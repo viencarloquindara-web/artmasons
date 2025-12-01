@@ -49,6 +49,14 @@ const FAMOUS_WORKS = [
   { id: 2, title: "The Kiss", date: "1908", src: "/image/2.jpg" },
   { id: 3, title: "Guernica", date: "1937", src: "/image/3.jpg" },
   { id: 4, title: "Creation of Adam", date: "1512", src: "/image/4.jpg" },
+  { id: 5, title: "Mona Lisa", date: "1503", src: "/image/5.jpg" },
+  { id: 6, title: "The Kiss", date: "1908", src: "/image/6.jpg" },
+  { id: 7, title: "Guernica", date: "1937", src: "/image/7.jpg" },
+  { id: 8, title: "Creation of Adam", date: "1512", src: "/image/8.jpg" },
+    { id: 9, title: "Mona Lisa", date: "1503", src: "/image/9.jpg" },
+  { id: 10, title: "The Kiss", date: "1908", src: "/image/10.jpg" },
+  { id: 11, title: "Guernica", date: "1937", src: "/image/11.jpg" },
+  { id: 12, title: "Creation of Adam", date: "1512", src: "/image/12.jpg" },
 ];
 
 const PLACED_ART = [

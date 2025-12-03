@@ -47,6 +47,7 @@ const FUN_FACTS_DATA = [
   'The Scream’s sky was inspired by a real volcanic sunset in Norway.',
   "Andy Warhol kept everything he owned in 'time capsules.'",
   'The Last Supper survived bombings during WWII with only a wall tarp.',
+  
 ];
 
 const TESTIMONIALS_DATA = [

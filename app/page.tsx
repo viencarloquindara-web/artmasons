@@ -178,7 +178,7 @@ export default function ArtMasonsLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef(null);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const extendedArtists = [...POPULAR_ARTISTS, ...POPULAR_ARTISTS];
 
@@ -207,7 +207,7 @@ export default function ArtMasonsLanding() {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    let animationFrameId: number;
+    let animationFrameId;
 
     const scrollStep = () => {
       if (!isCarouselPaused) {
@@ -312,13 +312,13 @@ export default function ArtMasonsLanding() {
 
             <div className={`w-full ${mobileMenuOpen ? 'block' : 'hidden md:block'}`}>
               <nav>
-                <ul className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 py-2 font-serif text-base md:text-lg tracking-wide uppercase font-bold w-full">
+                <ul className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 py-2 font-serif text-base md:text-lg tracking-wide uppercase w-full">
                   {NAV_ITEMS.map((item) => (
-                    <li key={item.label} className="cursor-pointer text-[#800000] hover:text-black transition-colors relative group whitespace-nowrap">
+                    <li key={item.label} className="cursor-pointer text-black hover:text-[#800000] transition-colors relative group whitespace-nowrap">
                       <Link href={item.href}>
                         {item.label}
                       </Link>
-                      <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-black transition-all duration-300 group-hover:w-full"></span>
+                      <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-[#800000] transition-all duration-300 group-hover:w-full"></span>
                     </li>
                   ))}
                 </ul>
@@ -330,17 +330,17 @@ export default function ArtMasonsLanding() {
 
       <PageTransition>
       {/* --- HERO SECTION --- */}
-      <section className="flex flex-col md:flex-row w-full min-h-[600px] border-b border-gray-200">
-        <div className="w-full md:w-1/3 bg-white p-8 md:p-12 flex flex-col justify-center border-r border-gray-200">
+      {/* Added md:pr-8 lg:pr-16 to add space on the right side of the screen */}
+      <section className="flex flex-col md:flex-row w-full min-h-[600px] border-b border-gray-200 md:pr-8 lg:pr-16">
+        <div className="w-full md:w-1/3 bg-white p-8 md:py-12 md:pl-12 md:pr-1 flex flex-col justify-center">
           <div className="mb-8">
             <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight mb-2">ART OF MASONS</h2>
-            <h3 className="font-serif text-xl md:text-2xl italic text-[#800000]">SEAL OF ASSURANCE</h3>
+            <h3 className="font-serif text-xl md:text-2xl text-[#800000]">SEAL OF ASSURANCE</h3>
           </div>
 
           <ul className="space-y-4 font-serif text-lg text-gray-800">
             {ASSURANCE_POINTS.map((point, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <div className="mt-2 w-1.5 h-1.5 rounded-full bg-[#800000] flex-shrink-0" />
+              <li key={index}>
                 {point}
               </li>
             ))}
@@ -388,6 +388,7 @@ export default function ArtMasonsLanding() {
       {/* --- POPULAR ART STRIP --- */}
       <section className="bg-gray-50 py-8 border-b border-gray-200">
         <div className="container mx-auto px-4">
+          <h3 className="font-serif text-2xl font-bold mb-6 text-center uppercase">POPULAR ART</h3>
           <div className="relative group w-full">
             <button 
               onClick={handleScrollLeft}
@@ -408,9 +409,6 @@ export default function ArtMasonsLanding() {
             >
               {extendedArtists.map((artist, i) => (
                 <div key={`${artist.name}-${i}`} className="flex-shrink-0 w-40 h-40 relative rounded-lg overflow-hidden group cursor-pointer">
-                  <div className="absolute top-2 left-2 bg-[#800000] text-white text-[8px] font-bold uppercase tracking-widest px-2 py-1 z-20 shadow-sm rounded-sm">
-                    Popular Art
-                  </div>
                   <Image src={artist.image} alt={artist.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 pointer-events-none flex flex-col justify-end pb-3">
                     <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -436,20 +434,20 @@ export default function ArtMasonsLanding() {
       <section className="container mx-auto px-4 py-20 flex flex-col md:flex-row gap-12">
         <div className="w-full md:w-1/2">
           <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">FUN ART FACTS</h3>
-          <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white border-4 border-[#800000] shadow-sm">
-            <div className="absolute top-2 left-2 text-[#800000] opacity-20">
-              <span className="font-serif text-6xl">“</span>
-            </div>
+          <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white shadow-sm">
             {isClient && (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="font-serif text-2xl md:text-3xl leading-relaxed text-[#800000] font-bold"
+                className="font-serif text-2xl md:text-3xl leading-relaxed text-gray-700"
               >
                 {FUN_FACTS_DATA[currentFactIndex]}
               </motion.p>
             )}
+            <div className="absolute bottom-2 right-2 text-gray-400 opacity-40">
+              <span className="font-serif text-6xl leading-none">"</span>
+            </div>
           </div>
         </div>
 
@@ -569,7 +567,7 @@ export default function ArtMasonsLanding() {
         </div>
 
         <div className="container mx-auto px-4 mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-500 font-serif">Trade Mark 1990/2026 Art Masons. All rights reserved.</p>
+          <p className="text-xs text-gray-500 font-serif">Trade Mark 1990/2025 Art Masons. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <span className="text-xs font-bold uppercase text-gray-500 tracking-widest font-serif">Follow Us</span>
             <div className="flex items-center gap-4">

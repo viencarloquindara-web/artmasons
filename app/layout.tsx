@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import PageLoader from "./components/PageLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Art Masons",
-  description: "Powered by Art Masonsss",
+  description: "Museum-Quality Oil Painting Reproductions - Hand-Painted by Master Artists",
+  icons: {
+    icon: [
+      { url: '/artmasons_logo.png' },
+      { url: '/icon.png', type: 'image/png' }
+    ],
+    apple: '/artmasons_logo.png',
+    shortcut: '/artmasons_logo.png',
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +36,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <PageLoader />
         {children}
       </body>
     </html>

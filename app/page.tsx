@@ -417,7 +417,7 @@ export default function ArtMasonsLanding() {
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              className="absolute bottom-6 right-6 z-50 inline-block bg-[#800000] text-white px-5 py-2 rounded-md font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition"
+              className="absolute bottom-6 right-6 z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition text-sm"
               aria-label="Buy now"
             >
               BUY NOW

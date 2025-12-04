@@ -39,7 +39,7 @@ const ARTWORK_DATA = {
   artistLife: "1853-1890",
   location: "Museum of Modern Art, New York",
   originalSize: "73.7 x 92.1 cm",
-  description: "Own a museum-quality reproduction of Starry Night by Vincent van Gogh (1889), exclusively hand-painted in oils on linen canvas by Global artists with academic training. Each masterpiece is created with meticulous craftsmanship, capturing the exceptional quality and authentic brushwork of the original painting.",
+  description: "Own a museum-quality reproduction of Starry Night by Vincent van Gogh (1889), exclusively hand-painted in oils on linen canvas by International artists with academic training. Each masterpiece is created with meticulous craftsmanship, capturing the exceptional quality and authentic brushwork of the original painting.",
   sku: "AM-VG-SN-001",
   basePrice: 3579,
   currency: "AED",
@@ -127,7 +127,7 @@ export default function ProductDetailsPage({ params }: { params: { slug: string 
                   </li>
                   <li className="flex items-center gap-2">
                     <Star size={12} className="flex-shrink-0" fill="white" />
-                    Global Academic Training
+                    International Academic Training
                   </li>
                 </ul>
               </div>

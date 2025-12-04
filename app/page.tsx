@@ -166,6 +166,14 @@ const ART_OF_THE_DAY = [
   },
 ];
 
+// Placeholder Top 100 list. Images not yet available; logic implemented.
+const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
+  title: `Artwork #${i + 1}`,
+  artist: `Artist #${i + 1}`,
+  image: `/image/placeholder-${(i % 10) + 1}.webp`,
+  slug: `artwork-${i + 1}`,
+}));
+
 const NAV_ITEMS = [
   { label: "Artists A-Z", href: "/artists-a-z" },
   { label: "Top 100 Paintings", href: "#" },
@@ -176,6 +184,9 @@ const NAV_ITEMS = [
 
 export default function ArtMasonsLanding() {
   const [currentArtIndex, setCurrentArtIndex] = useState(0);
+  const [playTop100Random, setPlayTop100Random] = useState(false);
+  const [top100Order, setTop100Order] = useState<number[]>([]);
+  const [isTop100AutoPlay, setIsTop100AutoPlay] = useState(true);
   const [currentFactIndex, setCurrentFactIndex] = useState(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -196,7 +207,10 @@ export default function ArtMasonsLanding() {
     const oneDay = 1000 * 60 * 60 * 24;
     const dayOfYear = Math.floor(diff / oneDay);
 
+    // Default behavior: pick art of the day by day of year
     setCurrentArtIndex(dayOfYear % ART_OF_THE_DAY.length);
+    // Initialize Top100 order (shuffled) but don't activate until user toggles
+    setTop100Order(shuffle(Array.from({ length: TOP_100_ARTS.length }, (_, i) => i)));
     setCurrentFactIndex(dayOfYear % FUN_FACTS_DATA.length);
 
     const testimonialTimer = setInterval(() => {
@@ -207,6 +221,20 @@ export default function ArtMasonsLanding() {
       clearInterval(testimonialTimer);
     };
   }, []);
+
+  // When top100 random playback is active, set up auto-advance timer
+  useEffect(() => {
+    if (!playTop100Random || !isTop100AutoPlay) return;
+
+    const interval = setInterval(() => {
+      setCurrentArtIndex((prev) => {
+        const next = prev + 1;
+        return next % TOP_100_ARTS.length;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [playTop100Random, isTop100AutoPlay]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -248,7 +276,41 @@ export default function ArtMasonsLanding() {
     return TESTIMONIALS_DATA[index];
   });
 
-  const currentArt = ART_OF_THE_DAY[currentArtIndex];
+  // Helper to resolve current array depending on mode
+  const currentArray = playTop100Random ? TOP_100_ARTS : ART_OF_THE_DAY;
+  const currentArt = playTop100Random
+    ? TOP_100_ARTS[top100Order[currentArtIndex] ?? currentArtIndex]
+    : ART_OF_THE_DAY[currentArtIndex];
+
+  function shuffle<T>(arr: T[]) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Programmatic toggle for Top 100 random mode (no UI button)
+  function toggleTop100Random(enabling?: boolean) {
+    const enable = typeof enabling === "boolean" ? enabling : !playTop100Random;
+    setPlayTop100Random(enable);
+    setIsTop100AutoPlay(true);
+    setCurrentArtIndex(0);
+    if (enable && top100Order.length === 0) {
+      setTop100Order(shuffle(Array.from({ length: TOP_100_ARTS.length }, (_, i) => i)));
+    }
+  }
+
+  const goPrevArt = () => {
+    setIsTop100AutoPlay(false);
+    setCurrentArtIndex((prev) => (prev - 1 + currentArray.length) % currentArray.length);
+  };
+
+  const goNextArt = () => {
+    setIsTop100AutoPlay(false);
+    setCurrentArtIndex((prev) => (prev + 1) % currentArray.length);
+  };
 
   return (
     <main
@@ -274,7 +336,7 @@ export default function ArtMasonsLanding() {
             <div className="w-full max-w-[330px] text-left mx-auto">
               <div className="mb-8">
                 <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight mb-2">
-                  ART OF MASONS
+                  ART MASONS
                 </h2>
                 <h3 className="font-serif text-xl md:text-2xl text-[#800000]">
                   SEAL OF ASSURANCE
@@ -314,13 +376,52 @@ export default function ArtMasonsLanding() {
             </AnimatePresence>
 
             <div className="absolute bottom-0 w-full bg-white/90 py-4 text-center z-20 backdrop-blur-sm border-t border-gray-200">
-              <span className="font-serif text-xs uppercase tracking-[0.2em] block text-gray-500 mb-1">
-                Art of the Day
-              </span>
+              <div className="flex items-center justify-center gap-3">
+                <span className="font-serif text-xs uppercase tracking-[0.2em] block text-gray-500 mb-1">
+                  FAMOUS ART
+                </span>
+              </div>
               <h2 className="font-serif text-2xl text-black">
                 {isClient ? currentArt.title : ""}
               </h2>
             </div>
+
+            {/* Left/Right manual navigation for hero */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                goPrevArt();
+              }}
+              aria-label="Previous art"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white"
+            >
+              <ChevronLeft size={28} />
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                goNextArt();
+              }}
+              aria-label="Next art"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white"
+            >
+              <ChevronRight size={28} />
+            </button>
+
+            {/* BUY NOW ribbon - sits above the full-area Link and stops propagation */}
+            <Link
+              href={isClient ? `/artworks/${currentArt.slug}` : "#"}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="absolute bottom-6 right-6 z-50 inline-block bg-[#800000] text-white px-5 py-2 rounded-md font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition"
+              aria-label="Buy now"
+            >
+              BUY NOW
+            </Link>
 
             <Link
               href={isClient ? `/artworks/${currentArt.slug}` : "#"}
@@ -346,7 +447,7 @@ export default function ArtMasonsLanding() {
             <h3 className="font-serif text-2xl font-bold mb-6 text-center uppercase">
               POPULAR ART
             </h3>
-            <div className="relative group w-full">
+            <div className="relative w-full">
               <button
                 onClick={handleScrollLeft}
                 className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 transition-colors hover:text-[#800000]"

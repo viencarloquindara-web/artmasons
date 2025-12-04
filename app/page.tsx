@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Playfair_Display } from "next/font/google";
 import Link from "next/link";
 import PageTransition from "./components/PageTransition";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 import {
   Search,
   ShoppingBag,
@@ -262,122 +264,29 @@ export default function ArtMasonsLanding() {
         }
       `}</style>
 
-      {/* --- HEADER SECTION --- */}
-      <header className="relative z-50 bg-white pt-6 pb-4 shadow-sm border-b border-gray-100">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-end gap-12">
-          <div
-            className="flex-shrink-0 flex flex-col items-center justify-end w-auto md:w-56 cursor-pointer pb-2"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            <div className="relative w-32 h-32 md:w-44 md:h-44">
-              <Image
-                src="/artmasons_logo.png"
-                alt="Art Masons Seal"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-
-          <div className="flex-1 flex flex-col w-full justify-end">
-            <div className="flex flex-col md:flex-row items-center gap-6 relative w-full">
-              <div className="flex-1 w-full relative z-20">
-                <div
-                  className={`flex items-center border rounded-sm overflow-hidden bg-white w-full`}
-                  style={{ borderColor: THEME_RED }}
-                >
-                  <input
-                    type="text"
-                    placeholder="Search For Paintings"
-                    className="w-full px-4 py-3 outline-none text-sm placeholder-gray-400 font-serif"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <button className="p-3 hover:bg-gray-100 transition-colors">
-                    <Search size={22} className="text-black" />
-                  </button>
-                </div>
-
-                <div className="absolute top-full left-0 w-full text-[10px] text-gray-400 mt-2 text-center hidden md:block font-serif">
-                  Type Artist Name or Art Name to find from Top 100 Gallery &
-                  Artists A-Z
-                </div>
-              </div>
-
-              <div className="flex-shrink-0 flex items-center gap-6 self-center h-full pb-1">
-                <div
-                  className="w-8 h-8 rounded-full bg-gray-100 relative overflow-hidden shadow-sm border border-gray-200"
-                  title="UAE"
-                >
-                  <div className="absolute inset-y-0 left-0 w-1/4 bg-red-600"></div>
-                  <div className="absolute top-0 right-0 w-3/4 h-1/3 bg-green-600"></div>
-                  <div className="absolute bottom-0 right-0 w-3/4 h-1/3 bg-black"></div>
-                  <div className="absolute top-1/3 right-0 w-3/4 h-1/3 bg-white"></div>
-                </div>
-
-                <div className="flex items-center gap-2 cursor-pointer hover:opacity-70">
-                  <div className="relative">
-                    <ShoppingBag size={28} color="black" strokeWidth={1.5} />
-                    <span className="absolute -top-1 -right-1 bg-[#800000] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-serif">
-                      0
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  className="md:hidden"
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                >
-                  {mobileMenuOpen ? <X /> : <Menu />}
-                </button>
-              </div>
-            </div>
-
-            <div className="h-10 hidden md:block"></div>
-
-            <div
-              className={`w-full ${
-                mobileMenuOpen ? "block" : "hidden md:block"
-              }`}
-            >
-              <nav>
-                <ul className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 py-2 font-serif text-base md:text-lg tracking-wide uppercase w-full">
-                  {NAV_ITEMS.map((item) => (
-                    <li
-                      key={item.label}
-                      className="cursor-pointer text-black hover:text-[#800000] transition-colors relative group whitespace-nowrap"
-                    >
-                      <Link href={item.href}>{item.label}</Link>
-                      <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-[#800000] transition-all duration-300 group-hover:w-full"></span>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <PageTransition>
         {/* --- HERO SECTION --- */}
         {/* Added md:pr-8 lg:pr-16 to add space on the right side of the screen */}
         <section className="flex flex-col md:flex-row w-full min-h-[600px] border-b border-gray-200 md:pr-8 lg:pr-16">
-          <div className="w-full md:w-1/3 bg-white p-8 md:py-12 md:pl-12 md:pr-1 flex flex-col justify-center">
-            <div className="mb-8">
-              <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight mb-2">
-                ART OF MASONS
-              </h2>
-              <h3 className="font-serif text-xl md:text-2xl text-[#800000]">
-                SEAL OF ASSURANCE
-              </h3>
-            </div>
+          <div className="w-full md:w-1/3 bg-white p-8 md:py-12 md:pl-12 md:pr-1 flex flex-col justify-center items-center">
+            <div className="w-full max-w-[330px] text-left mx-auto">
+              <div className="mb-8">
+                <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight mb-2">
+                  ART OF MASONS
+                </h2>
+                <h3 className="font-serif text-xl md:text-2xl text-[#800000]">
+                  SEAL OF ASSURANCE
+                </h3>
+              </div>
 
-            <ul className="space-y-4 font-serif text-lg text-gray-800">
-              {ASSURANCE_POINTS.map((point, index) => (
-                <li key={index}>{point}</li>
-              ))}
-            </ul>
+              <ul className="space-y-4 font-serif text-lg text-gray-800">
+                {ASSURANCE_POINTS.map((point, index) => (
+                  <li key={index}>{point}</li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="w-full md:w-2/3 relative bg-gray-50 group overflow-hidden">
@@ -492,7 +401,7 @@ export default function ArtMasonsLanding() {
         <section className="container mx-auto px-4 py-20 flex flex-col md:flex-row gap-12">
           <div className="w-full md:w-1/2">
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">
-              FUN ART FACTS
+              FUN FACTS
             </h3>
             <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white shadow-sm">
               {isClient && (
@@ -578,170 +487,7 @@ export default function ArtMasonsLanding() {
         </section>
       </PageTransition>
 
-      {/* --- FOOTER --- */}
-      <footer className="bg-[#1a1a1a] text-white pt-20 pb-10">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
-            <h4 className="font-serif text-xl mb-6">About Art Masons</h4>
-            <p className="font-serif text-gray-400 text-sm leading-relaxed mb-6">
-              We are a small, highly specialised team of artists, academically
-              trained according to European standards, and we never compromise
-              on detail, technique, or materials.
-            </p>
-            <div className="flex gap-4">
-              <Instagram
-                className="text-gray-400 hover:text-white cursor-pointer"
-                size={20}
-              />
-              <Facebook
-                className="text-gray-400 hover:text-white cursor-pointer"
-                size={20}
-              />
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-serif text-xs font-bold uppercase tracking-widest text-gray-500 mb-6">
-              Customer Service
-            </h4>
-            <ul className="space-y-3 font-serif text-gray-300">
-              <li>
-                <Link
-                  href="/faqs"
-                  className="hover:text-white transition-colors"
-                >
-                  FAQs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/return-policy"
-                  className="hover:text-white transition-colors"
-                >
-                  Return Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/delivery-information"
-                  className="hover:text-white transition-colors"
-                >
-                  Delivery Information
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy-policy"
-                  className="hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms-conditions"
-                  className="hover:text-white transition-colors"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-serif text-xs font-bold uppercase tracking-widest text-gray-500 mb-6">
-              Contact Us
-            </h4>
-            <div className="space-y-4">
-              <a
-                href="mailto:info@artmasons.com"
-                className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors font-serif"
-              >
-                <Mail size={18} /> info@artmasons.com
-              </a>
-              <div className="flex items-center gap-3 text-gray-300 font-serif">
-                <Phone size={18} /> +971 56 170 4788
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-8">
-            <div>
-              <h4 className="font-serif text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
-                Secure Online Payment
-              </h4>
-              <div className="flex gap-2">
-                <div className="bg-white rounded px-2 py-1 h-8 w-12 flex items-center justify-center shadow-md">
-                  <span className="text-blue-900 font-bold text-[10px] italic font-serif">
-                    VISA
-                  </span>
-                </div>
-                <div className="bg-white rounded px-2 py-1 h-8 w-12 flex items-center justify-center shadow-md">
-                  <div className="flex -space-x-1 relative">
-                    <div className="w-3 h-3 rounded-full bg-red-600 opacity-90"></div>
-                    <div className="w-3 h-3 rounded-full bg-orange-500 opacity-90"></div>
-                  </div>
-                </div>
-                <div className="bg-white rounded px-2 py-1 h-8 w-12 flex items-center justify-center shadow-md">
-                  <span className="text-blue-500 font-bold text-[8px] uppercase font-serif">
-                    AMEX
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-serif text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
-                Newsletter
-              </h4>
-              <div className="flex flex-col gap-3">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="bg-white text-black px-4 py-2 outline-none rounded-sm w-full font-serif text-sm"
-                />
-                <button className="bg-[#800000] text-white px-4 py-2 font-bold uppercase text-xs tracking-widest hover:bg-[#600000] transition-colors rounded-sm font-serif">
-                  Subscribe*
-                </button>
-                <p className="text-[10px] text-gray-500 font-serif leading-tight">
-                  *Subscribe to receive special offers, updates and news.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-4 mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-500 font-serif">
-            Trade Mark 1990/2025 Art Masons. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-bold uppercase text-gray-500 tracking-widest font-serif">
-              Follow Us
-            </span>
-            <div className="flex items-center gap-4">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href="https://instagram.com/Theartmasons"
-                className="text-gray-400 hover:text-white transition-colors flex items-center gap-1"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Video size={18} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

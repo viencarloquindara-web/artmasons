@@ -2,15 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display } from 'next/font/google';
 import { ArrowLeft } from 'lucide-react';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export default function TermsConditionsPage() {
   return (
-    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-sans`}>
+    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         
         <div className="mb-8">
@@ -19,9 +18,9 @@ export default function TermsConditionsPage() {
           </Link>
         </div>
 
-        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Terms and Conditions</h1>
+      <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Terms and Conditions</h1>
 
-        <div className="space-y-10 text-gray-700 leading-relaxed">
+        <div className="font-serif space-y-10 text-gray-700 leading-relaxed">
           
           <section>
              <h3 className="font-serif text-2xl font-bold mb-2">Website Access</h3>

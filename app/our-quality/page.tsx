@@ -1,0 +1,242 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Playfair_Display } from 'next/font/google';
+import { ArrowLeft, CheckCircle } from 'lucide-react';
+
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
+
+export default function OurQualityPage() {
+  return (
+    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
+      <div className="container mx-auto px-4 py-12 max-w-6xl">
+        
+        <div className="mb-8">
+          <Link href="/" className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#800000] transition-colors">
+            <ArrowLeft size={16} /> Back to Home
+          </Link>
+        </div>
+
+        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Our Quality</h1>
+
+        {/* Hero Banner */}
+        <div className="mb-16">
+          <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-2xl">
+            <Image 
+              src="/our-quality/banner_1.jpg" 
+              alt="Museum Quality Art" 
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </div>
+
+        <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
+          
+          {/* Introduction */}
+          <section>
+            <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Museum-Quality Excellence</h2>
+            <p className="text-lg mb-4">
+              At ART MASONS, we are committed to delivering nothing less than museum-quality oil painting reproductions. Each piece is meticulously hand-painted by our master artists, ensuring that every brushstroke captures the essence and beauty of the original masterpiece.
+            </p>
+            <p className="text-lg">
+              Our dedication to quality means using only the finest materials and employing time-honored techniques that have been perfected over centuries. When you choose ART MASONS, you're not just buying a painting—you're investing in a work of art.
+            </p>
+          </section>
+
+          {/* Quality Standards */}
+          <section>
+            <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Quality Standards</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
+                <div>
+                  <h3 className="font-bold text-xl mb-2">100% Hand-Painted</h3>
+                  <p>Every painting is created entirely by hand using traditional oil painting techniques. We never use prints or digital reproduction methods.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
+                <div>
+                  <h3 className="font-bold text-xl mb-2">Premium Linen Canvas</h3>
+                  <p>We use 100% pure linen canvases that are pre-stretched and triple-primed for superior durability and paint adhesion.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
+                <div>
+                  <h3 className="font-bold text-xl mb-2">Refined Oil Paints</h3>
+                  <p>Only the highest quality, lightfast oil paints are used to ensure vibrant colors that will last for generations.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
+                <div>
+                  <h3 className="font-bold text-xl mb-2">Master Artists</h3>
+                  <p>Our certified art masons are highly skilled professionals with years of training in classical painting techniques.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
+                <div>
+                  <h3 className="font-bold text-xl mb-2">Quality Control</h3>
+                  <p>Each painting undergoes rigorous quality inspection before shipping to ensure it meets our exacting standards.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
+                <div>
+                  <h3 className="font-bold text-xl mb-2">Proper Drying Time</h3>
+                  <p>We allow 8-10 weeks for paintings to properly dry and cure, ensuring longevity and preventing cracking.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Second Banner */}
+          <div className="my-16">
+            <div className="relative w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden shadow-2xl">
+              <Image 
+                src="/our-quality/banner_2.jpg" 
+                alt="Artisan at Work" 
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Our Process */}
+          <section>
+            <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Creation Process</h2>
+            <div className="space-y-6">
+              <div className="border-l-4 border-[#800000] pl-6 py-2">
+                <h3 className="font-bold text-xl mb-2">1. Selection & Study</h3>
+                <p>Our artists carefully study the original masterpiece, analyzing brushwork, color palette, and technique.</p>
+              </div>
+              
+              <div className="border-l-4 border-[#800000] pl-6 py-2">
+                <h3 className="font-bold text-xl mb-2">2. Canvas Preparation</h3>
+                <p>Premium linen canvas is stretched on wooden frames and treated with multiple layers of primer.</p>
+              </div>
+              
+              <div className="border-l-4 border-[#800000] pl-6 py-2">
+                <h3 className="font-bold text-xl mb-2">3. Underpainting</h3>
+                <p>The composition is sketched and an underpainting layer is applied to establish values and composition.</p>
+              </div>
+              
+              <div className="border-l-4 border-[#800000] pl-6 py-2">
+                <h3 className="font-bold text-xl mb-2">4. Layer by Layer Painting</h3>
+                <p>Multiple layers of oil paint are applied using traditional techniques, building depth and richness.</p>
+              </div>
+              
+              <div className="border-l-4 border-[#800000] pl-6 py-2">
+                <h3 className="font-bold text-xl mb-2">5. Detail Work & Finishing</h3>
+                <p>Fine details are added with precision, and the painting is allowed to dry completely.</p>
+              </div>
+              
+              <div className="border-l-4 border-[#800000] pl-6 py-2">
+                <h3 className="font-bold text-xl mb-2">6. Quality Inspection</h3>
+                <p>Each painting is inspected for accuracy, quality, and adherence to our museum-grade standards.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Certification */}
+          <section className="bg-gray-50 p-8 rounded-lg">
+            <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000] text-center">Certified Excellence</h2>
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="md:w-1/3 flex justify-center">
+                <div className="relative w-64 h-64">
+                  <Image 
+                    src="/our-quality/cert_1.png" 
+                    alt="Quality Certificate" 
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <div className="md:w-2/3 space-y-4">
+                <p className="text-lg">
+                  Every painting from ART MASONS comes with a certificate of authenticity, guaranteeing that your artwork is a genuine hand-painted oil painting reproduction created by our certified master artists.
+                </p>
+                <p className="text-lg">
+                  This certificate serves as proof of the quality materials used, the traditional techniques employed, and our commitment to delivering museum-quality artwork that will be treasured for generations.
+                </p>
+                <div className="mt-6 p-4 bg-white rounded border-l-4 border-[#800000]">
+                  <p className="font-bold text-[#800000]">Our Guarantee:</p>
+                  <p className="mt-2">We stand behind the quality of every painting we create. If you're not completely satisfied with your artwork, we offer a comprehensive return policy to ensure your peace of mind.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Materials & Techniques */}
+          <section>
+            <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Premium Materials</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                  1
+                </div>
+                <h3 className="font-bold text-xl mb-3">Linen Canvas</h3>
+                <p>100% pure Belgian linen, known for its superior texture and durability compared to cotton canvas.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                  2
+                </div>
+                <h3 className="font-bold text-xl mb-3">Artist-Grade Oils</h3>
+                <p>Professional quality oil paints with high pigment concentration for brilliant, long-lasting color.</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                  3
+                </div>
+                <h3 className="font-bold text-xl mb-3">Wooden Frames</h3>
+                <p>Kiln-dried wooden stretcher bars ensure stability and prevent warping over time.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Why Choose Us */}
+          <section className="border-2 border-[#800000] p-8 rounded-lg">
+            <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000] text-center">Why Choose ART MASONS?</h2>
+            <div className="space-y-4 text-lg">
+              <p>✓ <strong>Authenticity:</strong> Each painting is 100% hand-painted—no prints, no reproductions.</p>
+              <p>✓ <strong>Expertise:</strong> Our artists have years of training in classical painting techniques.</p>
+              <p>✓ <strong>Premium Materials:</strong> We use only the finest linen, oils, and frames available.</p>
+              <p>✓ <strong>Time & Care:</strong> We never rush. Each painting receives the time it needs to be perfect.</p>
+              <p>✓ <strong>Museum Quality:</strong> Our standards match those of the world's finest art institutions.</p>
+              <p>✓ <strong>Guaranteed Satisfaction:</strong> We stand behind our work with confidence.</p>
+            </div>
+          </section>
+
+          {/* Call to Action */}
+          <section className="text-center py-12">
+            <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Experience the Difference</h2>
+            <p className="text-lg mb-8 max-w-2xl mx-auto">
+              Discover the beauty and quality that only hand-painted oil reproductions can provide. Browse our collection and find the perfect masterpiece for your space.
+            </p>
+            <Link 
+              href="/"
+              className="inline-block bg-[#800000] text-white px-8 py-4 rounded-lg font-bold hover:bg-[#600000] transition-colors text-lg"
+            >
+              Explore Our Collection
+            </Link>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  );
+}

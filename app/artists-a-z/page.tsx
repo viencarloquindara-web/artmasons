@@ -2,11 +2,10 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Playfair_Display, Inter } from 'next/font/google';
-import { ArrowLeft } from 'lucide-react';
+import { Playfair_Display } from 'next/font/google';
+import { ArrowLeft, User } from 'lucide-react';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 // --- THEME COLORS ---
 const THEME_RED = '#800000';
@@ -215,15 +214,34 @@ const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 // --- HELPER ---
 const getSurnameChar = (fullName: string) => {
   const parts = fullName.trim().split(' ');
-  let surname = parts[parts.length - 1]; 
   
-  if (fullName.includes('Da Vinci')) surname = 'Vinci'; 
-  if (fullName.includes('Van Gogh')) surname = 'Gogh';
-  if (fullName.includes('Van Aelst')) surname = 'Aelst';
-  if (fullName.includes('De Bellis')) surname = 'Bellis';
-  if (fullName.includes('De Blaas')) surname = 'Blaas';
+  // Check for "De" or "Da" prefixes - count them as "D"
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] === 'De' || parts[i] === 'Da') {
+      return 'D';
+    }
+  }
   
+  // For "Van" prefix, use the next word
+  for (let i = 0; i < parts.length - 1; i++) {
+    if (parts[i] === 'Van') {
+      return parts[i + 1].charAt(0).toUpperCase();
+    }
+  }
+  
+  // Default: use last name
+  const surname = parts[parts.length - 1];
   return surname.charAt(0).toUpperCase();
+};
+
+// Helper function to generate slug from artwork title
+const generateSlug = (title: string) => {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-')      // Replace spaces with hyphens
+    .replace(/-+/g, '-')       // Replace multiple hyphens with single hyphen
+    .trim();
 };
 
 export default function ArtistsAZPage() {
@@ -235,61 +253,143 @@ export default function ArtistsAZPage() {
     return Array.from(new Set(artists)).sort();
   }, []);
 
+  // Get count of artists per letter
+  const letterCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    ALPHABET.forEach(letter => {
+      counts[letter] = uniqueArtists.filter(artist => getSurnameChar(artist) === letter).length;
+    });
+    return counts;
+  }, [uniqueArtists]);
+
   const filteredArtists = useMemo(() => {
     if (!selectedLetter) return [];
     return uniqueArtists.filter(artist => getSurnameChar(artist) === selectedLetter);
   }, [selectedLetter, uniqueArtists]);
 
+  // Get artworks by selected artists
+  const getArtworksByArtist = (artist: string) => {
+    return COLLECTION_DATA.filter(item => item.artist === artist).map(item => item.title);
+  };
+
   return (
-    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-serif`}>
-      <div className="container mx-auto px-4 py-12">
+    <main className={`${playfair.variable} min-h-screen bg-white text-black font-serif`}>
+      <div className="container mx-auto px-4 py-12 max-w-7xl">
         
         {/* Back to Home Link */}
         <div className="mb-8">
-          <Link href="/" className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#800000] transition-colors font-sans">
+          <Link href="/" className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#800000] transition-colors">
             <ArrowLeft size={16} /> Back to Home
           </Link>
         </div>
 
-        <div className="text-center mb-12">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-[#800000]">Explore Our Curated Collection of Artists</h1>
-          <p className="max-w-3xl mx-auto text-sm text-gray-500 leading-relaxed">
-            Discover a rich collection of art from renowned painters throughout history, organized by the artist's last name.
+        <div className="mb-12">
+          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-[#800000]">Artists A-Z</h1>
+          <p className="font-serif text-lg text-gray-600 max-w-3xl">
+            Explore our curated collection of master artists from throughout history. Browse by last name to discover their available works.
           </p>
         </div>
 
         {/* Alphabet Filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {ALPHABET.map((letter) => (
-            <button
-              key={letter}
-              onClick={() => setSelectedLetter(letter)}
-              className={`
-                w-10 h-10 md:w-12 md:h-12 border text-xl flex items-center justify-center transition-all duration-200 rounded-sm
-                ${selectedLetter === letter 
-                  ? 'bg-[#800000] text-white border-[#800000] shadow-md' 
-                  : 'border-gray-300 bg-white hover:border-[#800000] hover:text-[#800000] text-black'
-                }
-              `}
-            >
-              {letter}
-            </button>
-          ))}
+        <div className="mb-12 bg-gray-50 p-6 rounded-lg">
+          <h2 className="font-serif text-xl font-bold mb-4 text-gray-800">Browse by Letter</h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {ALPHABET.map((letter) => {
+              const count = letterCounts[letter];
+              const hasArtists = count > 0;
+              
+              return (
+                <button
+                  key={letter}
+                  onClick={() => hasArtists && setSelectedLetter(letter)}
+                  disabled={!hasArtists}
+                  className={`
+                    relative w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 rounded font-serif text-lg font-bold
+                    ${!hasArtists 
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                      : selectedLetter === letter 
+                        ? 'bg-[#800000] text-white shadow-lg scale-110' 
+                        : 'bg-white text-gray-700 border border-gray-300 hover:border-[#800000] hover:text-[#800000] hover:scale-105 shadow-sm'
+                    }
+                  `}
+                >
+                  {letter}
+                  {hasArtists && count > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-[#800000] text-white text-sm font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Results Grid */}
-        <div className="min-h-[200px]">
+        {/* Results Section */}
+        <div className="min-h-[400px]">
           {filteredArtists.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-left">
-              {filteredArtists.map((artist, idx) => (
-                <div key={idx} className="p-4 bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
-                  <p className="text-sm md:text-base text-gray-800 group-hover:text-[#800000] transition-colors">{artist}</p>
-                </div>
-              ))}
-            </div>
+            <>
+              <div className="mb-6">
+                <h2 className="font-serif text-2xl font-bold text-gray-800">
+                  <span className="text-4xl font-bold text-[#800000]">{filteredArtists.length}</span> {filteredArtists.length === 1 ? 'Artist' : 'Artists'} starting with "{selectedLetter}"
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredArtists.map((artist, idx) => {
+                  const artworks = getArtworksByArtist(artist);
+                  
+                  return (
+                    <div 
+                      key={idx} 
+                      className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-200 hover:border-[#800000]"
+                    >
+                      <div className="flex items-start gap-4 mb-5">
+                        <div className="flex-shrink-0 w-14 h-14 bg-[#800000] rounded-full flex items-center justify-center">
+                          <User className="text-white" size={26} />
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h3 className="font-serif text-2xl font-bold text-[#800000] leading-tight">
+                            {artist}
+                          </h3>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <p className="font-serif text-base font-semibold text-gray-600">
+                          <span className="text-2xl font-bold text-[#800000]">{artworks.length}</span> {artworks.length === 1 ? 'Artwork' : 'Artworks'}
+                        </p>
+                        <ul className="space-y-2">
+                          {artworks.map((artwork, artIdx) => {
+                            const slug = generateSlug(artwork);
+                            
+                            return (
+                              <li key={artIdx}>
+                                <Link 
+                                  href={`/artworks/${slug}`}
+                                  className="font-serif text-gray-700 text-base flex items-start gap-2 hover:text-[#800000] transition-colors leading-relaxed group"
+                                >
+                                  <span className="text-[#800000] mt-1">•</span>
+                                  <span className="flex-1 group-hover:underline">{artwork}</span>
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           ) : (
-            <div className="flex flex-col items-center justify-center py-10 opacity-50">
-              <p className="text-xl text-gray-400">No artists found for "{selectedLetter}"</p>
+            <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-lg">
+              <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                <User className="text-gray-400" size={40} />
+              </div>
+              <p className="text-xl font-serif text-gray-400 mb-2">No artists found for letter "{selectedLetter}"</p>
+              <p className="font-serif text-sm text-gray-500">Try selecting a different letter above</p>
             </div>
           )}
         </div>

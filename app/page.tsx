@@ -177,7 +177,7 @@ const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
 const NAV_ITEMS = [
   { label: "Artists A-Z", href: "/artists-a-z" },
   { label: "Top 100 Paintings", href: "#" },
-  { label: "Our Quality", href: "#" },
+  { label: "Our Quality", href: "/our-quality" },
   { label: "Frame & Size Art", href: "#" },
   { label: "About Us", href: "#" },
 ];

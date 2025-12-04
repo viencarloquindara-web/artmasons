@@ -2,15 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display } from 'next/font/google';
 import { ArrowLeft } from 'lucide-react';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export default function DeliveryInfoPage() {
   return (
-    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-sans`}>
+    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         
         <div className="mb-8">
@@ -21,7 +20,7 @@ export default function DeliveryInfoPage() {
 
         <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Delivery Information</h1>
 
-        <div className="space-y-12 text-gray-700 leading-relaxed">
+        <div className="font-serif space-y-12 text-gray-700 leading-relaxed">
           
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">Cost of Delivery</h2>
@@ -41,7 +40,7 @@ export default function DeliveryInfoPage() {
             </p>
           </section>
 
-          <section>
+           <section>
              <h2 className="font-serif text-2xl font-bold mb-4">Shipping Method & Packaging</h2>
              <p className="mb-4">
                We ship our paintings using globally recognised and reputable courier companies to ensure safe and reliable delivery. All unframed art reproductions are carefully rolled and placed into secure, protective postal tubes to prevent any damage during transit.
@@ -51,7 +50,7 @@ export default function DeliveryInfoPage() {
              </p>
           </section>
 
-          <section>
+           <section>
              <h2 className="font-serif text-2xl font-bold mb-4">Address Requirements</h2>
              <p className="mb-4">
                Please ensure that the delivery address provided is accurate and that someone is available to receive the shipment, as this is the customer’s responsibility.

@@ -2,15 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display } from 'next/font/google';
 import { ArrowLeft } from 'lucide-react';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-sans`}>
+    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         
         <div className="mb-8">
@@ -21,7 +20,7 @@ export default function PrivacyPolicyPage() {
 
         <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Privacy Policy</h1>
 
-        <div className="space-y-8 text-gray-700 leading-relaxed">
+        <div className="font-serif space-y-8 text-gray-700 leading-relaxed">
           
           <p className="font-bold">
              At ART MASONS, we take your privacy seriously. This policy explains what information we collect, how we use it, and the measures we take to protect it.

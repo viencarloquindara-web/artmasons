@@ -131,7 +131,7 @@ export default function Footer() {
 
       <div className="container mx-auto px-4 mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-xs text-gray-500 font-serif">
-          Trade Mark 1990/2025 Art Masons. All rights reserved.
+          Trade Mark 1990/{new Date().getFullYear()} Art Masons. All rights reserved.
         </p>
         <div className="flex items-center gap-4">
           <span className="text-xs font-bold uppercase text-gray-500 tracking-widest font-serif">

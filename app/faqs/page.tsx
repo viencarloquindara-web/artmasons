@@ -2,15 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display } from 'next/font/google';
 import { ArrowLeft } from 'lucide-react';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export default function FAQsPage() {
   return (
-    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-sans`}>
+    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         
         {/* Breadcrumb / Back */}
@@ -27,7 +26,7 @@ export default function FAQsPage() {
           {/* Section 1 */}
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">How Do We Create Our Paintings? Hand-Painted Oil Masterpieces</h2>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <div className="font-serif text-gray-700 leading-relaxed space-y-4">
               <p>
                 At ART MASONS, we are driven by a single ambition: to create paintings of true museum quality. We are a small, highly specialised team of artists, academically trained according to European standards, and we never compromise on detail, technique, or materials.
               </p>
@@ -43,7 +42,7 @@ export default function FAQsPage() {
           {/* Section 2 */}
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">How Long Will It Take to Create My Painting?</h2>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <div className="font-serif text-gray-700 leading-relaxed space-y-4">
               <p>
                 Creating a hand-painted reproduction of museum quality requires patience, precision, and time. Each artwork is painted entirely by hand and must also be allowed to dry fully before it can be safely shipped.
               </p>
@@ -59,7 +58,7 @@ export default function FAQsPage() {
           {/* Section 3 */}
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">What Will Be the Cost of Delivery for My Painting?</h2>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <div className="font-serif text-gray-700 leading-relaxed space-y-4">
               <p>
                 We are delighted to offer free shipping. There are no additional standard delivery charges.
               </p>
@@ -72,7 +71,7 @@ export default function FAQsPage() {
           {/* Section 4 */}
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">How Will My Painting Be Shipped?</h2>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <div className="font-serif text-gray-700 leading-relaxed space-y-4">
               <p>
                 We ship our paintings using globally recognised and reputable courier companies to ensure safe and reliable delivery. If you would like to track your shipment, we will provide an online tracking number via email as soon as your painting has been dispatched.
               </p>
@@ -88,7 +87,7 @@ export default function FAQsPage() {
           {/* Section 5 */}
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">How Can I Order a Painting in a Different Size From the Options Offered?</h2>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <div className="font-serif text-gray-700 leading-relaxed space-y-4">
               <p>
                 Many websites offering painting reproductions provide standard sizes that often do not match the proportions of the original artwork. Our approach is entirely different. We offer our hand-painted reproductions either in the exact size of the original painting or in a size that maintains perfect original proportional accuracy.
               </p>
@@ -104,7 +103,7 @@ export default function FAQsPage() {
           {/* Section 6 */}
           <section>
             <h2 className="font-serif text-2xl font-bold mb-4">Can You Frame the Painting I Have Chosen?</h2>
-            <div className="text-gray-700 leading-relaxed space-y-4">
+            <div className="font-serif text-gray-700 leading-relaxed space-y-4">
               <p>
                 Our paintings are shipped unstretched and unframed due to international mailing limitations. High-quality oil paintings are valuable and can be easily damaged during transport if shipped already stretched on a frame.
               </p>

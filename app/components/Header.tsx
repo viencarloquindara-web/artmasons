@@ -15,8 +15,8 @@ export default function Header() {
     { label: "Artists A-Z", href: "/artists-a-z" },
     { label: "Top 100 Paintings", href: "#" },
     { label: "Our Quality", href: "/our-quality" },
-    { label: "Frame & Size Art", href: "#" },
-    { label: "About Us", href: "#" },
+    { label: "Frame & Size Art", href: "/frame-size-art" },
+    { label: "About Us", href: "/about-us" },
   ];
 
   return (
@@ -68,14 +68,14 @@ export default function Header() {
                 <div className="absolute top-1/3 right-0 w-3/4 h-1/3 bg-white"></div>
               </div>
 
-              <div className="flex items-center gap-2 cursor-pointer hover:opacity-70">
+              <Link href="/cart" className="flex items-center gap-2 cursor-pointer hover:opacity-70">
                 <div className="relative">
                   <ShoppingBag size={28} color="black" strokeWidth={1.5} />
                   <span className="absolute -top-1 -right-1 bg-[#800000] text-white text-sm w-4 h-4 rounded-full flex items-center justify-center font-serif">
                     0
                   </span>
                 </div>
-              </div>
+              </Link>
 
               <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                 {mobileMenuOpen ? <X /> : <Menu />}

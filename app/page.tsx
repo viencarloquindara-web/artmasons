@@ -6,8 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Playfair_Display } from "next/font/google";
 import Link from "next/link";
 import PageTransition from "./components/PageTransition";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
 import {
   Search,
   ShoppingBag,
@@ -326,8 +324,6 @@ export default function ArtMasonsLanding() {
         }
       `}</style>
 
-      <Header />
-
       <PageTransition>
         {/* --- HERO SECTION --- */}
         {/* Added md:pr-8 lg:pr-16 to add space on the right side of the screen */}
@@ -587,8 +583,6 @@ export default function ArtMasonsLanding() {
           </div>
         </section>
       </PageTransition>
-
-      <Footer />
     </main>
   );
 }

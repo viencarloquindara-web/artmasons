@@ -4,7 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Playfair_Display } from 'next/font/google';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
@@ -14,9 +15,7 @@ export default function OurQualityPage() {
       <div className="container mx-auto px-4 py-12 max-w-6xl">
         
         <div className="mb-8">
-          <Link href="/" className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#800000] transition-colors">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
+          <Breadcrumbs items={[{ label: 'Our Quality', href: '/our-quality' }]} />
         </div>
 
         <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Our Quality</h1>

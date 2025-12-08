@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -14,38 +14,57 @@ import {
 
 type Artwork = {
   title: string;
-  year: string;
+  year?: string;
   artist: string;
-  artistLife: string;
-  location: string;
-  originalSize: string;
-  description: string;
-  sku: string;
-  basePrice: number;
-  currency: string;
+  artistLife?: string;
+  location?: string;
+  originalSize?: string;
+  description?: string;
+  sku?: string;
+  basePrice?: number;
+  currency?: string;
   image: string;
-  options: Array<{ id: string; width: number; height: number; price: number; label: string }>;
+  options?: Array<{ id: string; width: number; height: number; price: number; label: string }>;
 };
 
 export default function ClientProductDetails({ artwork, slug }: { artwork: Artwork; slug: string }) {
-  const [selectedOption, setSelectedOption] = useState(artwork.options[0]);
+  const [selectedOption, setSelectedOption] = useState(
+    (artwork.options && artwork.options.length > 0 && artwork.options[0]) || { id: 'opt-default', width: 70, height: 90, price: artwork.basePrice || 0, label: 'Default' }
+  );
   const [quantity, setQuantity] = useState(1);
+  const [isPortrait, setIsPortrait] = useState(false);
+
+  useEffect(() => {
+    if (!selectedOption) return;
+    // Use selected option dimensions as a hint for orientation
+    setIsPortrait(selectedOption.width < selectedOption.height);
+  }, [selectedOption]);
+
+  const availableOptions = (artwork.options && artwork.options.length > 0) ? artwork.options : [selectedOption];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
 
       {/* LEFT: Image */}
       <div className="w-full">
-        <div className="bg-gray-50 border border-gray-200 p-3 md:p-4 flex items-center justify-center aspect-[4/3] relative group">
-          <div className="relative w-full h-full">
-            <Image
-              src={artwork.image}
-              alt={artwork.title}
-              width={800}
-              height={600}
-              className="object-cover w-full h-full shadow-xl"
-              priority
-            />
+        <div className="bg-transparent border border-gray-200 p-0 flex items-center justify-center relative group">
+          {/* Dynamic aspect container: portrait or landscape to avoid white bars */}
+          <div className={`relative w-full ${isPortrait ? 'aspect-[3/4]' : 'aspect-[4/3]'} max-h-[70vh]`}>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Image
+                src={artwork.image}
+                alt={artwork.title}
+                fill
+                onLoadingComplete={(img) => {
+                  if (img && img.naturalWidth && img.naturalHeight) {
+                    setIsPortrait(img.naturalWidth < img.naturalHeight);
+                  }
+                }}
+                className="object-contain w-full h-full max-h-[70vh] shadow-xl"
+                priority
+              />
+            </div>
+
             {/* Museum Quality Diagonal Ribbon */}
             <div className="absolute top-0 left-0 w-40 md:w-48 h-40 md:h-48 overflow-hidden pointer-events-none">
               <div className="absolute -left-16 md:-left-20 top-8 md:top-10 transform -rotate-45 bg-[#800000] text-white px-20 md:px-24 py-2 md:py-2.5 font-serif text-[10px] md:text-xs font-bold uppercase tracking-wide shadow-xl whitespace-nowrap flex items-center justify-center">
@@ -60,10 +79,23 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
           <div className="bg-gray-50 border border-gray-200 p-4 md:p-5">
             <h3 className="font-serif text-lg md:text-xl font-bold text-[#800000] mb-2 md:mb-3 uppercase">About This Artwork</h3>
             <div className="space-y-1.5 text-sm md:text-base text-gray-700 font-serif">
-              <p><span className="font-bold text-gray-900">Artist:</span> {artwork.artist} ({artwork.artistLife})</p>
-              <p><span className="font-bold text-gray-900">Original Year:</span> {artwork.year}</p>
-              <p><span className="font-bold text-gray-900">Current Location:</span> {artwork.location}</p>
-              <p><span className="font-bold text-gray-900">Original Dimensions:</span> {artwork.originalSize}</p>
+              <p>
+                <span className="font-bold text-gray-900">Artist:</span>{' '}
+                {artwork.artist}
+                {artwork.artistLife ? ` (${artwork.artistLife})` : ''}
+              </p>
+              <p>
+                <span className="font-bold text-gray-900">Original Year:</span>{' '}
+                {artwork.year ?? 'Unknown'}
+              </p>
+              <p>
+                <span className="font-bold text-gray-900">Current Location:</span>{' '}
+                {artwork.location ?? 'Unknown'}
+              </p>
+              <p>
+                <span className="font-bold text-gray-900">Original Dimensions:</span>{' '}
+                {artwork.originalSize ?? (selectedOption ? `${selectedOption.width} x ${selectedOption.height} cm` : 'Varies')}
+              </p>
             </div>
           </div>
 
@@ -103,7 +135,7 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
             {artwork.artist}, {artwork.year}
           </p>
           <p className="text-gray-700 leading-relaxed font-serif text-base">
-            {artwork.description}
+            {artwork.description ?? 'No description available for this artwork.'}
           </p>
         </div>
 
@@ -126,10 +158,10 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
         </div>
 
         {/* Size Selection */}
-        <div>
+          <div>
           <h3 className="font-serif text-lg md:text-xl font-bold text-gray-900 mb-3 uppercase">Select Canvas Size</h3>
           <div className="space-y-2 md:space-y-3">
-            {artwork.options.map((option) => (
+            {availableOptions.map((option) => (
               <label 
                 key={option.id} 
                 className={`

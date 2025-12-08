@@ -155,14 +155,27 @@ const POPULAR_ARTISTS = [
   { name: "PORTRAITS", image: "/popular-art/portrait.jpg" },
 ];
 
+// Simple slug generator (matches the one in `data/artworks.ts`)
+const generateSlug = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+
 const ART_OF_THE_DAY = [
-  {
-    title: "Starry Night",
-    artist: "VINCENT VAN GOGH",
-    image: "/image/starry-night.webp",
-    slug: "starry-night-vincent-van-gogh",
-  },
-];
+  { title: "The Breakfast", artist: "Wilem Van Aelst", image: "/image/the_breakfast.jpg" },
+  { title: "Last Supper", artist: "Valentin De Boulogne", image: "/image/b/last_supper.jpg" },
+  { title: "Still Life Grapes, A Roemer, A Silver Ewer And A Plate", artist: "Wilem Van Aelst", image: "/image/a/grapes_roemer.jpg" },
+  { title: "Sunrise In Yalta", artist: "Ivan Konstantinovich Aivazovsky", image: "/image/a/sunrise_in_yalta.jpg" },
+  { title: "The Bathers", artist: "Paul Cezanne", image: "/image/c/the_bathers.jpg" },
+  { title: "Monte Sainte-Victoire", artist: "Paul Cezanne", image: "/image/c/sainte_victoire.jpg" },
+  { title: "Piazzetta And The Doge's Palace", artist: "Giovanni Antonio Canal Canaletto", image: "/image/c/piazzetta.jpg" },
+  { title: "The Market Scene", artist: "Pieter Aertsen", image: "/image/a/market_scene.jpg" },
+  { title: "Venice Façade", artist: "William Merritt Chase", image: "/image/c/venice_facade.jpg" },
+  { title: "Portrait of My Daughters", artist: "Frank Weston Benson", image: "/image/b/portrait_daughters.jpg" },
+].map((a) => ({ ...a, slug: generateSlug(a.title) }));
 
 // Placeholder Top 100 list. Images not yet available; logic implemented.
 const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
@@ -174,7 +187,7 @@ const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
 
 const NAV_ITEMS = [
   { label: "Artists A-Z", href: "/artists-a-z" },
-  { label: "Top 100 Paintings", href: "#" },
+  { label: "Top 100 Paintings", href: "/top-100" },
   { label: "Our Quality", href: "/our-quality" },
   { label: "Frame & Size Art", href: "#" },
   { label: "About Us", href: "#" },
@@ -190,6 +203,7 @@ export default function ArtMasonsLanding() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [dailyAutoPaused, setDailyAutoPaused] = useState(false);
 
   // You might need to import useRef from 'react'
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -219,6 +233,43 @@ export default function ArtMasonsLanding() {
       clearInterval(testimonialTimer);
     };
   }, []);
+
+  // Ensure the featured art updates at local midnight each day while the page is open.
+  useEffect(() => {
+    if (!isClient) return;
+
+    // If user has manually navigated, daily auto updates are paused until refresh
+    if (dailyAutoPaused) return;
+
+    const updateDailyIndex = () => {
+      if (dailyAutoPaused) return;
+      const today = new Date();
+      const startOfYear = new Date(today.getFullYear(), 0, 0);
+      const diff = today.getTime() - startOfYear.getTime();
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      setCurrentArtIndex(dayOfYear % ART_OF_THE_DAY.length);
+      setCurrentFactIndex(dayOfYear % FUN_FACTS_DATA.length);
+    };
+
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const msUntilMidnight = tomorrow.getTime() - now.getTime();
+
+    const midnightTimeout = setTimeout(() => {
+      updateDailyIndex();
+      const dailyInterval = setInterval(updateDailyIndex, 24 * 60 * 60 * 1000);
+      (window as any).__artMasons_dailyInterval = dailyInterval;
+    }, msUntilMidnight);
+
+    return () => {
+      clearTimeout(midnightTimeout);
+      if ((window as any).__artMasons_dailyInterval) {
+        clearInterval((window as any).__artMasons_dailyInterval);
+        delete (window as any).__artMasons_dailyInterval;
+      }
+    };
+  }, [isClient, dailyAutoPaused]);
 
   // When top100 random playback is active, set up auto-advance timer
   useEffect(() => {
@@ -302,11 +353,13 @@ export default function ArtMasonsLanding() {
 
   const goPrevArt = () => {
     setIsTop100AutoPlay(false);
+    setDailyAutoPaused(true);
     setCurrentArtIndex((prev) => (prev - 1 + currentArray.length) % currentArray.length);
   };
 
   const goNextArt = () => {
     setIsTop100AutoPlay(false);
+    setDailyAutoPaused(true);
     setCurrentArtIndex((prev) => (prev + 1) % currentArray.length);
   };
 

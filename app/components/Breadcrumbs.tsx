@@ -33,12 +33,34 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             {isLast ? (
               <span className="text-[#800000] font-semibold">{item.label}</span>
             ) : (
-              <Link 
-                href={item.href}
-                className="hover:text-[#800000] transition-colors"
-              >
-                {item.label}
-              </Link>
+              // If navigating to the main Artists A-Z page and the history
+              // contains a selectedLetter, prefer going back in history so
+              // the previous entry's state (selected letter) is preserved.
+              (() => {
+                try {
+                  if (typeof window !== 'undefined' && item.href === '/artists-a-z' && window.history.state && window.history.state.selectedLetter) {
+                    return (
+                      <button
+                        onClick={() => window.history.back()}
+                        className="hover:text-[#800000] transition-colors"
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  }
+                } catch (e) {
+                  // fall back to normal link
+                }
+
+                return (
+                  <Link 
+                    href={item.href}
+                    className="hover:text-[#800000] transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })()
             )}
           </React.Fragment>
         );

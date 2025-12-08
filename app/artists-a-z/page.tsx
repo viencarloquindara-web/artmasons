@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { User } from 'lucide-react';
@@ -212,6 +212,9 @@ const COLLECTION_DATA = [
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
+// Local storage key for remembering selected letter
+const STORAGE_KEY = 'artistsAZSelectedLetter';
+
 // --- HELPER ---
 const getSurnameChar = (fullName: string) => {
   const parts = fullName.trim().split(' ');
@@ -255,7 +258,52 @@ const getArtistDates = (artistName: string): { birth?: number; death?: number } 
 };
 
 export default function ArtistsAZPage() {
+  // Keep initial render deterministic to avoid hydration mismatch
   const [selectedLetter, setSelectedLetter] = useState<string>('A');
+
+  // On mount, restore selection from history.state (preferred) or localStorage
+  useEffect(() => {
+    try {
+      const fromHistory = typeof window !== 'undefined' && (window.history.state && window.history.state.selectedLetter);
+      if (fromHistory && ALPHABET.includes(fromHistory)) {
+        setSelectedLetter(fromHistory);
+        return;
+      }
+
+      const stored = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+      if (stored && ALPHABET.includes(stored)) {
+        setSelectedLetter(stored);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  // Persist selected letter when it changes (keep localStorage in sync)
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && selectedLetter) {
+        localStorage.setItem(STORAGE_KEY, selectedLetter);
+      }
+    } catch (e) {
+      // ignore localStorage errors
+    }
+  }, [selectedLetter]);
+
+  // Helper to select a letter and record it in history and localStorage
+  const selectLetter = (letter: string) => {
+    setSelectedLetter(letter);
+    try {
+      if (typeof window !== 'undefined') {
+        // store in history state so back/forward navigations restore it
+        const state = Object.assign({}, window.history.state, { selectedLetter: letter });
+        window.history.replaceState(state, document.title);
+        localStorage.setItem(STORAGE_KEY, letter);
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
 
   // Derive unique artists from the collection data
   const uniqueArtists = useMemo(() => {
@@ -310,7 +358,7 @@ export default function ArtistsAZPage() {
               return (
                 <button
                   key={letter}
-                  onClick={() => hasArtists && setSelectedLetter(letter)}
+                  onClick={() => hasArtists && selectLetter(letter)}
                   disabled={!hasArtists}
                   className={`
                     relative w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 rounded font-serif text-lg font-bold

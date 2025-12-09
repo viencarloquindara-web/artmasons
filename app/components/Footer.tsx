@@ -2,11 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
-  Instagram,
-  Facebook,
   Mail,
-  Phone,
   Video,
 } from "lucide-react";
 
@@ -21,15 +19,13 @@ export default function Footer() {
             trained according to European standards, and we never compromise
             on detail, technique, or materials.
           </p>
-          <div className="flex gap-4">
-            <Instagram
-              className="text-gray-400 hover:text-white cursor-pointer"
-              size={20}
-            />
-            <Facebook
-              className="text-gray-400 hover:text-white cursor-pointer"
-              size={20}
-            />
+          <div className="flex gap-4 items-center">
+            <a href="https://instagram.com/Theartmasons" className="block">
+              <Image src="/image/icons/instagram.png" alt="Instagram" width={24} height={24} />
+            </a>
+            <a href="#" className="block">
+              <Image src="/image/icons/facebook.png" alt="Facebook" width={24} height={24} />
+            </a>
           </div>
         </div>
 
@@ -73,12 +69,13 @@ export default function Footer() {
           <div className="space-y-4">
             <a
               href="mailto:info@artmasons.com"
-              className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors font-serif"
+              className="flex items-center gap-3 text-[#800000] hover:underline transition-colors font-serif font-semibold"
             >
               <Mail size={18} /> info@artmasons.com
             </a>
             <div className="flex items-center gap-3 text-gray-300 font-serif">
-              <Phone size={18} /> +971 56 170 4788
+              <Image src="/image/icons/whatsapp.png" alt="WhatsApp" width={20} height={20} />
+              <span>+971 56 170 4788</span>
             </div>
           </div>
         </div>
@@ -138,11 +135,14 @@ export default function Footer() {
             Follow Us
           </span>
           <div className="flex items-center gap-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-              <Facebook size={18} />
+            <a href="#" className="block">
+              <Image src="/image/icons/facebook.png" alt="Facebook" width={20} height={20} />
             </a>
-            <a href="https://instagram.com/Theartmasons" className="text-gray-400 hover:text-white transition-colors flex items-center gap-1">
-              <Instagram size={18} />
+            <a href="https://instagram.com/Theartmasons" className="block">
+              <Image src="/image/icons/instagram.png" alt="Instagram" width={20} height={20} />
+            </a>
+            <a href="#" className="block">
+              <Image src="/image/icons/whatsapp.png" alt="WhatsApp" width={20} height={20} />
             </a>
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
               <Video size={18} />

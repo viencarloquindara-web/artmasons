@@ -25,14 +25,14 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <section>
-            <h3 className="font-serif text-2xl font-bold mb-2">Order Information</h3>
+            <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Order Information</h3>
             <p>
               We only store the information that you choose to provide. Some details, such as your name and delivery address, are required to process your order. Additional information, such as email addresses and phone numbers, helps us communicate effectively with you and manage our business operations.
             </p>
           </section>
 
           <section>
-            <h3 className="font-serif text-2xl font-bold mb-2">Email Addresses</h3>
+            <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Email Addresses</h3>
             <p className="mb-2">We use your email address solely to:</p>
             <ul className="list-disc pl-5 mb-2">
                <li>Provide information regarding your order</li>
@@ -42,14 +42,14 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h3 className="font-serif text-2xl font-bold mb-2">Confidentiality</h3>
+            <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Confidentiality</h3>
             <p>
                We adhere to a strict confidentiality policy. You will never receive promotional messages or information about new services unless you have explicitly opted in.
             </p>
           </section>
 
           <section>
-            <h3 className="font-serif text-2xl font-bold mb-2">Information from Anonymous Users</h3>
+            <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Information from Anonymous Users</h3>
             <p className="mb-2">We collect non-identifying statistical data from website visitors, including:</p>
              <ul className="list-disc pl-5 mb-2">
                <li>Country of access</li>
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h3 className="font-serif text-2xl font-bold mb-2">Cookies</h3>
+            <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Cookies</h3>
             <p className="mb-4">
                Our website uses cookies to enhance user experience. By using our site, you consent to the use of cookies in accordance with this policy. A cookie is a small file containing an identifier (a string of letters and numbers) sent by a web server to your browser and stored locally.
             </p>

@@ -21,64 +21,63 @@ export default function TermsConditionsPage() {
         <div className="font-serif space-y-10 text-gray-700 leading-relaxed">
           
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Website Access</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Website Access</h3>
              <p className="mb-2">We grant you limited, personal access to our website as a customer. You may not reproduce, duplicate, copy, sell, or otherwise exploit any content from the website for commercial purposes.</p>
              <p className="mb-2">This includes, but is not limited to: product images, listings, descriptions, videos, pricing, page layout, design, trade dress, trademarks, and logos.</p>
              <p>You may not use any meta tags, search terms, or key terms that contain the website’s name or trademarks.</p>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Copyright</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Copyright</h3>
              <p>
                 All website content is either our property, in the public domain, or provided by content suppliers, and is protected by international copyright laws. Content not owned by us is used with permission.
              </p>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Pricing and Availability</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Pricing and Availability</h3>
              <p>
                 The price you pay for products is the price shown on the website at the time of purchase. Despite our best efforts, some items may occasionally be unavailable. We reserve the right to update product prices at any time.
              </p>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Product Descriptions</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Product Descriptions</h3>
              <p>
                 We strive to describe our products accurately and completely. If a purchased product does not match its description, your sole remedy is to return it in unused condition for a replacement or refund.
              </p>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Invoicing</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Invoicing</h3>
              <p>Customers will receive a purchase confirmation email upon completing an order.</p>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Time for Creation – Hand-Painted Fine Art Reproductions</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Time for Creation – Hand-Painted Fine Art Reproductions</h3>
              <p>
                 Hand-painted art reproductions require careful craftsmanship and sufficient drying time. We require 8–10 weeks from the moment of order to prepare your painting for shipment. The timeframe varies depending on complexity and size of the artwork.
              </p>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Delivery Information</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Delivery Information</h3>
              <p>Customers are responsible for providing accurate delivery details.</p>
              <ul className="list-disc pl-5 mt-2">
                 <li>We offer Free standard shipping: 10–14 working days</li>
-                <li>Express shipping via DHL: 2–4 working days if the customer is willing to pay extra</li>
              </ul>
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Return Rights</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Return Rights</h3>
              <p>
-                ART MASONS is committed to quality and your satisfaction. If you are not satisfied with your order, you may return it within 14 days of receipt for adjustments or corrections.
+                ART MASONS is committed to quality and your satisfaction. If you are not satisfied with your order, you may return it within 30 days of receipt for adjustments or corrections.
              </p>
              <div className="mt-4 mb-4">
                  <strong>Please note:</strong>
                  <ul className="list-disc pl-5 mt-2">
                     <li>Returns are assessed at our discretion, and a valid reason must be provided.</li>
-                    <li>Contact us by email on <a href="mailto:info@artmasons.com" className="underline">info@artmasons.com</a> before returning the item to clarify the issue.</li>
+                    <li>Contact us by email on <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a> before returning the item to clarify the issue.</li>
                     <li>Shipping costs are non-refundable.</li>
                  </ul>
              </div>
@@ -86,7 +85,7 @@ export default function TermsConditionsPage() {
              <p>If your painting arrives damaged:</p>
              <ol className="list-decimal pl-5 mt-2 mb-4">
                 <li>Take a digital photo of the painting and the shipping container.</li>
-                <li>Email these images with your order number, painting name, and description of the issue to <a href="mailto:info@artmasons.com" className="underline">info@artmasons.com</a></li>
+                <li>Email these images with your order number, painting name, and description of the issue to <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a></li>
                 <li>Indicate the areas you would like us to address.</li>
              </ol>
              <p>
@@ -95,7 +94,7 @@ export default function TermsConditionsPage() {
           </section>
 
           <section>
-             <h3 className="font-serif text-2xl font-bold mb-2">Conclusion</h3>
+             <h3 className="font-serif text-2xl font-bold mb-2 text-[#800000]">Conclusion</h3>
              <p>
                 These terms are governed by DIFC law. Any contract for the purchase of goods from this website, and any dispute arising from it, will also be governed by DIFC law.
              </p>

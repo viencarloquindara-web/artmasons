@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { User } from 'lucide-react';
@@ -305,6 +305,63 @@ export default function ArtistsAZPage() {
     }
   };
 
+  // Track which artist dropdown is open (null = none)
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  // Track whether the currently open menu should open upward
+  const [openUp, setOpenUp] = useState(false);
+
+  // Reference to the artists results container so we can detect outside clicks
+  const resultsRef = useRef<HTMLDivElement | null>(null);
+
+  // Close any open dropdown when clicking outside the results area
+  useEffect(() => {
+    const handler = (ev: MouseEvent) => {
+      const target = ev.target as Node | null;
+      if (resultsRef.current && target && !resultsRef.current.contains(target)) {
+        setOpenIndex(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Toggle menu open/close and compute whether to open upward based on available space
+  const toggleMenu = (idx: number, extraCount: number) => {
+    if (openIndex === idx) {
+      setOpenIndex(null);
+      return;
+    }
+
+    // find the button element inside the resultsRef for this menu
+    const container = resultsRef.current;
+    const button = container?.querySelector(`[data-menu="${idx}"] button`) as HTMLElement | null;
+
+    // default to opening downward
+    let shouldOpenUp = false;
+
+    if (button && typeof window !== 'undefined') {
+      const rect = button.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+
+      // estimate menu content height: each item ~40px (padding + text)
+      const estimatedItemH = 40;
+      const items = Math.max(0, extraCount);
+      const estimatedHeight = Math.min(viewportH * 0.6, items * estimatedItemH);
+
+      const spaceBelow = viewportH - rect.bottom;
+      const spaceAbove = rect.top;
+
+      // open upward if there isn't enough space below but there is above
+      if (spaceBelow < Math.min(160, estimatedHeight) && spaceAbove > spaceBelow) {
+        shouldOpenUp = true;
+      }
+    }
+
+    setOpenUp(shouldOpenUp);
+    setOpenIndex(idx);
+  };
+
   // Derive unique artists from the collection data
   const uniqueArtists = useMemo(() => {
     const artists = COLLECTION_DATA.map(item => item.artist);
@@ -398,7 +455,7 @@ export default function ArtistsAZPage() {
                 </h2>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div ref={resultsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredArtists.map((artist, idx) => {
                   const artworks = getArtworksByArtist(artist);
                   const dates = getArtistDates(artist);
@@ -430,9 +487,9 @@ export default function ArtistsAZPage() {
                           <span className="text-2xl font-bold text-[#800000]">{artworks.length}</span> {artworks.length === 1 ? 'Artwork' : 'Artworks'}
                         </p>
                         <ul className="space-y-2">
-                          {artworks.map((artwork, artIdx) => {
+                          {artworks.slice(0, 4).map((artwork, artIdx) => {
                             const slug = generateSlug(artwork);
-                            
+
                             return (
                               <li key={artIdx}>
                                 <Link 
@@ -446,6 +503,45 @@ export default function ArtistsAZPage() {
                             );
                           })}
                         </ul>
+
+                        {artworks.length > 4 && (
+                          <div className="mt-3 relative" onClick={(e) => e.stopPropagation()} data-menu={idx}>
+                            <button
+                              type="button"
+                              onClick={() => toggleMenu(idx, artworks.length - 4)}
+                              aria-haspopup="menu"
+                              aria-expanded={openIndex === idx}
+                              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded bg-white text-sm hover:bg-gray-50"
+                            >
+                              <span>View other artworks ({artworks.length - 4})</span>
+                              <svg
+                                className={`w-3 h-3 transition-transform ${openIndex === idx ? 'rotate-180' : ''}`}
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden
+                              >
+                                <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </button>
+
+                            {openIndex === idx && (
+                              <ul className={`absolute z-50 ${openUp ? 'bottom-full mb-2' : 'mt-2'} left-0 w-64 bg-white border border-gray-200 rounded shadow-lg overflow-hidden max-h-[56vh] md:max-h-[60vh] overflow-y-auto`}>
+                                {artworks.slice(4).map((other, oIdx) => (
+                                  <li key={oIdx} className="last:rounded-b">
+                                    <Link
+                                      href={`/artworks/${generateSlug(other)}`}
+                                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                      onClick={() => setOpenIndex(null)}
+                                    >
+                                      {other}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   );

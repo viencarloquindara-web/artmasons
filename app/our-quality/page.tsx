@@ -116,33 +116,33 @@ export default function OurQualityPage() {
           <section>
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Creation Process</h2>
             <div className="space-y-6">
-              <div className="border-l-4 border-[#800000] pl-6 py-2">
-                <h3 className="font-bold text-xl mb-2">1. Selection & Study</h3>
+              <div className="p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
+                <h3 className="font-bold text-xl mb-2 text-[#800000]">1. Selection & Study</h3>
                 <p>Our artists carefully study the original masterpiece, analyzing brushwork, color palette, and technique.</p>
               </div>
               
-              <div className="border-l-4 border-[#800000] pl-6 py-2">
-                <h3 className="font-bold text-xl mb-2">2. Canvas Preparation</h3>
+              <div className="p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
+                <h3 className="font-bold text-xl mb-2 text-[#800000]">2. Canvas Preparation</h3>
                 <p>Premium linen canvas is stretched on wooden frames and treated with multiple layers of primer.</p>
               </div>
               
-              <div className="border-l-4 border-[#800000] pl-6 py-2">
-                <h3 className="font-bold text-xl mb-2">3. Underpainting</h3>
+              <div className="p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
+                <h3 className="font-bold text-xl mb-2 text-[#800000]">3. Underpainting</h3>
                 <p>The composition is sketched and an underpainting layer is applied to establish values and composition.</p>
               </div>
               
-              <div className="border-l-4 border-[#800000] pl-6 py-2">
-                <h3 className="font-bold text-xl mb-2">4. Layer by Layer Painting</h3>
+              <div className="p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
+                <h3 className="font-bold text-xl mb-2 text-[#800000]">4. Layer by Layer Painting</h3>
                 <p>Multiple layers of oil paint are applied using traditional techniques, building depth and richness.</p>
               </div>
               
-              <div className="border-l-4 border-[#800000] pl-6 py-2">
-                <h3 className="font-bold text-xl mb-2">5. Detail Work & Finishing</h3>
+              <div className="p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
+                <h3 className="font-bold text-xl mb-2 text-[#800000]">5. Detail Work & Finishing</h3>
                 <p>Fine details are added with precision, and the painting is allowed to dry completely.</p>
               </div>
               
-              <div className="border-l-4 border-[#800000] pl-6 py-2">
-                <h3 className="font-bold text-xl mb-2">6. Quality Inspection</h3>
+              <div className="p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
+                <h3 className="font-bold text-xl mb-2 text-[#800000]">6. Quality Inspection</h3>
                 <p>Each painting is inspected for accuracy, quality, and adherence to our museum-grade standards.</p>
               </div>
             </div>
@@ -169,7 +169,7 @@ export default function OurQualityPage() {
                 <p className="text-lg">
                   This certificate serves as proof of the quality materials used, the traditional techniques employed, and our commitment to delivering museum-quality artwork that will be treasured for generations.
                 </p>
-                <div className="mt-6 p-4 bg-white rounded border-l-4 border-[#800000]">
+                <div className="mt-6 p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
                   <p className="font-bold text-[#800000]">Our Guarantee:</p>
                   <p className="mt-2">We stand behind the quality of every painting we create. If you're not completely satisfied with your artwork, we offer a comprehensive return policy to ensure your peace of mind.</p>
                 </div>

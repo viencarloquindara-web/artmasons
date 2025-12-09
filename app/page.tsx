@@ -460,18 +460,7 @@ export default function ArtMasonsLanding() {
               <ChevronRight size={28} />
             </button>
 
-            {/* BUY NOW ribbon - sits above the full-area Link and stops propagation */}
-            <Link
-              href={isClient ? `/artworks/${currentArt.slug}` : "#"}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              className="absolute bottom-6 right-6 z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition text-sm"
-              aria-label="Buy now"
-            >
-              BUY NOW
-            </Link>
-
+            {/* Full-area clickable overlay (covers the hero image) */}
             <Link
               href={isClient ? `/artworks/${currentArt.slug}` : "#"}
               className="absolute inset-0 z-30 cursor-pointer"
@@ -486,6 +475,18 @@ export default function ArtMasonsLanding() {
                   </p>
                 </div>
               </div>
+            </Link>
+
+            {/* BUY NOW ribbon - sits above the full-area Link and stops propagation */}
+            <Link
+              href={isClient ? `/artworks/${currentArt.slug}` : "#"}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              aria-label="Buy now"
+              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition text-sm bottom-6 right-6 md:left-1/2 md:bottom-[72px] md:transform md:-translate-x-1/2"
+            >
+              BUY NOW
             </Link>
           </div>
         </section>
@@ -554,18 +555,31 @@ export default function ArtMasonsLanding() {
               FUN FACTS
             </h3>
             <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white shadow-sm">
+              {/* Opening quote aligned to first line */}
+              <div
+                className="absolute left-6 text-[#800000] opacity-90"
+                style={{ top: '30%', transform: 'translateY(-50%)' }}
+              >
+                <span className="font-serif text-6xl leading-none">“</span>
+              </div>
+
               {isClient && (
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="font-serif text-2xl md:text-3xl leading-relaxed text-gray-700"
+                  className="font-serif text-2xl md:text-3xl leading-relaxed text-gray-700 -mt-3"
                 >
                   {FUN_FACTS_DATA[currentFactIndex]}
                 </motion.p>
               )}
-              <div className="absolute bottom-2 right-2 text-gray-400 opacity-40">
-                <span className="font-serif text-6xl leading-none">"</span>
+
+              {/* Closing quote aligned to second line */}
+              <div
+                className="absolute right-6 text-[#800000] opacity-90"
+                style={{ top: '70%', transform: 'translateY(-50%)' }}
+              >
+                <span className="font-serif text-6xl leading-none">”</span>
               </div>
             </div>
           </div>

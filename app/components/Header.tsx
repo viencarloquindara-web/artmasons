@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingBag, Menu, X } from "lucide-react";
@@ -19,14 +20,55 @@ export default function Header() {
     { label: "About Us", href: "/about-us" },
   ];
 
+  // Prevent background scroll when mobile menu is open
+  React.useEffect(() => {
+    // Use a robust scroll lock that prevents page jump when disabling scroll
+    // Store current scroll position and apply fixed positioning to body.
+    let scrollY = 0;
+    if (mobileMenuOpen) {
+      scrollY = window.scrollY || document.documentElement.scrollTop;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      // restore
+      const top = document.body.style.top;
+      if (top) {
+        const restoredY = -parseInt(top || '0', 10) || 0;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.documentElement.style.overflow = '';
+        window.scrollTo(0, restoredY);
+      } else {
+        document.documentElement.style.overflow = '';
+      }
+    }
+
+    return () => {
+      const top = document.body.style.top;
+      if (top) {
+        const restoredY = -parseInt(top || '0', 10) || 0;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.documentElement.style.overflow = '';
+        window.scrollTo(0, restoredY);
+      } else {
+        document.documentElement.style.overflow = '';
+      }
+    };
+  }, [mobileMenuOpen]);
+
   return (
-    <header className="relative z-50 bg-white pt-6 pb-4 shadow-sm border-b border-gray-100">
+    <header className="relative z-50 bg-white pt-3 pb-3 md:pt-6 md:pb-4 shadow-sm border-b border-gray-100">
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-end gap-12">
-        <div
-          className="flex-shrink-0 flex flex-col items-center justify-end w-auto md:w-56 cursor-pointer pb-2"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          <div className="relative w-32 h-32 md:w-44 md:h-44">
+        <Link href="/" className="flex-shrink-0 flex flex-col items-center justify-end w-auto md:w-56 cursor-pointer pb-2">
+          <div className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-44 md:h-44">
             <Image
               src="/artmasons_logo.png"
               alt="Art Masons Seal"
@@ -35,7 +77,7 @@ export default function Header() {
               priority
             />
           </div>
-        </div>
+        </Link>
 
         <div className="flex-1 flex flex-col w-full justify-end">
           <div className="flex flex-col md:flex-row items-center gap-6 relative w-full">
@@ -47,7 +89,7 @@ export default function Header() {
                 <input
                   type="text"
                   placeholder="Search For Paintings"
-                  className="w-full px-4 py-3 outline-none text-base placeholder-gray-400 font-serif"
+                  className="w-full px-4 py-2 sm:py-3 outline-none text-base placeholder-gray-400 font-serif"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -85,7 +127,8 @@ export default function Header() {
 
           <div className="h-10 hidden md:block"></div>
 
-          <div className={`w-full ${mobileMenuOpen ? "block" : "hidden md:block"}`}>
+          {/* Mobile menu: render as overlay to avoid pushing page content */}
+          <div className="w-full hidden md:block">
             <nav>
               <ul className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 py-2 font-serif text-base md:text-lg tracking-wide uppercase w-full">
                 {NAV_ITEMS.map((item) => (
@@ -93,13 +136,41 @@ export default function Header() {
                     key={item.label}
                     className="cursor-pointer text-black hover:text-[#800000] transition-colors relative group whitespace-nowrap"
                   >
-                    <Link href={item.href}>{item.label}</Link>
+                    <Link href={item.href}><span className="lining-nums">{item.label}</span></Link>
                     <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-[#800000] transition-all duration-300 group-hover:w-full"></span>
                   </li>
                 ))}
               </ul>
             </nav>
           </div>
+
+          {mobileMenuOpen && typeof document !== 'undefined' && createPortal(
+            <div className="fixed inset-0 z-[9999] bg-white p-6 overflow-auto md:hidden">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <Link href="/" onClick={() => setMobileMenuOpen(false)} className="relative w-24 h-24 block">
+                    <Image src="/artmasons_logo.png" alt="Art Masons" fill className="object-contain" />
+                  </Link>
+                </div>
+                <button aria-label="Close menu" onClick={() => setMobileMenuOpen(false)} className="p-2">
+                  <X />
+                </button>
+              </div>
+
+              <nav>
+                <ul className="flex flex-col gap-4 text-lg font-serif uppercase">
+                  {NAV_ITEMS.map((item) => (
+                    <li key={item.label} className="py-3 border-b border-gray-100">
+                      <Link href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-black">
+                        <span className="lining-nums">{item.label}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>,
+            document.body
+          )}
         </div>
       </div>
     </header>

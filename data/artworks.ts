@@ -374,10 +374,8 @@ export const ARTWORKS: Artwork[] = [
     title: "Philadelphia Winter Landscape",
     artist: "Thomas Birch",
     artistLife: "1779-1851",
-    // NOTE: no exact filename for Philadelphia Winter was found in `public/image/b`.
-    // Keep the expected path here; add the actual file to `public/image/b` or
-    // update this path to the correct filename when available.
-    image: "/image/b/philadelphia-winter-landscape.jpg",
+    // Image updated to match uploaded file in `public/image/b`.
+    image: "/image/b/philadelphia_winter.jpg",
     sku: "AM-TB-001",
     basePrice: 800,
     currency: "AED",
@@ -1893,20 +1891,20 @@ export const ARTWORKS: Artwork[] = [
   },
   {
     title: "The Hunt in the Forest",
-    year: "1470",
-    artist: "Paolo Uccello",
-    artistLife: "1397-1475",
-    location: "Ashmolean Museum, Oxford",
-    originalSize: "65 x 165 cm",
-    description: "Uccello's masterful use of perspective in this dynamic hunting scene. The converging lines and detailed figures demonstrate Renaissance innovation.",
-    sku: "AM-PU-001",
+    year: "1876",
+    artist: "Claude Monet",
+    artistLife: "1840-1926",
+    location: "Unknown",
+    originalSize: "170 x 137 cm",
+    description: "An Impressionist landscape attributed to Claude Monet (1876) depicting a wooded hunting scene. Monet's loose brushwork and emphasis on light and atmosphere render the figures and surrounding foliage with a luminous, fleeting quality.",
+    sku: "AM-CM-001",
     basePrice: 2800,
     currency: "AED",
     image: "/image/famous-art/the_hunt.jpg",
     options: [
-      { id: 'opt1', width: 165, height: 65, price: 2800, label: 'Original Size (165x65cm)' },
-      { id: 'opt2', width: 210, height: 83, price: 3600, label: 'Large (210x83cm)' },
-      { id: 'opt3', width: 250, height: 98, price: 4800, label: 'Extra Large (250x98cm)' },
+      { id: 'opt1', width: 170, height: 137, price: 2800, label: 'Original Size (170x137cm)' },
+      { id: 'opt2', width: 200, height: 161, price: 3600, label: 'Large (200x161cm)' },
+      { id: 'opt3', width: 240, height: 193, price: 4800, label: 'Extra Large (240x193cm)' },
     ],
   },
   {

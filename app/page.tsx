@@ -216,7 +216,7 @@ const ART_OF_THE_DAY = [
   { title: "Wanderer Above the Sea of Fog", artist: "Caspar David Friedrich", image: "/image/famous-art/wanderer_mist.jpg" },
   { title: "The Sleeping Gypsy", artist: "Henri Rousseau", image: "/image/famous-art/sleeping_gypsy.jpg" },
   { title: "The Dream", artist: "Henri Rousseau", image: "/image/famous-art/the_dream.jpg" },
-  { title: "The Hunt in the Forest", artist: "Paolo Uccello", image: "/image/famous-art/the_hunt.jpg" },
+  { title: "The Hunt in the Forest", artist: "Claude Monet", image: "/image/famous-art/the_hunt.jpg" },
   { title: "Madame X", artist: "John Singer Sargent", image: "/image/famous-art/madame_x.jpg" },
   { title: "The Angelus", artist: "Jean-François Millet", image: "/image/famous-art/the_angelus.jpg" },
   { title: "Napoleon Crossing the Alps", artist: "Jacques-Louis David", image: "/image/famous-art/napoleon_crossing.jpg" },
@@ -254,7 +254,7 @@ export default function ArtMasonsLanding() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [dailyAutoPaused, setDailyAutoPaused] = useState(false);
+  const [famousAutoPlay, setFamousAutoPlay] = useState(true);
 
   // You might need to import useRef from 'react'
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -264,17 +264,11 @@ export default function ArtMasonsLanding() {
   useEffect(() => {
     setIsClient(true);
 
-    const today = new Date();
-    const startOfYear = new Date(today.getFullYear(), 0, 0);
-    const diff = today.getTime() - startOfYear.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-
-    // Default behavior: pick art of the day by day of year
-    setCurrentArtIndex(dayOfYear % ART_OF_THE_DAY.length);
+    // Default behavior: start carousel at first famous art
+    setCurrentArtIndex(0);
     // Initialize Top100 order (shuffled) but don't activate until user toggles
     setTop100Order(shuffle(Array.from({ length: TOP_100_ARTS.length }, (_, i) => i)));
-    setCurrentFactIndex(dayOfYear % FUN_FACTS_DATA.length);
+    setCurrentFactIndex(0);
 
     const testimonialTimer = setInterval(() => {
       setTestimonialIndex((prev) => (prev + 3) % TESTIMONIALS_DATA.length);
@@ -285,42 +279,18 @@ export default function ArtMasonsLanding() {
     };
   }, []);
 
-  // Ensure the featured art updates at local midnight each day while the page is open.
+  // Famous art carousel autoplay (advances every 5s when enabled)
   useEffect(() => {
     if (!isClient) return;
+    if (playTop100Random) return; // don't autoplay famous when Top100 mode is active
+    if (!famousAutoPlay) return;
 
-    // If user has manually navigated, daily auto updates are paused until refresh
-    if (dailyAutoPaused) return;
+    const interval = setInterval(() => {
+      setCurrentArtIndex((prev) => (prev + 1) % ART_OF_THE_DAY.length);
+    }, 5000);
 
-    const updateDailyIndex = () => {
-      if (dailyAutoPaused) return;
-      const today = new Date();
-      const startOfYear = new Date(today.getFullYear(), 0, 0);
-      const diff = today.getTime() - startOfYear.getTime();
-      const oneDay = 1000 * 60 * 60 * 24;
-      const dayOfYear = Math.floor(diff / oneDay);
-      setCurrentArtIndex(dayOfYear % ART_OF_THE_DAY.length);
-      setCurrentFactIndex(dayOfYear % FUN_FACTS_DATA.length);
-    };
-
-    const now = new Date();
-    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    const msUntilMidnight = tomorrow.getTime() - now.getTime();
-
-    const midnightTimeout = setTimeout(() => {
-      updateDailyIndex();
-      const dailyInterval = setInterval(updateDailyIndex, 24 * 60 * 60 * 1000);
-      (window as any).__artMasons_dailyInterval = dailyInterval;
-    }, msUntilMidnight);
-
-    return () => {
-      clearTimeout(midnightTimeout);
-      if ((window as any).__artMasons_dailyInterval) {
-        clearInterval((window as any).__artMasons_dailyInterval);
-        delete (window as any).__artMasons_dailyInterval;
-      }
-    };
-  }, [isClient, dailyAutoPaused]);
+    return () => clearInterval(interval);
+  }, [isClient, playTop100Random, famousAutoPlay]);
 
   // When top100 random playback is active, set up auto-advance timer
   useEffect(() => {
@@ -342,22 +312,45 @@ export default function ArtMasonsLanding() {
 
     // FIX 1: Explicitly type this as a number
     let animationFrameId: number;
+    let lastTime = 0;
+    const speed = 40; // pixels per second (adjust for comfortable scroll speed)
 
-    const scrollStep = () => {
-      if (!isCarouselPaused) {
-        // These errors will disappear once Step 1 is done
-        if (container.scrollLeft >= container.scrollWidth / 2) {
-          container.scrollLeft = 0;
-        } else {
-          container.scrollLeft += 1;
-        }
+    const step = (time: number) => {
+      if (document.hidden || isCarouselPaused) {
+        // Do not advance while tab is hidden or carousel is paused
+        lastTime = time;
+        animationFrameId = requestAnimationFrame(step);
+        return;
       }
-      animationFrameId = requestAnimationFrame(scrollStep);
+
+      if (!lastTime) lastTime = time;
+      const delta = (time - lastTime) / 1000; // seconds elapsed
+      const deltaPx = speed * delta;
+
+      if (container.scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft = 0;
+      } else {
+        container.scrollLeft += deltaPx;
+      }
+
+      lastTime = time;
+      animationFrameId = requestAnimationFrame(step);
     };
 
-    animationFrameId = requestAnimationFrame(scrollStep);
+    const handleVisibility = () => {
+      if (!document.hidden) {
+        lastTime = performance.now();
+      }
+    };
 
-    return () => cancelAnimationFrame(animationFrameId);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    animationFrameId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [isCarouselPaused]);
 
   const handleScrollLeft = () => {
@@ -404,13 +397,13 @@ export default function ArtMasonsLanding() {
 
   const goPrevArt = () => {
     setIsTop100AutoPlay(false);
-    setDailyAutoPaused(true);
+    setFamousAutoPlay(false);
     setCurrentArtIndex((prev) => (prev - 1 + currentArray.length) % currentArray.length);
   };
 
   const goNextArt = () => {
     setIsTop100AutoPlay(false);
-    setDailyAutoPaused(true);
+    setFamousAutoPlay(false);
     setCurrentArtIndex((prev) => (prev + 1) % currentArray.length);
   };
 
@@ -435,7 +428,7 @@ export default function ArtMasonsLanding() {
           <div className="w-full md:w-1/3 bg-white p-8 md:py-12 md:pl-12 md:pr-1 flex flex-col justify-center items-center">
             <div className="w-full max-w-[330px] text-left mx-auto">
               <div className="mb-8">
-                <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight mb-2">
+                <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight mb-2 ml-2 md:ml-4">
                   ART MASONS
                 </h2>
                 <h3 className="font-serif text-xl md:text-2xl text-[#800000]">
@@ -461,29 +454,32 @@ export default function ArtMasonsLanding() {
                 transition={{ duration: 1 }}
                 className="absolute inset-0"
               >
-                {isClient && (
-                  <div className="w-full h-full bg-gray-200 relative">
-                    <Image
-                      src={currentArt.image}
-                      alt={currentArt.title}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                )}
+                {/* Render hero image on initial render (SSR-friendly). This removes the isClient gating
+                    so famous art shows on mobile immediately rather than waiting for client mount. */}
+                <div className="w-full h-full bg-gray-200 relative">
+                  <Image
+                    src={currentArt.image}
+                    alt={currentArt.title}
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </motion.div>
             </AnimatePresence>
 
-            <div className="absolute bottom-0 w-full bg-white/90 py-4 text-center z-20 backdrop-blur-sm border-t border-gray-200">
+              <div className="absolute bottom-0 w-full bg-white/90 py-4 text-center z-20 backdrop-blur-sm border-t border-gray-200">
               <div className="flex items-center justify-center gap-3">
-                <span className="font-serif text-xs uppercase tracking-[0.2em] block text-gray-500 mb-1">
+                <span className="font-serif text-xs uppercase tracking-[0.2em] block text-[#800000] mb-1">
                   FAMOUS ART
                 </span>
               </div>
               <h2 className="font-serif text-2xl text-black">
-                {isClient ? currentArt.title : ""}
+                {currentArt?.title ?? ""}
               </h2>
+              <p className="font-serif text-sm text-gray-600 mt-1">
+                {currentArt?.artist ?? ""}
+              </p>
             </div>
 
             {/* Left/Right manual navigation for hero */}
@@ -535,7 +531,7 @@ export default function ArtMasonsLanding() {
                 e.stopPropagation();
               }}
               aria-label="Buy now"
-              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition text-sm bottom-6 right-6 md:left-1/2 md:bottom-[72px] md:transform md:-translate-x-1/2"
+              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition text-sm bottom-20 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2"
             >
               BUY NOW
             </Link>
@@ -567,9 +563,12 @@ export default function ArtMasonsLanding() {
                 onTouchEnd={() => setIsCarouselPaused(false)}
               >
                 {extendedArtists.map((artist, i) => (
-                  <div
+                  <Link
                     key={`${artist.name}-${i}`}
-                    className="flex-shrink-0 w-40 h-40 relative rounded-lg overflow-hidden group cursor-pointer"
+                    href={`/popular-art/${generateSlug(artist.name)}`}
+                    className="flex-shrink-0 w-40 h-40 relative rounded-lg overflow-hidden group"
+                    onMouseEnter={() => setIsCarouselPaused(true)}
+                    onMouseLeave={() => setIsCarouselPaused(false)}
                   >
                     <Image
                       src={artist.image}
@@ -583,7 +582,7 @@ export default function ArtMasonsLanding() {
                         {artist.name}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 

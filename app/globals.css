@@ -24,3 +24,42 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Responsive helpers and global improvements for mobile */
+img, picture, video, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Make interactive controls easier to hit on touch devices */
+button, input, select, textarea {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  touch-action: manipulation;
+}
+
+/* Container padding variable to ensure consistent padding across breakpoints */
+:root {
+  --container-padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  :root { --container-padding: 1.25rem; }
+}
+
+@media (min-width: 768px) {
+  :root { --container-padding: 1.5rem; }
+}
+
+/* Keep tailwind container paddings consistent on very small screens */
+.container {
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* Fluid headings for improved readability on small devices */
+h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+h2 { font-size: clamp(1.25rem, 3vw, 2rem); }
+
+/* Reduce layout jank by forcing images to be block-level and responsive */
+.object-contain { max-width: 100%; height: auto; }

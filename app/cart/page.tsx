@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -6,67 +6,21 @@ import Image from 'next/image';
 import { Playfair_Display } from 'next/font/google';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, Lock, Truck, Shield } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { useCart } from '../context/CartContext';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
-// Mock cart data
-interface CartItem {
-  id: string;
-  title: string;
-  artist: string;
-  image: string;
-  size: string;
-  dimensions: string;
-  price: number;
-  quantity: number;
-  sku: string;
-}
-
-const MOCK_CART_ITEMS: CartItem[] = [
-  {
-    id: '1',
-    title: 'Starry Night',
-    artist: 'Vincent van Gogh',
-    image: '/image/starry-night.webp',
-    size: 'Original Size',
-    dimensions: '73.7 x 92.1 cm',
-    price: 3579,
-    quantity: 1,
-    sku: 'AM-VG-SN-001'
-  },
-  {
-    id: '2',
-    title: 'Mona Lisa',
-    artist: 'Leonardo da Vinci',
-    image: '/image/starry-night.webp', // Replace with actual image
-    size: 'Large',
-    dimensions: '90 x 120 cm',
-    price: 4200,
-    quantity: 1,
-    sku: 'AM-LDV-ML-002'
-  }
-];
+// Cart data comes from CartContext
 
 const SHIPPING_COST = 0; // Free shipping
 const TAX_RATE = 0.05; // 5% tax
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>(MOCK_CART_ITEMS);
+  const { items: cartItems, updateQuantity, removeItem, subtotal } = useCart();
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
+  // updateQuantity and removeItem handled by context
 
   const applyPromoCode = () => {
     if (promoCode.trim()) {
@@ -75,7 +29,7 @@ export default function CartPage() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  // subtotal provided by context
   const discount = promoApplied ? subtotal * 0.1 : 0; // 10% discount if promo applied
   const tax = (subtotal - discount) * TAX_RATE;
   const total = subtotal - discount + tax + SHIPPING_COST;
@@ -127,7 +81,7 @@ export default function CartPage() {
                     {/* Product Image */}
                     <div className="flex-shrink-0 w-32 h-32 bg-gray-100 rounded-lg overflow-hidden relative">
                       <Image
-                        src={item.image}
+                        src={item.image || '/placeholder.jpg'}
                         alt={item.title}
                         fill
                         className="object-cover"

@@ -5,6 +5,8 @@ import PageLoader from "./components/PageLoader";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
+import { CartProvider } from "./context/CartContext";
+import { ToastProvider } from "./context/ToastContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,14 +41,16 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <PageLoader />
-        <Header />
-        {children}
-        <BackToTop />
-        <Footer />
+        <ToastProvider>
+          <CartProvider>
+            <Header />
+            {children}
+            <BackToTop />
+            <Footer />
+          </CartProvider>
+        </ToastProvider>
       </body>
     </html>
   );

@@ -11,6 +11,9 @@ import {
   Star,
   Info
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
 
 type Artwork = {
   title: string;
@@ -41,7 +44,10 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
   }, [selectedOption]);
 
   const availableOptions = (artwork.options && artwork.options.length > 0) ? artwork.options : [selectedOption];
-
+  const { addItem, items: cartItems } = useCart();
+  const { addToast } = useToast();
+  const [conflictItem, setConflictItem] = useState<any | null>(null);
+  const [showConflictModal, setShowConflictModal] = useState(false);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
 
@@ -249,10 +255,44 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
 
         {/* Action Buttons */}
         <div className="space-y-3 pt-3 border-t border-gray-200">
-          <button className="w-full bg-[#800000] hover:bg-[#600000] text-white font-serif font-bold text-base md:text-lg py-3 md:py-3.5 px-4 transition-colors flex items-center justify-center gap-2 shadow-md uppercase tracking-wide">
-            <ShoppingCart size={18} /> 
+          <button
+            onClick={() => {
+              const baseId = slug;
+              const existing = cartItems.find((p) => {
+                const parts = String(p.id).split('-');
+                return parts[0] === baseId;
+              });
+
+              const itemId = `${slug}-${selectedOption.id}`;
+              const newItem = {
+                id: itemId,
+                title: artwork.title,
+                artist: artwork.artist,
+                image: artwork.image,
+                option: selectedOption,
+                size: `${selectedOption.width} x ${selectedOption.height} cm`,
+                dimensions: `${selectedOption.width} x ${selectedOption.height} cm`,
+                price: selectedOption.price,
+                quantity,
+                sku: artwork.sku || itemId,
+              };
+
+              // If a product with same base id exists but different option, prompt user
+              if (existing && existing.option && existing.option.id !== selectedOption.id) {
+                setConflictItem({ existing, newItem });
+                setShowConflictModal(true);
+                return;
+              }
+
+              addItem(newItem);
+              addToast(`${artwork.title} added to cart`, 'success');
+            }}
+            className="w-full bg-[#800000] hover:bg-[#600000] text-white font-serif font-bold text-base md:text-lg py-3 md:py-3.5 px-4 transition-colors flex items-center justify-center gap-2 shadow-md uppercase tracking-wide"
+          >
+            <ShoppingCart size={18} />
             <span className="inline-flex items-end">
-              Add to Cart - 
+              Add to Cart -
+              &nbsp;
               {selectedOption.price.toLocaleString().split(',').map((part, i, arr) => (
                 <React.Fragment key={i}>
                   {part}
@@ -296,6 +336,52 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {showConflictModal && conflictItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40"
+          >
+            <motion.div
+              initial={{ y: 12, scale: 0.98, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: 12, scale: 0.98, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              className="bg-white rounded-lg p-6 max-w-lg w-full mx-4"
+            >
+              <h3 className="font-serif text-lg font-bold mb-2">Product already in cart</h3>
+              <p className="text-sm text-gray-700 mb-4">You already have this artwork in a different size/option. How would you like to add the new selection?</p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    addItem(conflictItem.newItem, { merge: 'replace' });
+                    addToast(`${conflictItem.newItem.title} merged into existing item`, 'success');
+                    setShowConflictModal(false);
+                  }}
+                  className="w-full bg-[#800000] text-white px-4 py-3 rounded-md font-bold"
+                >
+                  Replace existing option & increase quantity
+                </button>
+
+                <button
+                  onClick={() => {
+                    addItem(conflictItem.newItem, { merge: 'separate' });
+                    addToast(`${conflictItem.newItem.title} added as separate item`, 'success');
+                    setShowConflictModal(false);
+                  }}
+                  className="w-full bg-white border border-gray-300 text-[#800000] px-4 py-3 rounded-md font-bold"
+                >
+                  Add as separate line item
+                </button>
+
+                <button onClick={() => setShowConflictModal(false)} className="w-full text-gray-700 underline">Cancel</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

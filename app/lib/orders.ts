@@ -1,0 +1,66 @@
+import fs from 'fs';
+import path from 'path';
+
+const DATA_DIR = path.join(process.cwd(), 'data');
+const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
+
+type StoredOrder = {
+  sessionId: string;
+  status: 'pending' | 'paid' | 'failed';
+  createdAt: string;
+  items: Array<any>;
+  customer?: any;
+  raw?: any;
+};
+
+function ensureDataDir() {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!fs.existsSync(ORDERS_FILE)) fs.writeFileSync(ORDERS_FILE, JSON.stringify([]), 'utf8');
+}
+
+export function readOrders(): StoredOrder[] {
+  try {
+    ensureDataDir();
+    const raw = fs.readFileSync(ORDERS_FILE, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (e) {
+    console.error('Failed to read orders file', e);
+    return [];
+  }
+}
+
+export function writeOrders(orders: StoredOrder[]) {
+  try {
+    ensureDataDir();
+    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf8');
+  } catch (e) {
+    console.error('Failed to write orders file', e);
+  }
+}
+
+export function saveOrder(order: Omit<StoredOrder, 'createdAt'>) {
+  const orders = readOrders();
+  const entry: StoredOrder = { ...order, createdAt: new Date().toISOString() } as StoredOrder;
+  orders.push(entry);
+  writeOrders(orders);
+  return entry;
+}
+
+export function findOrderBySession(sessionId: string) {
+  const orders = readOrders();
+  return orders.find((o) => o.sessionId === sessionId) || null;
+}
+
+export function markOrderPaid(sessionId: string, payload?: any) {
+  const orders = readOrders();
+  const idx = orders.findIndex((o) => o.sessionId === sessionId);
+  if (idx >= 0) {
+    orders[idx].status = 'paid';
+    if (payload) orders[idx].raw = payload;
+    writeOrders(orders);
+    return orders[idx];
+  }
+  return null;
+}
+
+export default { readOrders, writeOrders, saveOrder, findOrderBySession, markOrderPaid };

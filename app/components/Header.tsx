@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingBag, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from "../context/CartContext";
 
 const THEME_RED = "#800000";
 
@@ -113,9 +115,7 @@ export default function Header() {
               <Link href="/cart" className="flex items-center gap-2 cursor-pointer hover:opacity-70">
                 <div className="relative">
                   <ShoppingBag size={28} color="black" strokeWidth={1.5} />
-                  <span className="absolute -top-1 -right-1 bg-[#800000] text-white text-sm w-4 h-4 rounded-full flex items-center justify-center font-serif">
-                    0
-                  </span>
+                  <CartCountBadge />
                 </div>
               </Link>
 
@@ -175,4 +175,33 @@ export default function Header() {
       </div>
     </header>
   );
+}
+
+function CartCountBadge() {
+  try {
+    const { count } = useCart();
+    return (
+      <div className="absolute -top-1 -right-1 w-5 h-5">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={count}
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.6, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            className="absolute inset-0 bg-[#800000] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-serif"
+          >
+            {count}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+    );
+  } catch (e) {
+    // If context not available (SSR or outside provider), fallback to 0
+    return (
+      <div className="absolute -top-1 -right-1 w-5 h-5">
+        <span className="absolute inset-0 bg-[#800000] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-serif">0</span>
+      </div>
+    );
+  }
 }

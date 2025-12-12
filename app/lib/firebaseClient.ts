@@ -27,4 +27,5 @@ export default { auth };
 
 // Placeholder exports while Firebase is disabled
 export const auth = null;
-export default { auth: null };
+const firebaseClient = { auth: null };
+export default firebaseClient;

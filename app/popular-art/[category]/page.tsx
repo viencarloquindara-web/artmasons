@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import { Playfair_Display } from 'next/font/google';
 import PageTransition from '../../components/PageTransition';
-import { ARTWORKS, generateSlug, getArtworkBySlug } from '../../../data/artworks';
+import { ARTWORKS, generateSlug, getArtworkBySlug, type Artwork } from '../../../data/artworks';
 import { getCategorySlugs } from '../../../data/popularCategories';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
@@ -17,20 +17,20 @@ function humanize(slug: string) {
     .join(' ');
 }
 
-function matchesCategory(artwork: any, slug?: string) {
+function matchesCategory(artwork: Artwork, slug?: string) {
   if (!slug) return false;
   const lower = String(slug).replace(/-/g, ' ').toLowerCase();
-  const title = (artwork.title || '').toLowerCase();
-  const artist = (artwork.artist || '').toLowerCase();
-  const desc = (artwork.description || '').toLowerCase();
+  const title = (artwork.title ?? '').toLowerCase();
+  const artist = (artwork.artist ?? '').toLowerCase();
+  const desc = (artwork.description ?? '').toLowerCase();
 
   // Direct artist match (e.g., "monet", "van gogh")
   if (artist.includes(lower)) return true;
   // match against artist slugified tokens (e.g., "van-gogh")
   try {
-    const artistSlug = generateSlug(artwork.artist || '');
+    const artistSlug = generateSlug(artwork.artist ?? '');
     if (artistSlug.includes(lower.replace(/\s+/g, '-'))) return true;
-  } catch (e) {}
+  } catch {}
 
   // Direct title match
   if (title.includes(lower)) return true;
@@ -65,10 +65,12 @@ export default async function CategoryPage({ params, searchParams }: { params: P
 
   // Try curated lists first (exact controlled lists from `data/popularCategories.ts`)
   const curatedSlugs = getCategorySlugs(slug);
-  let filtered = [] as any[];
+  let filtered: Artwork[] = [];
 
   if (curatedSlugs && curatedSlugs.length > 0) {
-    filtered = curatedSlugs.map((s) => getArtworkBySlug(s)).filter(Boolean) as any[];
+    filtered = curatedSlugs
+      .map((s) => getArtworkBySlug(s))
+      .filter((a): a is Artwork => Boolean(a));
   } else {
     filtered = ARTWORKS.filter((a) => matchesCategory(a, slug));
   }
@@ -77,9 +79,9 @@ export default async function CategoryPage({ params, searchParams }: { params: P
 
   // Apply sorting (server-side) — default preserves curated order
   if (sort === 'title') {
-    filtered = filtered.slice().sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    filtered = filtered.slice().sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
   } else if (sort === 'artist') {
-    filtered = filtered.slice().sort((a, b) => (a.artist || '').localeCompare(b.artist || ''));
+    filtered = filtered.slice().sort((a, b) => (a.artist ?? '').localeCompare(b.artist ?? ''));
   }
 
   // Render full list (no hero thumbnail)
@@ -113,7 +115,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
           {filtered.length === 0 ? (
             <div className="py-20 text-center">
               <h2 className="font-serif text-xl font-bold text-gray-700">No artworks found</h2>
-              <p className="text-gray-500 mt-2">We couldn't find artworks for "{title}".</p>
+              <p className="text-gray-500 mt-2">We couldn&apos;t find artworks for “{title}”.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

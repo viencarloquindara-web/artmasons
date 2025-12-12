@@ -42,7 +42,7 @@ export default function OurQualityPage() {
               At ART MASONS, we are committed to delivering nothing less than museum-quality oil painting reproductions. Each piece is meticulously hand-painted by our master artists, ensuring that every brushstroke captures the essence and beauty of the original masterpiece.
             </p>
             <p className="text-lg">
-              Our dedication to quality means using only the finest materials and employing time-honored techniques that have been perfected over centuries. When you choose ART MASONS, you're not just buying a painting—you're investing in a work of art.
+              Our dedication to quality means using only the finest materials and employing time-honored techniques that have been perfected over centuries. When you choose ART MASONS, you&apos;re not just buying a painting—you&apos;re investing in a work of art.
             </p>
           </section>
 
@@ -171,7 +171,7 @@ export default function OurQualityPage() {
                 </p>
                 <div className="mt-6 p-6 bg-[#fff6f6] border border-[#f2cfcf] rounded-md">
                   <p className="font-bold text-[#800000]">Our Guarantee:</p>
-                  <p className="mt-2">We stand behind the quality of every painting we create. If you're not completely satisfied with your artwork, we offer a comprehensive return policy to ensure your peace of mind.</p>
+                  <p className="mt-2">We stand behind the quality of every painting we create. If you&apos;re not completely satisfied with your artwork, we offer a comprehensive return policy to ensure your peace of mind.</p>
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function OurQualityPage() {
               <p>✓ <strong>Expertise:</strong> Our artists have years of training in classical painting techniques.</p>
               <p>✓ <strong>Premium Materials:</strong> We use only the finest linen, oils, and frames available.</p>
               <p>✓ <strong>Time & Care:</strong> We never rush. Each painting receives the time it needs to be perfect.</p>
-              <p>✓ <strong>Museum Quality:</strong> Our standards match those of the world's finest art institutions.</p>
+              <p>✓ <strong>Museum Quality:</strong> Our standards match those of the world&apos;s finest art institutions.</p>
               <p>✓ <strong>Guaranteed Satisfaction:</strong> We stand behind our work with confidence.</p>
             </div>
           </section>

@@ -48,7 +48,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
                       </button>
                     );
                   }
-                } catch (e) {
+                } catch {
                   // fall back to normal link
                 }
 

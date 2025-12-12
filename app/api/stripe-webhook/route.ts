@@ -3,6 +3,8 @@ import Stripe from 'stripe';
 import ordersLib from '../../lib/orders';
 // import { firestore } from '../../lib/firebaseAdmin';
 
+export const runtime = 'nodejs';
+
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -17,14 +19,22 @@ export async function POST(req: Request) {
   const body = await req.text();
 
   if (!webhookSecret) {
-    // If no webhook secret, accept event without verification (NOT recommended in production)
+    // Only allow unverified events in development.
+    if (process.env.NODE_ENV !== 'development') {
+      return NextResponse.json({ error: 'Stripe webhook not configured (STRIPE_WEBHOOK_SECRET)' }, { status: 500 });
+    }
+
     const evt = JSON.parse(body);
-    console.log('Received stripe event (no verification):', evt.type || evt);
+    console.warn('Received stripe event WITHOUT verification (development only):', evt.type || evt);
     return NextResponse.json({ received: true });
   }
 
+  if (!signature) {
+    return NextResponse.json({ error: 'Missing stripe-signature header' }, { status: 400 });
+  }
+
   try {
-    const event = stripe.webhooks.constructEvent(body, signature || '', webhookSecret);
+    const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
     console.log('Verified Stripe webhook event:', event.type);
 
     // Handle events of interest (expand as needed)
@@ -33,12 +43,22 @@ export async function POST(req: Request) {
         console.log('Checkout session completed:', event.data.object);
         // Mark order paid if we have a saved record (Firebase/Firestore temporarily disabled)
         try {
-          const sessionObj: any = event.data.object;
+          const sessionObj = event.data.object as Stripe.Checkout.Session;
           const sessionId = sessionObj.id;
-          const result = await ordersLib.markOrderPaid(sessionId, event.data.object);
+          const result = await ordersLib.markOrderPaid(sessionId, sessionObj);
           console.log('Local order mark result', result);
         } catch (e) {
           console.error('Failed to mark order paid', e);
+        }
+        break;
+      case 'checkout.session.async_payment_failed':
+        try {
+          const sessionObj = event.data.object as Stripe.Checkout.Session;
+          const sessionId = sessionObj.id;
+          const result = await ordersLib.markOrderFailed(sessionId, sessionObj);
+          console.log('Local order mark failed result', result);
+        } catch (e) {
+          console.error('Failed to mark order failed', e);
         }
         break;
       default:
@@ -46,8 +66,9 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ received: true });
-  } catch (err: any) {
-    console.error('Webhook signature verification failed.', err.message);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('Webhook signature verification failed.', message);
     return NextResponse.json({ error: 'Webhook verification failed' }, { status: 400 });
   }
 }

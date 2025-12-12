@@ -42,7 +42,8 @@ export function unauthorizedResponse(message = 'Unauthorized') {
 import { NextResponse } from 'next/server';
 
 // Placeholder exports while Firebase is disabled
-export async function verifyAdminFromRequest(req: Request) {
+export async function verifyAdminFromRequest(_req: Request) {
+  void _req;
   return { ok: false, message: 'Firebase temporarily disabled' };
 }
 

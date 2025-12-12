@@ -60,4 +60,5 @@ export default admin;
 // Placeholder exports while Firebase is disabled
 export const authAdmin = null;
 export const firestore = null;
-export default null;
+const firebaseAdmin = null;
+export default firebaseAdmin;

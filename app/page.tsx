@@ -1,33 +1,30 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Playfair_Display } from "next/font/google";
 import Link from "next/link";
 import PageTransition from "./components/PageTransition";
 import {
-  Search,
-  ShoppingBag,
-  Menu,
-  X,
-  Instagram,
-  Facebook,
-  Mail,
-  Phone,
-  Video,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+
+function shuffle<T>(arr: T[]) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 // --- Fonts ---
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
 });
-
-// --- Theme Colors ---
-const THEME_RED = "#800000";
 
 // --- DATA ---
 const ASSURANCE_POINTS = [
@@ -236,25 +233,24 @@ const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
   slug: `artwork-${i + 1}`,
 }));
 
-const NAV_ITEMS = [
-  { label: "Artists A-Z", href: "/artists-a-z" },
-  { label: "Top 100 Paintings", href: "/top-100" },
-  { label: "Our Quality", href: "/our-quality" },
-  { label: "Frame & Size Art", href: "#" },
-  { label: "About Us", href: "#" },
-];
-
 export default function ArtMasonsLanding() {
   const [currentArtIndex, setCurrentArtIndex] = useState(0);
-  const [playTop100Random, setPlayTop100Random] = useState(false);
-  const [top100Order, setTop100Order] = useState<number[]>([]);
+  const [playTop100Random] = useState(false);
   const [isTop100AutoPlay, setIsTop100AutoPlay] = useState(true);
-  const [currentFactIndex, setCurrentFactIndex] = useState(0);
+  const [currentFactIndex] = useState(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false);
   const [famousAutoPlay, setFamousAutoPlay] = useState(true);
+
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
+  const top100Order = React.useMemo(() => {
+    const indices = Array.from({ length: TOP_100_ARTS.length }, (_, i) => i);
+    return isClient ? shuffle(indices) : indices;
+  }, [isClient]);
 
   // You might need to import useRef from 'react'
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -262,14 +258,6 @@ export default function ArtMasonsLanding() {
   const extendedArtists = [...POPULAR_ARTISTS, ...POPULAR_ARTISTS];
 
   useEffect(() => {
-    setIsClient(true);
-
-    // Default behavior: start carousel at first famous art
-    setCurrentArtIndex(0);
-    // Initialize Top100 order (shuffled) but don't activate until user toggles
-    setTop100Order(shuffle(Array.from({ length: TOP_100_ARTS.length }, (_, i) => i)));
-    setCurrentFactIndex(0);
-
     const testimonialTimer = setInterval(() => {
       setTestimonialIndex((prev) => (prev + 3) % TESTIMONIALS_DATA.length);
     }, 6000);
@@ -374,26 +362,6 @@ export default function ArtMasonsLanding() {
   const currentArt = playTop100Random
     ? TOP_100_ARTS[top100Order[currentArtIndex] ?? currentArtIndex]
     : ART_OF_THE_DAY[currentArtIndex];
-
-  function shuffle<T>(arr: T[]) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  // Programmatic toggle for Top 100 random mode (no UI button)
-  function toggleTop100Random(enabling?: boolean) {
-    const enable = typeof enabling === "boolean" ? enabling : !playTop100Random;
-    setPlayTop100Random(enable);
-    setIsTop100AutoPlay(true);
-    setCurrentArtIndex(0);
-    if (enable && top100Order.length === 0) {
-      setTop100Order(shuffle(Array.from({ length: TOP_100_ARTS.length }, (_, i) => i)));
-    }
-  }
 
   const goPrevArt = () => {
     setIsTop100AutoPlay(false);
@@ -687,7 +655,7 @@ export default function ArtMasonsLanding() {
                     <div>
                       <div className="flex text-[#800000] mb-4">★★★★★</div>
                       <p className="font-serif italic text-gray-700">
-                        "{text}"
+                        “{text}”
                       </p>
                     </div>
                     <p className="mt-4 font-serif text-xs font-bold text-gray-400 uppercase tracking-widest">

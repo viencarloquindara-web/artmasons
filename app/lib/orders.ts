@@ -8,9 +8,9 @@ type StoredOrder = {
   sessionId: string;
   status: 'pending' | 'paid' | 'failed';
   createdAt: string;
-  items: Array<any>;
-  customer?: any;
-  raw?: any;
+  items: Array<unknown>;
+  customer?: unknown;
+  raw?: unknown;
 };
 
 function ensureDataDir() {
@@ -51,7 +51,7 @@ export function findOrderBySession(sessionId: string) {
   return orders.find((o) => o.sessionId === sessionId) || null;
 }
 
-export function markOrderPaid(sessionId: string, payload?: any) {
+export function markOrderPaid(sessionId: string, payload?: unknown) {
   const orders = readOrders();
   const idx = orders.findIndex((o) => o.sessionId === sessionId);
   if (idx >= 0) {
@@ -63,4 +63,17 @@ export function markOrderPaid(sessionId: string, payload?: any) {
   return null;
 }
 
-export default { readOrders, writeOrders, saveOrder, findOrderBySession, markOrderPaid };
+export function markOrderFailed(sessionId: string, payload?: unknown) {
+  const orders = readOrders();
+  const idx = orders.findIndex((o) => o.sessionId === sessionId);
+  if (idx >= 0) {
+    orders[idx].status = 'failed';
+    if (payload) orders[idx].raw = payload;
+    writeOrders(orders);
+    return orders[idx];
+  }
+  return null;
+}
+
+const ordersLib = { readOrders, writeOrders, saveOrder, findOrderBySession, markOrderPaid, markOrderFailed };
+export default ordersLib;

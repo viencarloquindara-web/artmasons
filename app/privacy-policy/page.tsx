@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import Breadcrumbs from '../components/Breadcrumbs';
 

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Playfair_Display } from 'next/font/google';
 import { Heart, Palette, Users, Sparkles, CheckCircle } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -230,7 +229,7 @@ export default function AboutUsPage() {
                     <h3 className="font-serif text-xl font-bold text-gray-800">Craftsmanship</h3>
                   </div>
                   <p className="text-base">
-                    We are a small, highly specialized team of artists, academically trained according to European standards. We never compromise on detail, technique, or materials. Museum-quality excellence is not just our standard—it's our promise.
+                    We are a small, highly specialized team of artists, academically trained according to European standards. We never compromise on detail, technique, or materials. Museum-quality excellence is not just our standard—it&apos;s our promise.
                   </p>
                 </div>
 
@@ -252,7 +251,7 @@ export default function AboutUsPage() {
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Our Story</h2>
             <div className="space-y-4">
               <p className="text-lg">
-                ART MASONS was born from a simple yet powerful vision: to make the world's greatest artistic masterpieces accessible to art lovers everywhere, without compromising on quality or authenticity.
+                ART MASONS was born from a simple yet powerful vision: to make the world&apos;s greatest artistic masterpieces accessible to art lovers everywhere, without compromising on quality or authenticity.
               </p>
               <p className="text-lg">
                 Founded by a collective of classically trained artists and art historians, we recognized a gap in the market. While museums house priceless originals and mass production churns out soulless prints, there was a need for something in between—authentic, hand-painted reproductions that capture the true essence of the masters.
@@ -305,7 +304,7 @@ export default function AboutUsPage() {
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Personalized Service</h3>
                   <p className="text-base">
-                    From custom sizing to framing advice, we're here to help you find the perfect artwork for your space.
+                    From custom sizing to framing advice, we&apos;re here to help you find the perfect artwork for your space.
                   </p>
                 </div>
               </div>
@@ -435,9 +434,9 @@ export default function AboutUsPage() {
 
           {/* Contact CTA */}
           <section className="text-center bg-gray-50 p-8 rounded-lg">
-            <h2 className="font-serif text-3xl font-bold mb-4 text-[#800000]">Let's Create Something Beautiful Together</h2>
+            <h2 className="font-serif text-3xl font-bold mb-4 text-[#800000]">Let&apos;s Create Something Beautiful Together</h2>
             <p className="text-lg mb-6 max-w-2xl mx-auto">
-              Whether you have questions about our process, need help selecting the perfect piece, or want to discuss a custom commission, we're here to help.
+              Whether you have questions about our process, need help selecting the perfect piece, or want to discuss a custom commission, we&apos;re here to help.
             </p>
             <div className="space-y-2">
               <p className="text-lg flex items-center justify-center gap-2">

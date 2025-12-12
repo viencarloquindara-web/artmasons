@@ -64,8 +64,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const persisted = readFromStorage();
-    if (persisted && persisted.length > 0) setItems(persisted);
+    const load = setTimeout(() => {
+      const persisted = readFromStorage();
+      if (persisted.length > 0) setItems(persisted);
+    }, 0);
+    return () => clearTimeout(load);
   }, []);
 
   useEffect(() => {
@@ -91,8 +94,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       // Default (auto): prefer matching by option id (merge quantities), otherwise add as separate
       if (existing) {
-        const pOpt = (existing as any).option;
-        const iOpt = (item as any).option;
+        const pOpt = existing.option;
+        const iOpt = item.option;
         if (pOpt && iOpt && pOpt.id === iOpt.id) {
           const copy = [...prev];
           copy[idx] = { ...copy[idx], quantity: copy[idx].quantity + item.quantity };

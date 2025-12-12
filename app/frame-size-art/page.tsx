@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { Playfair_Display } from 'next/font/google';
 import { Ruler, Frame, Palette, CheckCircle } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -29,7 +27,7 @@ export default function FrameSizeArtPage() {
               At ART MASONS, we understand that the presentation of your artwork is just as important as the painting itself. Our approach to sizing and framing ensures that every reproduction maintains the authentic proportions and aesthetic integrity of the original masterpiece.
             </p>
             <p className="text-lg">
-              Whether you're looking for a specific size or need guidance on framing options, we're here to help you create the perfect display for your space.
+              Whether you&apos;re looking for a specific size or need guidance on framing options, we&apos;re here to help you create the perfect display for your space.
             </p>
           </section>
 
@@ -47,14 +45,14 @@ export default function FrameSizeArtPage() {
                   Unlike many reproduction services that offer standardized sizes, we take a different approach. Our paintings are available either in the exact size of the original artwork or in carefully calculated dimensions that maintain perfect proportional accuracy to the original.
                 </p>
                 <p className="text-lg">
-                  This means you'll never receive a distorted or stretched reproduction that compromises the artist's original vision. Every dimension is calculated to preserve the authentic composition and visual balance of the masterpiece.
+                  This means you&apos;ll never receive a distorted or stretched reproduction that compromises the artist&apos;s original vision. Every dimension is calculated to preserve the authentic composition and visual balance of the masterpiece.
                 </p>
               </div>
 
               <div>
                 <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">Available Sizes</h3>
                 <p className="text-lg mb-4">
-                  On each painting's detailed page, you'll find a selection of size options along with their corresponding prices. These sizes are carefully chosen to work well in various spaces while maintaining the artwork's original proportions.
+                  On each painting&apos;s detailed page, you&apos;ll find a selection of size options along with their corresponding prices. These sizes are carefully chosen to work well in various spaces while maintaining the artwork&apos;s original proportions.
                 </p>
                 <div className="bg-white p-6 rounded-lg border border-gray-200">
                   <p className="text-lg font-semibold mb-2 text-[#800000]">Common Size Categories:</p>
@@ -82,7 +80,7 @@ export default function FrameSizeArtPage() {
               <div>
                 <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">Custom Sizing</h3>
                 <p className="text-lg mb-4">
-                  If you would like your painting in a size that is not listed on our website, we're happy to accommodate your needs. Simply contact us at <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a> with your request.
+                  If you would like your painting in a size that is not listed on our website, we&apos;re happy to accommodate your needs. Simply contact us at <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a> with your request.
                 </p>
                 <p className="text-lg">
                   Our team will guide you through the process and recommend the most suitable dimensions for your space, always ensuring the size remains proportional to the original artwork. This way, your custom-sized piece will perfectly complement your interior while maintaining artistic integrity.
@@ -212,7 +210,7 @@ export default function FrameSizeArtPage() {
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle size={20} className="text-[#800000] mt-1 flex-shrink-0" />
-                      <span>Medium-width frames that don't overpower</span>
+                      <span>Medium-width frames that don&apos;t overpower</span>
                     </li>
                   </ul>
                 </div>
@@ -240,7 +238,7 @@ export default function FrameSizeArtPage() {
                   <ul className="space-y-2 text-lg">
                     <li className="flex items-start gap-2">
                       <CheckCircle size={20} className="text-[#800000] mt-1 flex-shrink-0" />
-                      <span>Consider your room's color scheme</span>
+                      <span>Consider your room&apos;s color scheme</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle size={20} className="text-[#800000] mt-1 flex-shrink-0" />
@@ -248,7 +246,7 @@ export default function FrameSizeArtPage() {
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle size={20} className="text-[#800000] mt-1 flex-shrink-0" />
-                      <span>Don't let the frame overpower the artwork</span>
+                      <span>Don&apos;t let the frame overpower the artwork</span>
                     </li>
                   </ul>
                 </div>

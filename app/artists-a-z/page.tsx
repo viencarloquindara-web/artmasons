@@ -8,9 +8,6 @@ import Breadcrumbs from '../components/Breadcrumbs';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
-// --- THEME COLORS ---
-const THEME_RED = '#800000';
-
 // --- DATA: CURATED COLLECTION ---
 const COLLECTION_DATA = [
   { artist: "John Otis Adams", birth: 1851, death: 1927, title: "In Poppyland (Poppy field)" },
@@ -266,15 +263,15 @@ export default function ArtistsAZPage() {
     try {
       const fromHistory = typeof window !== 'undefined' && (window.history.state && window.history.state.selectedLetter);
       if (fromHistory && ALPHABET.includes(fromHistory)) {
-        setSelectedLetter(fromHistory);
+        setTimeout(() => setSelectedLetter(fromHistory), 0);
         return;
       }
 
       const stored = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
       if (stored && ALPHABET.includes(stored)) {
-        setSelectedLetter(stored);
+        setTimeout(() => setSelectedLetter(stored), 0);
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, []);
@@ -285,7 +282,7 @@ export default function ArtistsAZPage() {
       if (typeof window !== 'undefined' && selectedLetter) {
         localStorage.setItem(STORAGE_KEY, selectedLetter);
       }
-    } catch (e) {
+    } catch {
       // ignore localStorage errors
     }
   }, [selectedLetter]);
@@ -300,7 +297,7 @@ export default function ArtistsAZPage() {
         window.history.replaceState(state, document.title);
         localStorage.setItem(STORAGE_KEY, letter);
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   };
@@ -451,7 +448,7 @@ export default function ArtistsAZPage() {
             <>
               <div className="mb-6">
                 <h2 className="font-serif text-2xl font-bold text-gray-800">
-                  <span className="text-4xl font-bold text-[#800000]">{filteredArtists.length}</span> {filteredArtists.length === 1 ? 'Artist' : 'Artists'} starting with "{selectedLetter}"
+                  <span className="text-4xl font-bold text-[#800000]">{filteredArtists.length}</span> {filteredArtists.length === 1 ? 'Artist' : 'Artists'} starting with “{selectedLetter}”
                 </h2>
               </div>
               
@@ -553,7 +550,7 @@ export default function ArtistsAZPage() {
               <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-4">
                 <User className="text-gray-400" size={40} />
               </div>
-              <p className="text-xl font-serif text-gray-400 mb-2">No artists found for letter "{selectedLetter}"</p>
+              <p className="text-xl font-serif text-gray-400 mb-2">No artists found for letter “{selectedLetter}”</p>
               <p className="font-serif text-sm text-gray-500">Try selecting a different letter above</p>
             </div>
           )}

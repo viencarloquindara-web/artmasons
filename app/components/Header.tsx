@@ -14,6 +14,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { count } = useCart();
+
   const NAV_ITEMS = [
     { label: "Artists A-Z", href: "/artists-a-z" },
     { label: "Top 100 Paintings", href: "/top-100" },
@@ -115,7 +117,7 @@ export default function Header() {
               <Link href="/cart" className="flex items-center gap-2 cursor-pointer hover:opacity-70">
                 <div className="relative">
                   <ShoppingBag size={28} color="black" strokeWidth={1.5} />
-                  <CartCountBadge />
+                  <CartCountBadge count={count} />
                 </div>
               </Link>
 
@@ -177,31 +179,21 @@ export default function Header() {
   );
 }
 
-function CartCountBadge() {
-  try {
-    const { count } = useCart();
-    return (
-      <div className="absolute -top-1 -right-1 w-5 h-5">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={count}
-            initial={{ scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.6, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className="absolute inset-0 bg-[#800000] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-serif"
-          >
-            {count}
-          </motion.span>
-        </AnimatePresence>
-      </div>
-    );
-  } catch (e) {
-    // If context not available (SSR or outside provider), fallback to 0
-    return (
-      <div className="absolute -top-1 -right-1 w-5 h-5">
-        <span className="absolute inset-0 bg-[#800000] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-serif">0</span>
-      </div>
-    );
-  }
+function CartCountBadge({ count }: { count: number }) {
+  return (
+    <div className="absolute -top-1 -right-1 w-5 h-5">
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={count}
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.6, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+          className="absolute inset-0 bg-[#800000] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-serif"
+        >
+          {count}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
 }

@@ -3,14 +3,11 @@ import { Playfair_Display, Inter } from 'next/font/google';
 import PageTransition from '../../components/PageTransition';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import ClientProductDetails from '../ClientProductDetails';
-import { getArtworkBySlug } from '../../../data/artworks';
+import { type Artwork, getArtworkBySlug } from '../../../data/artworks';
 
 // --- Fonts ---
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-
-// --- Theme Colors ---
-const THEME_RED = '#800000';
 
 // Artwork details are loaded from `data/artworks.ts` by slug
 
@@ -21,7 +18,7 @@ const THEME_RED = '#800000';
 // --- MAIN PRODUCT PAGE ---
 export default async function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const artwork = getArtworkBySlug(slug as string);
+  const artwork = getArtworkBySlug(slug as string) as Artwork | null;
 
   return (
     <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-serif text-base`}>
@@ -39,7 +36,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
 
           {/* Client-rendered product details (interactive) */}
           {artwork ? (
-            <ClientProductDetails artwork={artwork as any} slug={slug as string} />
+            <ClientProductDetails artwork={artwork} slug={slug as string} />
           ) : (
             <div className="py-20 text-center">
               <h2 className="font-serif text-2xl font-bold text-gray-700">Artwork not found</h2>

@@ -8,13 +8,18 @@ import Link from 'next/link';
 export default function CheckoutSuccess() {
   const { clearCart } = useCart();
   const { addToast } = useToast();
-  const [status, setStatus] = useState<'checking' | 'paid' | 'pending' | 'not_found' | 'error'>('checking');
+  const [sessionId] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const params = new URLSearchParams(window.location.search);
+    return params.get('session_id');
+  });
+
+  const [status, setStatus] = useState<'checking' | 'paid' | 'pending' | 'not_found' | 'error'>(() =>
+    sessionId ? 'checking' : 'not_found'
+  );
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get('session_id');
     if (!sessionId) {
-      setStatus('not_found');
       addToast('No session id found in return URL', 'error');
       return;
     }
@@ -30,20 +35,20 @@ export default function CheckoutSuccess() {
         } else if (data.status === 'pending') {
           setStatus('pending');
           addToast('Payment is pending. We will update your order shortly.', 'info');
-        } else if (data.status === 'not_found' || data.status === 'not_found') {
+        } else if (data.status === 'not_found' || data.status === 'failed') {
           setStatus('not_found');
           addToast('Order not found on server', 'error');
         } else {
           setStatus('error');
           addToast('Unable to verify payment status', 'error');
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error('Status check failed', e);
         setStatus('error');
         addToast('Unable to verify payment status', 'error');
       }
     })();
-  }, [clearCart, addToast]);
+  }, [sessionId, clearCart, addToast]);
 
   return (
     <main className="min-h-screen bg-white">
@@ -51,8 +56,8 @@ export default function CheckoutSuccess() {
         <h1 className="font-serif text-4xl font-bold text-[#800000] mb-4">Thank you — Order received</h1>
         {status === 'checking' && <p className="mb-6">Verifying payment...</p>}
         {status === 'paid' && <p className="mb-6">Your payment was successful. We have received your order and will process it shortly.</p>}
-        {status === 'pending' && <p className="mb-6">Payment is pending. If this doesn't update shortly, contact support.</p>}
-        {status === 'not_found' && <p className="mb-6">We couldn't find your order on the server. If you were charged, contact support.</p>}
+        {status === 'pending' && <p className="mb-6">Payment is pending. If this doesn’t update shortly, contact support.</p>}
+        {status === 'not_found' && <p className="mb-6">We couldn&apos;t find your order on the server. If you were charged, contact support.</p>}
         {status === 'error' && <p className="mb-6">There was an error verifying your payment. Contact support if needed.</p>}
         <Link href="/" className="inline-block bg-[#800000] text-white px-6 py-3 rounded-md font-bold">Return to shop</Link>
       </div>

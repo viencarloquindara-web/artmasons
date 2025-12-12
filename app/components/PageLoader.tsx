@@ -3,15 +3,19 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 export default function PageLoader() {
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    setLoading(true);
-    const timeout = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timeout);
+    const start = setTimeout(() => setLoading(true), 0);
+    const end = setTimeout(() => setLoading(false), 500);
+    return () => {
+      clearTimeout(start);
+      clearTimeout(end);
+    };
   }, [pathname]);
 
   return (
@@ -27,7 +31,14 @@ export default function PageLoader() {
           <div className="flex flex-col items-center gap-4">
             {/* Logo */}
             <div className="relative w-24 h-24 animate-pulse">
-              <img src="/artmasons_logo.png" alt="Art Masons" className="w-full h-full object-contain" />
+              <Image
+                src="/artmasons_logo.png"
+                alt="Art Masons"
+                fill
+                sizes="96px"
+                className="object-contain"
+                priority
+              />
             </div>
             
             {/* Animated loader */}

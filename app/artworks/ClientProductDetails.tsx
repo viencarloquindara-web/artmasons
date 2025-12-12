@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import {
   ShoppingCart,
   ShoppingBag,
@@ -12,41 +11,37 @@ import {
   Info
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '../context/CartContext';
+import { type CartItem, useCart } from '../context/CartContext';
+import type { Artwork } from '../../data/artworks';
 import { useToast } from '../context/ToastContext';
 
-type Artwork = {
-  title: string;
-  year?: string;
-  artist: string;
-  artistLife?: string;
-  location?: string;
-  originalSize?: string;
-  description?: string;
-  sku?: string;
-  basePrice?: number;
-  currency?: string;
-  image: string;
-  options?: Array<{ id: string; width: number; height: number; price: number; label: string }>;
+type ArtworkOption = NonNullable<Artwork['options']>[number];
+
+type ConflictState = {
+  existing: CartItem;
+  newItem: CartItem;
 };
 
 export default function ClientProductDetails({ artwork, slug }: { artwork: Artwork; slug: string }) {
-  const [selectedOption, setSelectedOption] = useState(
-    (artwork.options && artwork.options.length > 0 && artwork.options[0]) || { id: 'opt-default', width: 70, height: 90, price: artwork.basePrice || 0, label: 'Default' }
+  const [selectedOption, setSelectedOption] = useState<ArtworkOption>(
+    (artwork.options && artwork.options.length > 0 && artwork.options[0]) || {
+      id: 'opt-default',
+      width: 70,
+      height: 90,
+      price: artwork.basePrice || 0,
+      label: 'Default'
+    }
   );
   const [quantity, setQuantity] = useState(1);
-  const [isPortrait, setIsPortrait] = useState(false);
+  const [imageIsPortrait, setImageIsPortrait] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    if (!selectedOption) return;
-    // Use selected option dimensions as a hint for orientation
-    setIsPortrait(selectedOption.width < selectedOption.height);
-  }, [selectedOption]);
+  const optionIsPortrait = useMemo(() => selectedOption.width < selectedOption.height, [selectedOption.width, selectedOption.height]);
+  const isPortrait = imageIsPortrait ?? optionIsPortrait;
 
   const availableOptions = (artwork.options && artwork.options.length > 0) ? artwork.options : [selectedOption];
   const { addItem, items: cartItems } = useCart();
   const { addToast } = useToast();
-  const [conflictItem, setConflictItem] = useState<any | null>(null);
+  const [conflictItem, setConflictItem] = useState<ConflictState | null>(null);
   const [showConflictModal, setShowConflictModal] = useState(false);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
@@ -63,7 +58,7 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
                 fill
                 onLoadingComplete={(img) => {
                   if (img && img.naturalWidth && img.naturalHeight) {
-                    setIsPortrait(img.naturalWidth < img.naturalHeight);
+                    setImageIsPortrait(img.naturalWidth < img.naturalHeight);
                   }
                 }}
                 className="object-contain w-full h-full max-h-[70vh] shadow-xl"

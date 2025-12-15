@@ -80,7 +80,7 @@ export default function FrameSizeArtPage() {
               <div>
                 <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">Custom Sizing</h3>
                 <p className="text-lg mb-4">
-                  If you would like your painting in a size that is not listed on our website, we&apos;re happy to accommodate your needs. Simply contact us at <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a> with your request.
+                  If you would like your painting in a size that is not listed on our website, we&apos;re happy to accommodate your needs. Simply contact us at <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-normal">info@artmasons.com</a> with your request.
                 </p>
                 <p className="text-lg">
                   Our team will guide you through the process and recommend the most suitable dimensions for your space, always ensuring the size remains proportional to the original artwork. This way, your custom-sized piece will perfectly complement your interior while maintaining artistic integrity.

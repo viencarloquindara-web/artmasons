@@ -214,10 +214,10 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
           </div>
           
           {/* Custom Size Note */}
-          <div className="mt-3 flex items-start gap-2 text-sm md:text-sm text-gray-600 font-serif border border-gray-200 p-2.5 md:p-3 bg-gray-50">
+            <div className="mt-3 flex items-start gap-2 text-sm md:text-sm text-gray-600 font-serif border border-gray-200 p-2.5 md:p-3 bg-gray-50">
             <Info size={12} className="flex-shrink-0 mt-0.5" />
             <p>
-              Need a custom size? <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-bold">Contact us</a> for personalized dimensions.
+              Need a custom size? <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-normal">Contact us</a> for personalized dimensions.
             </p>
           </div>
         </div>

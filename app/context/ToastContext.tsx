@@ -28,10 +28,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const clearAll = useCallback(() => setToasts([]), []);
 
   const addToast = useCallback((message: string, type: Toast["type"] = "info", timeout = 3000) => {
-    const id = String(Date.now()) + Math.random().toString(36).slice(2, 9);
-    const toast: Toast = { id, message, type };
-    setToasts((t) => [toast, ...t]);
-    if (timeout > 0) setTimeout(() => removeToast(id), timeout);
+    setToasts((prev) => {
+      // Prevent adding duplicate toasts with the same message and type
+      if (prev.some((t) => t.message === message && t.type === type)) return prev;
+
+      const id = String(Date.now()) + Math.random().toString(36).slice(2, 9);
+      const toast: Toast = { id, message, type };
+
+      if (timeout > 0) setTimeout(() => removeToast(id), timeout);
+      return [toast, ...prev];
+    });
   }, [removeToast]);
 
   const value = useMemo(() => ({ toasts, addToast, removeToast, clearAll }), [toasts, addToast, removeToast, clearAll]);

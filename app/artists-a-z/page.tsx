@@ -429,8 +429,8 @@ export default function ArtistsAZPage() {
                     <span className={`
                       absolute -top-1 -right-1 text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center transition-all duration-200
                       ${isSelected 
-                        ? 'bg-[#800000] text-white' 
-                        : 'bg-transparent text-black border border-gray-300'
+                        ? 'bg-white text-[#800000] border border-white' 
+                        : 'bg-white text-[#800000] border border-gray-300'
                       }
                     `}>
                       {count}

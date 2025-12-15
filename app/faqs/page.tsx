@@ -89,7 +89,7 @@ export default function FAQsPage() {
                 Many websites offering painting reproductions provide standard sizes that often do not match the proportions of the original artwork. Our approach is entirely different. We offer our hand-painted reproductions either in the exact size of the original painting or in a size that maintains perfect original proportional accuracy.
               </p>
               <p>
-                If you would like your painting in a size that is not listed on our website, simply <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">email us on info@artmasons.com</a> with your request. We are happy to guide you and offer bespoke sizing options.
+                If you would like your painting in a size that is not listed on our website, simply <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-normal">email us on info@artmasons.com</a> with your request. We are happy to guide you and offer bespoke sizing options.
               </p>
               <p>
                 On the detailed page of each painting, you will find the available size options along with their prices. If you prefer a custom size, we can recommend the most suitable dimensions, always proportional to the original to perfectly complement your space.

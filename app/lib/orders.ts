@@ -4,13 +4,29 @@ import path from 'path';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 
-type StoredOrder = {
+export type OrderItem = {
+  title?: string;
+  price?: number;
+  quantity?: number;
+  sku?: string;
+  currency?: string;
+};
+
+export type Customer = {
+  name?: string;
+  email?: string;
+  address?: string;
+  phone?: string;
+};
+
+export type StoredOrder = {
   sessionId: string;
   status: 'pending' | 'paid' | 'failed';
   createdAt: string;
-  items: Array<unknown>;
-  customer?: unknown;
-  raw?: unknown;
+  invoiceSentAt?: string;
+  items: OrderItem[];
+  customer?: Customer | Record<string, unknown> | unknown;
+  raw?: Record<string, unknown> | unknown;
 };
 
 function ensureDataDir() {
@@ -75,5 +91,16 @@ export function markOrderFailed(sessionId: string, payload?: unknown) {
   return null;
 }
 
-const ordersLib = { readOrders, writeOrders, saveOrder, findOrderBySession, markOrderPaid, markOrderFailed };
+export function markInvoiceSent(sessionId: string, sentAt = new Date().toISOString()) {
+  const orders = readOrders();
+  const idx = orders.findIndex((o) => o.sessionId === sessionId);
+  if (idx >= 0) {
+    orders[idx].invoiceSentAt = sentAt;
+    writeOrders(orders);
+    return orders[idx];
+  }
+  return null;
+}
+
+const ordersLib = { readOrders, writeOrders, saveOrder, findOrderBySession, markOrderPaid, markOrderFailed, markInvoiceSent };
 export default ordersLib;

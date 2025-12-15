@@ -1,9 +1,25 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import ordersLib from '../../lib/orders';
+import { sendOrderInvoice } from '../../lib/mailer';
 // import { firestore } from '../../lib/firebaseAdmin';
+import type { StoredOrder } from '../../lib/orders';
 
 export const runtime = 'nodejs';
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function readString(source: unknown, key: string): string | undefined {
+  if (!isRecord(source)) return undefined;
+  const value = source[key];
+  return typeof value === 'string' ? value : undefined;
+}
+
+function recipientFromOrder(order: StoredOrder): string | null {
+  return readString(order.customer, 'email') || readString(order.raw, 'receipt_email') || null;
+}
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY;
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -47,6 +63,50 @@ export async function POST(req: Request) {
           const sessionId = sessionObj.id;
           const result = await ordersLib.markOrderPaid(sessionId, sessionObj);
           console.log('Local order mark result', result);
+          if (result && !result.invoiceSentAt) {
+            try {
+              const recipient =
+                recipientFromOrder(result) ||
+                (sessionObj.customer_details && sessionObj.customer_details.email) ||
+                null;
+              if (recipient) {
+                await sendOrderInvoice(result, recipient);
+                ordersLib.markInvoiceSent(sessionId);
+                console.log('Sent invoice email for', sessionId, 'to', recipient);
+              } else {
+                console.log('No recipient email available for order', sessionId);
+              }
+            } catch (e) {
+              console.error('Failed to send invoice email for session', sessionId, e);
+            }
+          }
+        } catch (e) {
+          console.error('Failed to mark order paid', e);
+        }
+        break;
+      case 'payment_intent.succeeded':
+        console.log('Payment intent succeeded:', event.data.object);
+        try {
+          const pi = event.data.object as Stripe.PaymentIntent;
+          const result = await ordersLib.markOrderPaid(pi.id, pi);
+          console.log('Local order mark result', result);
+          if (result && !result.invoiceSentAt) {
+            try {
+              const recipient =
+                recipientFromOrder(result) ||
+                pi.receipt_email ||
+                null;
+              if (recipient) {
+                await sendOrderInvoice(result, recipient);
+                ordersLib.markInvoiceSent(pi.id);
+                console.log('Sent invoice email for', pi.id, 'to', recipient);
+              } else {
+                console.log('No recipient email available for order', pi.id);
+              }
+            } catch (e) {
+              console.error('Failed to send invoice email for payment intent', pi.id, e);
+            }
+          }
         } catch (e) {
           console.error('Failed to mark order paid', e);
         }
@@ -56,6 +116,16 @@ export async function POST(req: Request) {
           const sessionObj = event.data.object as Stripe.Checkout.Session;
           const sessionId = sessionObj.id;
           const result = await ordersLib.markOrderFailed(sessionId, sessionObj);
+          console.log('Local order mark failed result', result);
+        } catch (e) {
+          console.error('Failed to mark order failed', e);
+        }
+        break;
+      case 'payment_intent.payment_failed':
+      case 'payment_intent.canceled':
+        try {
+          const pi = event.data.object as Stripe.PaymentIntent;
+          const result = await ordersLib.markOrderFailed(pi.id, pi);
           console.log('Local order mark failed result', result);
         } catch (e) {
           console.error('Failed to mark order failed', e);

@@ -7,14 +7,20 @@ import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { ArrowRight, Lock, ShoppingBag } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { useRouter } from 'next/navigation';
+import StripePaymentModal from './StripePaymentModal';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
 export default function CheckoutPage() {
   const { items, subtotal } = useCart();
   const { addToast } = useToast();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', address: '', phone: '' });
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -38,26 +44,47 @@ export default function CheckoutPage() {
         },
       };
 
-      const res = await fetch('/api/create-checkout-session', {
+      const res = await fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || 'Failed to create checkout session');
-      if (data.url) {
-        // Redirect to Stripe Checkout
-        window.location.href = data.url;
+      if (!res.ok) throw new Error(data?.error || 'Failed to initialize payment');
+      if (data.clientSecret && data.paymentIntentId) {
+        setClientSecret(data.clientSecret);
+        setPaymentIntentId(data.paymentIntentId);
+        try {
+          if (typeof window !== 'undefined' && data.paymentIntentId) {
+            window.sessionStorage.setItem('last_payment_intent', data.paymentIntentId);
+          }
+        } catch {
+          // ignore storage failures
+        }
+        setPaymentModalOpen(true);
         return;
       }
-      throw new Error('No redirect URL from checkout session');
+      throw new Error('Missing client secret from server');
     } catch (err: unknown) {
       console.error('Checkout error', err);
       const message = err instanceof Error ? err.message : 'Checkout failed';
       addToast(message, 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleClosePaymentModal = () => {
+    setPaymentModalOpen(false);
+  };
+
+  const handlePaymentSuccess = () => {
+    setPaymentModalOpen(false);
+    if (paymentIntentId) {
+      router.push(`/checkout/success?payment_intent=${encodeURIComponent(paymentIntentId)}`);
+    } else {
+      router.push('/checkout/success');
     }
   };
 
@@ -176,7 +203,7 @@ export default function CheckoutPage() {
                 </button>
 
                 <p className="font-serif text-sm text-gray-500">
-                  You will be redirected to Stripe Checkout to complete your payment.
+                  Payment will open in a secure Stripe modal.
                 </p>
               </form>
             </div>
@@ -229,6 +256,14 @@ export default function CheckoutPage() {
           </div>
         )}
       </div>
+
+      <StripePaymentModal
+        open={paymentModalOpen}
+        clientSecret={clientSecret}
+        paymentIntentId={paymentIntentId}
+        onClose={handleClosePaymentModal}
+        onSuccess={handlePaymentSuccess}
+      />
     </main>
   );
 }

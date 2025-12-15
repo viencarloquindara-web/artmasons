@@ -76,7 +76,7 @@ export default function TermsConditionsPage() {
                  <strong>Please note:</strong>
                  <ul className="list-disc pl-5 mt-2">
                     <li>Returns are assessed at our discretion, and a valid reason must be provided.</li>
-                    <li>Contact us by email on <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a> before returning the item to clarify the issue.</li>
+                    <li>Contact us by email on <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-normal">info@artmasons.com</a> before returning the item to clarify the issue.</li>
                     <li>Shipping costs are non-refundable.</li>
                  </ul>
              </div>
@@ -84,7 +84,7 @@ export default function TermsConditionsPage() {
              <p>If your painting arrives damaged:</p>
              <ol className="list-decimal pl-5 mt-2 mb-4">
                 <li>Take a digital photo of the painting and the shipping container.</li>
-                <li>Email these images with your order number, painting name, and description of the issue to <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-semibold">info@artmasons.com</a></li>
+                <li>Email these images with your order number, painting name, and description of the issue to <a href="mailto:info@artmasons.com" className="text-[#800000] hover:underline font-normal">info@artmasons.com</a></li>
                 <li>Indicate the areas you would like us to address.</li>
              </ol>
              <p>

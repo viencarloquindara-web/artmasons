@@ -69,7 +69,7 @@ export default function Footer() {
           <div className="space-y-4">
             <a
               href="mailto:info@artmasons.com"
-              className="flex items-center gap-3 text-white hover:underline transition-colors font-serif font-semibold"
+              className="flex items-center gap-3 text-white hover:underline transition-colors font-serif font-normal"
             >
               <Mail size={18} /> info@artmasons.com
             </a>

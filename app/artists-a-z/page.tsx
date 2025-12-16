@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { User } from 'lucide-react';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { ARTWORKS, generateSlug, getArtworkSlug } from '../../data/artworks';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
@@ -235,16 +236,6 @@ const getSurnameChar = (fullName: string) => {
   return surname.charAt(0).toUpperCase();
 };
 
-// Helper function to generate slug from artwork title
-const generateSlug = (title: string) => {
-  return title
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-')      // Replace spaces with hyphens
-    .replace(/-+/g, '-')       // Replace multiple hyphens with single hyphen
-    .trim();
-};
-
 // Helper function to get artist dates
 const getArtistDates = (artistName: string): { birth?: number; death?: number } => {
   const artistData = COLLECTION_DATA.find(item => item.artist === artistName);
@@ -361,7 +352,7 @@ export default function ArtistsAZPage() {
 
   // Derive unique artists from the collection data
   const uniqueArtists = useMemo(() => {
-    const artists = COLLECTION_DATA.map(item => item.artist);
+    const artists = ARTWORKS.map(item => item.artist);
     return Array.from(new Set(artists)).sort();
   }, []);
 
@@ -381,12 +372,12 @@ export default function ArtistsAZPage() {
 
   // Get artworks by selected artists
   const getArtworksByArtist = (artist: string) => {
-    return COLLECTION_DATA.filter(item => item.artist === artist).map(item => item.title);
+    return ARTWORKS.filter(item => item.artist === artist);
   };
 
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black font-serif`}>
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <main className={`${playfair.variable} bg-white min-h-screen text-black font-serif relative`}>
+      <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
         
         {/* Breadcrumbs */}
         <div className="mb-8">
@@ -401,7 +392,7 @@ export default function ArtistsAZPage() {
         </div>
 
         {/* Alphabet Filter */}
-        <div className="mb-12 bg-gray-50 p-6 rounded-lg">
+        <div className="mb-12 bg-white shadow-sm p-6 rounded-lg">
           <h2 className="font-serif text-xl font-bold mb-4 text-gray-800">Browse by Letter</h2>
           <div className="flex flex-wrap justify-center gap-2">
             {ALPHABET.map((letter) => {
@@ -469,7 +460,12 @@ export default function ArtistsAZPage() {
                         
                         <div className="flex-1">
                           <h3 className="font-serif text-2xl font-bold text-[#800000] leading-tight mb-1">
-                            {artist}
+                            <Link
+                              href={`/artists-a-z/${generateSlug(artist)}`}
+                              className="hover:underline"
+                            >
+                              {artist}
+                            </Link>
                           </h3>
                           {(dates.birth || dates.death) && (
                             <p className="font-serif text-sm text-gray-500">
@@ -485,7 +481,7 @@ export default function ArtistsAZPage() {
                         </p>
                         <ul className="space-y-2">
                           {artworks.slice(0, 4).map((artwork, artIdx) => {
-                            const slug = generateSlug(artwork);
+                            const slug = getArtworkSlug(artwork);
 
                             return (
                               <li key={artIdx}>
@@ -494,7 +490,7 @@ export default function ArtistsAZPage() {
                                   className="font-serif text-gray-700 text-base flex items-start gap-2 hover:text-[#800000] transition-colors leading-relaxed group"
                                 >
                                   <span className="text-[#800000] mt-1">•</span>
-                                  <span className="flex-1 group-hover:underline">{artwork}</span>
+                                  <span className="flex-1 group-hover:underline">{artwork.title}</span>
                                 </Link>
                               </li>
                             );
@@ -527,11 +523,11 @@ export default function ArtistsAZPage() {
                                 {artworks.slice(4).map((other, oIdx) => (
                                   <li key={oIdx} className="last:rounded-b">
                                     <Link
-                                      href={`/artworks/${generateSlug(other)}`}
+                                      href={`/artworks/${getArtworkSlug(other)}`}
                                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                                       onClick={() => setOpenIndex(null)}
                                     >
-                                      {other}
+                                      {other.title}
                                     </Link>
                                   </li>
                                 ))}
@@ -546,7 +542,7 @@ export default function ArtistsAZPage() {
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-lg">
+            <div className="flex flex-col items-center justify-center py-20 bg-white shadow-sm rounded-lg">
               <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-4">
                 <User className="text-gray-400" size={40} />
               </div>

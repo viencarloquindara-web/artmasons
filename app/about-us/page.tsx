@@ -185,8 +185,8 @@ export default function AboutUsPage() {
   };
 
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+    <main className={`${playfair.variable} bg-white min-h-screen text-black relative`}>
+      <div className="container mx-auto px-4 py-12 max-w-6xl relative z-10">
         
         <div className="mb-8">
           <Breadcrumbs items={[{ label: 'About Us', href: '/about-us' }]} />
@@ -213,7 +213,7 @@ export default function AboutUsPage() {
               </p>
 
               <div className="grid md:grid-cols-3 gap-8 mt-8">
-                <div className="bg-gray-50 p-6 rounded-lg">
+                <div className="bg-white shadow-sm p-6 rounded-lg">
                   <div className="flex items-center gap-3 mb-4">
                     <Palette className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Authenticity</h3>
@@ -223,7 +223,7 @@ export default function AboutUsPage() {
                   </p>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
+                <div className="bg-white shadow-sm p-6 rounded-lg">
                   <div className="flex items-center gap-3 mb-4">
                     <Users className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Craftsmanship</h3>
@@ -233,7 +233,7 @@ export default function AboutUsPage() {
                   </p>
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-lg">
+                <div className="bg-white shadow-sm p-6 rounded-lg">
                   <div className="flex items-center gap-3 mb-4">
                     <Sparkles className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Accessibility</h3>
@@ -247,7 +247,7 @@ export default function AboutUsPage() {
           </section>
 
           {/* Our Story */}
-          <section className="bg-gray-50 p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Our Story</h2>
             <div className="space-y-4">
               <p className="text-lg">
@@ -433,7 +433,7 @@ export default function AboutUsPage() {
           </section>
 
           {/* Contact CTA */}
-          <section className="text-center bg-gray-50 p-8 rounded-lg">
+          <section className="text-center bg-white shadow-sm p-8 rounded-lg">
             <h2 className="font-serif text-3xl font-bold mb-4 text-[#800000]">Let&apos;s Create Something Beautiful Together</h2>
             <p className="text-lg mb-6 max-w-2xl mx-auto">
               Whether you have questions about our process, need help selecting the perfect piece, or want to discuss a custom commission, we&apos;re here to help.

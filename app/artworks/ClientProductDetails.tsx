@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   ShoppingCart,
   ShoppingBag,
@@ -13,6 +14,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { type CartItem, useCart } from '../context/CartContext';
 import type { Artwork } from '../../data/artworks';
+import { generateSlug, getArtworkSlug } from '../../data/artworks';
 import { useToast } from '../context/ToastContext';
 
 type ArtworkOption = NonNullable<Artwork['options']>[number];
@@ -22,7 +24,15 @@ type ConflictState = {
   newItem: CartItem;
 };
 
-export default function ClientProductDetails({ artwork, slug }: { artwork: Artwork; slug: string }) {
+export default function ClientProductDetails({
+  artwork,
+  slug,
+  similarArtworks = [],
+}: {
+  artwork: Artwork;
+  slug: string;
+  similarArtworks?: Artwork[];
+}) {
   const [selectedOption, setSelectedOption] = useState<ArtworkOption>(
     (artwork.options && artwork.options.length > 0 && artwork.options[0]) || {
       id: 'opt-default',
@@ -37,6 +47,7 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
 
   const optionIsPortrait = useMemo(() => selectedOption.width < selectedOption.height, [selectedOption.width, selectedOption.height]);
   const isPortrait = imageIsPortrait ?? optionIsPortrait;
+  const formatPrice = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
   const availableOptions = (artwork.options && artwork.options.length > 0) ? artwork.options : [selectedOption];
   const { addItem, items: cartItems } = useCart();
@@ -144,12 +155,7 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
         <div className="bg-gray-50 border border-gray-200 p-4 md:p-5">
           <div className="flex items-baseline gap-2 mb-1">
             <span className="font-serif text-4xl md:text-5xl font-bold text-[#800000] inline-flex items-end">
-              {selectedOption.price.toLocaleString().split(',').map((part, i, arr) => (
-                <React.Fragment key={i}>
-                  {part}
-                  {i < arr.length - 1 && <span className="text-2xl md:text-3xl relative top-1 mx-px">,</span>}
-                </React.Fragment>
-              ))}
+              {formatPrice(selectedOption.price)}
             </span>
             <span className="font-serif text-lg md:text-xl text-gray-600">{artwork.currency}</span>
           </div>
@@ -192,12 +198,7 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
                   </div>
                 </div>
                 <span className="font-serif font-bold text-base md:text-lg text-gray-800 inline-flex items-end">
-                  {option.price.toLocaleString().split(',').map((part, i, arr) => (
-                    <React.Fragment key={i}>
-                      {part}
-                      {i < arr.length - 1 && <span className="text-sm md:text-sm relative top-0.5 mx-px">,</span>}
-                    </React.Fragment>
-                  ))}
+                  {formatPrice(option.price)}
                   <span className="ml-1">{artwork.currency}</span>
                 </span>
                 
@@ -288,12 +289,7 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
             <span className="inline-flex items-end">
               Add to Cart -
               &nbsp;
-              {selectedOption.price.toLocaleString().split(',').map((part, i, arr) => (
-                <React.Fragment key={i}>
-                  {part}
-                  {i < arr.length - 1 && <span className="text-sm md:text-sm relative top-0.5 mx-px">,</span>}
-                </React.Fragment>
-              ))}
+              {formatPrice(selectedOption.price)}
               <span className="ml-1">{artwork.currency}</span>
             </span>
           </button>
@@ -377,6 +373,46 @@ export default function ClientProductDetails({ artwork, slug }: { artwork: Artwo
           </motion.div>
         )}
       </AnimatePresence>
+
+      {similarArtworks.length > 0 && (
+        <div className="lg:col-span-2 mt-12">
+          <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#800000] mb-5 uppercase text-center">
+            Similar paintings by {artwork.artist}
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 max-w-6xl mx-auto justify-center">
+            {similarArtworks.map((item) => {
+              const itemSlug = getArtworkSlug(item);
+              const displayPrice = item.basePrice ?? item.options?.[0]?.price ?? 0;
+
+              return (
+                <Link
+                  key={itemSlug}
+                  href={`/artworks/${itemSlug}`}
+                  className="group block bg-white border border-gray-200 hover:border-[#800000] transition-colors shadow-sm rounded-md overflow-hidden"
+                >
+                  <div className="relative w-full h-56 md:h-52 overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw"
+                    />
+                  </div>
+                  <div className="p-3 space-y-1">
+                    <p className="font-serif text-xs text-gray-600 uppercase tracking-wide">{item.artist}</p>
+                    <p className="font-serif text-base font-bold text-gray-900 leading-snug line-clamp-2">{item.title}</p>
+                    <p className="font-serif text-xs text-gray-500">{item.year ?? 'Year unknown'}</p>
+                    <p className="font-serif text-lg md:text-xl font-bold text-[#800000]">
+                      {displayPrice.toLocaleString()} {item.currency ?? artwork.currency}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

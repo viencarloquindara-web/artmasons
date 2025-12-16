@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { ARTWORKS, getArtworkSlug } from "../data/artworks";
 
 function shuffle<T>(arr: T[]) {
   const a = arr.slice();
@@ -223,7 +224,21 @@ const ART_OF_THE_DAY = [
   { title: "Nude Descending a Staircase", artist: "Marcel Duchamp", image: "/image/famous-art/nude_descending.jpg" },
   { title: "Dancers in Blue", artist: "Edgar Degas", image: "/image/famous-art/dancers_blue.jpg" },
   { title: "Crouching Woman", artist: "Egon Schiele", image: "/image/famous-art/crouching_woman.jpg" },
-].map((a) => ({ ...a, slug: generateSlug(a.title) }));
+].map((item) => {
+  const byImage = ARTWORKS.find((a) => a.image === item.image);
+  const byTitleArtist =
+    byImage ||
+    ARTWORKS.find(
+      (a) =>
+        (a.title ?? "").toLowerCase() === item.title.toLowerCase() &&
+        (a.artist ?? "").toLowerCase() === item.artist.toLowerCase(),
+    );
+
+  return {
+    ...item,
+    slug: byTitleArtist ? getArtworkSlug(byTitleArtist) : undefined,
+  };
+});
 
 // Placeholder Top 100 list. Images not yet available; logic implemented.
 const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
@@ -477,7 +492,7 @@ export default function ArtMasonsLanding() {
 
             {/* Full-area clickable overlay (covers the hero image) */}
             <Link
-              href={isClient ? `/artworks/${currentArt.slug}` : "#"}
+              href={isClient && currentArt.slug ? `/artworks/${currentArt.slug}` : "#"}
               className="absolute inset-0 z-30 cursor-pointer"
             >
               <div className="w-full h-full flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -494,7 +509,7 @@ export default function ArtMasonsLanding() {
 
             {/* BUY NOW ribbon - sits above the full-area Link and stops propagation */}
             <Link
-              href={isClient ? `/artworks/${currentArt.slug}` : "#"}
+              href={isClient && currentArt.slug ? `/artworks/${currentArt.slug}` : "#"}
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -572,7 +587,7 @@ export default function ArtMasonsLanding() {
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">
               FUN FACTS
             </h3>
-            <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white shadow-sm">
+            <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white shadow-sm border-2 border-[#800000] rounded-lg">
               {/* Opening quote aligned to first line */}
               <div
                 className="absolute left-6 text-[#800000] opacity-90"
@@ -606,7 +621,7 @@ export default function ArtMasonsLanding() {
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">
               About Us
             </h3>
-            <div className="space-y-6 font-serif text-gray-600 leading-relaxed text-justify">
+            <div className="space-y-6 font-serif text-gray-600 leading-relaxed text-justify bg-white p-8 md:p-10 border-2 border-[#800000] rounded-lg shadow-sm">
               <p>
                 You can have a Monet or Renoir in your own home or office which
                 can be exactly like the original masterpiece in the museum. ART

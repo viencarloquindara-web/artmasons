@@ -23,6 +23,15 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* Keep numbers aligned and on the baseline across fonts */
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+
+.font-serif,
+.font-sans {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
 }
 
 /* Responsive helpers and global improvements for mobile */
@@ -63,3 +72,15 @@ h2 { font-size: clamp(1.25rem, 3vw, 2rem); }
 
 /* Reduce layout jank by forcing images to be block-level and responsive */
 .object-contain { max-width: 100%; height: auto; }
+/* Subtle moving background animation */
+@keyframes subtle-drift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-subtle-drift {
+  background: linear-gradient(270deg, #f5f5f4, #e7e5e4, #d6d3d1, #f5f5f4);
+  background-size: 400% 400%;
+  animation: subtle-drift 20s ease infinite;
+}

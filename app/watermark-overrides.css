@@ -1,0 +1,16 @@
+:root { --watermark-size: 140px; }
+
+.watermark-bg, .watermark-surface { 
+  background-color: #ffffff !important;
+}
+
+.watermark-bg::before, .watermark-surface::before {
+  background-position: top left !important;
+  background-size: var(--watermark-size) !important;
+  background-attachment: scroll !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  opacity: 1 !important; /* pseudo-element remains fully rendered; svg opacity controls visual strength */
+  pointer-events: none !important;
+  background-repeat: repeat !important;
+}

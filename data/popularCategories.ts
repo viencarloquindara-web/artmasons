@@ -1,8 +1,8 @@
-import { ARTWORKS, generateSlug } from './artworks';
+import { ARTWORKS, getArtworkSlug } from './artworks';
 
 function byArtist(nameFragment: string) {
   const frag = nameFragment.toLowerCase();
-  return ARTWORKS.filter((a) => (a.artist || '').toLowerCase().includes(frag)).map((a) => generateSlug(a.title));
+  return ARTWORKS.filter((a) => (a.artist || '').toLowerCase().includes(frag)).map((a) => getArtworkSlug(a));
 }
 
 function byTitleKeywords(...keywords: string[]) {
@@ -10,7 +10,7 @@ function byTitleKeywords(...keywords: string[]) {
   return ARTWORKS.filter((a) => {
     const t = (a.title || '').toLowerCase();
     return keys.some((k) => t.includes(k));
-  }).map((a) => generateSlug(a.title));
+  }).map((a) => getArtworkSlug(a));
 }
 
 export const POPULAR_CATEGORY_MAP: Record<string, string[]> = {
@@ -26,7 +26,7 @@ export const POPULAR_CATEGORY_MAP: Record<string, string[]> = {
     const t = (a.title || '').toLowerCase();
     const kws = ['landscape', 'valley', 'sea', 'view', 'nile', 'bay', 'river', 'field', 'sunrise', 'wheat', 'beach', 'shore', 'harbor', 'yosemite'];
     return kws.some((k) => t.includes(k));
-  }).map((a) => generateSlug(a.title)),
+  }).map((a) => getArtworkSlug(a)),
 };
 
 export function getCategorySlugs(categorySlug: string) {

@@ -298,8 +298,11 @@ export const ARTWORKS: Artwork[] = [
   },
   {
     title: "Under The Roof Of The Blue Ionion Weather",
+    year: "Unknown",
+    originalSize: "70 x 90 cm",
     artist: "Sir Lawreance Alma-Tadema",
     artistLife: "1836-1912",
+    description: "Sun-warmed marble terrace scene painted in the artist's classical style, reproduced with layered glazes for depth.",
     image: "/image/a/blue_ionion.jpg",
     sku: "AM-SLT-004",
     basePrice: 1100,
@@ -354,9 +357,11 @@ export const ARTWORKS: Artwork[] = [
 
   {
     title: "The Ponte Vecchio Florence",
+    year: "Unknown",
     originalSize: "55.9 x 87.6 cm",
     artist: "Bernado Belotto",
     artistLife: "1721-1780",
+    description: "Bellotto's cityscape of Florence's iconic bridge, rendered with crisp architectural detail and luminous skies.",
     image: "/image/b/vecchio_florence.jpg",
     sku: "AM-BB-003",
     basePrice: 14535,
@@ -484,10 +489,13 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "Duran 002",
     artist: "Unknown",
+    year: "Unknown",
+    originalSize: "50 x 70 cm",
     image: "/image/b/duran002.jpg",
     sku: "AM-B-004",
     basePrice: 600,
     currency: "AED",
+    description: "Archival portrait study with soft chiaroscuro; sized for versatile display while keeping period character intact.",
     options: [{ id: 'opt1', width: 50, height: 70, price: 600, label: 'Original Size' }],
   },
   {
@@ -557,23 +565,29 @@ export const ARTWORKS: Artwork[] = [
   },
   {
     title: "Green Grocers Stall With The Flight Into Egypt",
-    artist: "Joachim Beuckelaer",
     year: "1550",
+    originalSize: "95.8 x 125 cm",
+    artist: "Joachim Beuckelaer",
+    description: "Bustling market stall scene framing the Flight into Egypt in the distance, rich with produce and metalwork textures.",
     image: "/image/b/green_grocers.jpg",
     sku: "AM-B-010",
-    basePrice: 700,
+    basePrice: 12985,
     currency: "AED",
-    options: [{ id: 'opt1', width: 60, height: 80, price: 700, label: 'Original Size' }],
+    options: [
+      { id: 'opt1', width: 95.8, height: 125, price: 12985, label: 'Original Size' },
+    ],
   },
   {
     title: "After The Service At The Church Of Holy Trinity",
+    year: "1890",
+    originalSize: "50.5 x 67.3 cm",
     artist: "Jean Beraud",
-    year: "c. 1900",
+    description: "Parisian churchgoers disperse into the snowy street; Béraud captures shimmering light and bustling detail.",
     image: "/image/b/holy_trinity.jpg",
     sku: "AM-B-011",
-    basePrice: 1200,
+    basePrice: 5850,
     currency: "AED",
-    options: [{ id: 'opt1', width: 90, height: 120, price: 1200, label: 'Original Size' }],
+    options: [{ id: 'opt1', width: 50.7, height: 67.3, price: 5850, label: 'Original Size' }],
   },
   {
     title: "Square With The Kreuz In Dresden",
@@ -607,11 +621,13 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "Lilac - How Liza Loved The King",
     artist: "Edmund Blair (Leighton)",
-    year: "1902",
+    year: "1890",
+    originalSize: "99.1 x 162.6 cm",
     image: "/image/b/liza_king.jpg",
     sku: "AM-B-014",
     basePrice: 600,
     currency: "AED",
+    description: "Romantic medieval tableau awash in lilac tones, rendered with Blair Leighton's precise draughtsmanship and ornament.",
     options: [{ id: 'opt1', width: 50, height: 70, price: 600, label: 'Original Size' }],
   },
   {
@@ -668,8 +684,10 @@ export const ARTWORKS: Artwork[] = [
   },
   {
     title: "Pont Neuf",
+    year: "1890",
     originalSize: "39.3 x 46 cm",
     artist: "Jean Beraud",
+    description: "Streetlife on the Pont Neuf painted with Béraud's crisp urban realism and silver Parisian light.",
     image: "/image/b/pont_neuf.jpg",
     sku: "AM-B-019",
     basePrice: 4444,
@@ -825,49 +843,61 @@ export const ARTWORKS: Artwork[] = [
     title: "Tristan And Isolde",
     artist: "Edmund Blair (Leighton)",
     year: "1902",
+    originalSize: "60 x 70 cm",
     image: "/image/b/tristan_isolade.jpg",
     sku: "AM-B-031",
     basePrice: 720,
     currency: "AED",
+    description: "Legendary lovers rendered with Pre-Raphaelite detail and glowing drapery, recreated by hand in oils.",
     options: [{ id: 'opt1', width: 60, height: 80, price: 720, label: 'Original Size' }],
   },
   {
     title: "Two Carribean Women Returning From The Market",
     artist: "Augostino Brunias",
     year: "1770",
+    originalSize: "55 x 75 cm",
     image: "/image/b/two_carribean.jpg",
     sku: "AM-B-032",
     basePrice: 640,
     currency: "AED",
+    description: "Market-day scene from the Caribbean, capturing vibrant textiles and poised figures against a sunlit backdrop.",
     options: [{ id: 'opt1', width: 55, height: 75, price: 640, label: 'Original Size' }],
   },
   {
     title: "The Two Children",
     artist: "Nikolay Bogdanov Belsky",
+    year: "Unknown",
+    originalSize: "65 x 81 cm",
     image: "/image/b/two_children.jpg",
     sku: "AM-B-033",
     basePrice: 600,
     currency: "AED",
+    description: "Quiet portrait of two children posed in soft light, rendered with gentle brushwork for a timeless feel.",
     options: [{ id: 'opt1', width: 50, height: 70, price: 600, label: 'Original Size' }],
   },
   {
     title: "Young Drivers On A Bear Hunt",
     artist: "Edmund Blair (Leighton)",
     year: "1890",
+    originalSize: "30 x 42.5 cm",
     image: "/image/b/young_drivers.jpg",
     sku: "AM-B-034",
     basePrice: 660,
     currency: "AED",
+    description: "Energetic hunting vignette with dramatic poses and crisp detailing, recreated with hand-painted precision.",
     options: [{ id: 'opt1', width: 55, height: 75, price: 660, label: 'Original Size' }],
   },
   // --- Letter C artworks (images located in /image/c/) ---
   {
     title: "I think I am Ready Now",
     artist: "William Merrit Chase",
+    year: "1883",
+    originalSize: "82.6 x 44.5 cm",
     image: "/image/c/am_ready.jpg",
     sku: "AM-C-001",
     basePrice: 650,
     currency: "AED",
+    description: "Elegant interior study with a poised sitter adjusting attire, painted with Chase's quick, luminous brushwork.",
     options: [{ id: 'opt1', width: 60, height: 80, price: 650, label: 'Original Size' }],
   },
   {
@@ -1017,11 +1047,13 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "The Floor Scrapers",
     year: "1876",
+    originalSize: "102 x 146 cm",
     artist: "Gustave Caillebotte",
     image: "/image/c/floor_scrapers.jpg",
     sku: "AM-C-012",
     basePrice: 3350,
     currency: "AED",
+    description: "Caillebotte's modern Parisian workers bending under lamplight, a realist icon of labor rendered with strong perspective.",
     options: [
       { id: 'opt1', width: 60, height: 70, price: 3350, label: 'Original Size' },
     ],
@@ -1029,11 +1061,13 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "Grand Canal From Palazzo Balbi",
     year: "1724",
+    originalSize: "61 x 89 cm",
     artist: "Giovanni Antonio Canal Canaletto",
     image: "/image/c/grand_canal.jpg",
     sku: "AM-C-013",
     basePrice: 20135,
     currency: "AED",
+    description: "Venetian vista painted with Canaletto's crisp linework and luminous lagoon atmosphere.",
     options: [
       { id: 'opt1', width: 61, height: 89, price: 20135, label: 'Original Size' },
     ],
@@ -1093,11 +1127,13 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "Still Life Leg Of Mutton Bread",
     year: "1865",
+    originalSize: "31 x 42 cm",
     artist: "Paul Cezanne",
     image: "/image/c/mutton_bread.jpg",
     sku: "AM-C-018",
     basePrice: 2267,
     currency: "AED",
+    description: "Early Cézanne still life pairing rustic bread with a carved mutton joint, modeled with weighty, textured strokes.",
     options: [
       { id: 'opt1', width: 31, height: 42, price: 2267, label: 'Original Size' },
     ],
@@ -1227,7 +1263,10 @@ export const ARTWORKS: Artwork[] = [
   },
   {
     title: "Piazza San Marco With The Cathedral",
+    year: "1730",
+    originalSize: "90 x 120 cm",
     artist: "Giovanni Antonio Canal Canaletto",
+    description: "Smaller-scale view of St. Mark's Square with luminous sky and crisp architectural draftsmanship.",
     image: "/image/c/san_marco.jpg",
     sku: "AM-C-028",
     basePrice: 650,
@@ -1278,7 +1317,10 @@ export const ARTWORKS: Artwork[] = [
   },
   {
     title: "The Coloseum",
+    year: "Unknown",
+    originalSize: "51 x 68 cm",
     artist: "Giovanni Antonio Canal Canaletto",
+    description: "View of the Colosseum rendered with Canaletto's clean perspective and sunlit Roman stonework.",
     image: "/image/c/the_coloseum.jpg",
     sku: "AM-C-032",
     basePrice: 12126,
@@ -1345,23 +1387,27 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "Basket Of Wild Strawberries",
     year: "1761",
+    originalSize: "38 x 46 cm",
     artist: "Jean Baptiste-Simeon Chardin",
     image: "/image/c/wild_strawberries.jpg",
     sku: "AM-C-037",
     basePrice: 2976,
     currency: "AED",
+    description: "Chardin's intimate still life of ripe berries in a woven basket, recreated with soft edges and gentle light.",
     options: [
       { id: 'opt1', width: 38, height: 46, price: 2976, label: 'Original Size' },
     ],
   },
   {
     title: "Austrian",
+    year: "Unknown",
     originalSize: "57 x 47.5 cm",
     artist: "Eduard Charlemont",
     image: "/image/c/x_charlemont005.webp",
     sku: "AM-C-038",
     basePrice: 5790,
     currency: "AED",
+    description: "Portrait of an Austrian gentleman with rich textiles and measured gaze, painted with Charlemont's refined realism.",
     options: [
       { id: 'opt1', width: 67, height: 47.5, price: 5790, label: 'Original Size' },
     ],
@@ -1369,11 +1415,13 @@ export const ARTWORKS: Artwork[] = [
   {
     title: "The Yerres Rain (Riverbank In The Rain)",
     year: "1875",
+    originalSize: "65 x 48 cm",
     artist: "Gustave Caillebotte",
     image: "/image/c/yerres_rain.jpg",
     sku: "AM-C-039",
     basePrice: 2775,
     currency: "AED",
+    description: "Rain-swept riverbank scene with shimmering reflections and loose Impressionist brushwork.",
     options: [
       { id: 'opt1', width: 65, height: 48, price: 2775, label: 'Original Size' },
     ],
@@ -2175,7 +2223,7 @@ export const ARTWORKS: Artwork[] = [
     location: "Unknown",
     originalSize: "170 x 137 cm",
     description: "An Impressionist landscape attributed to Claude Monet (1876) depicting a wooded hunting scene. Monet's loose brushwork and emphasis on light and atmosphere render the figures and surrounding foliage with a luminous, fleeting quality.",
-    sku: "AM-CM-001",
+    sku: "AM-CM-006",
     basePrice: 2800,
     currency: "AED",
     image: "/image/famous-art/the_hunt.jpg",
@@ -2283,7 +2331,7 @@ export const ARTWORKS: Artwork[] = [
     location: "Contarelli Chapel, Rome",
     originalSize: "322 x 340 cm",
     description: "Caravaggio's revolutionary use of light and shadow in this religious scene. The dramatic chiaroscuro and realistic figures transformed Baroque art.",
-    sku: "AM-C-001",
+    sku: "AM-CAR-001",
     basePrice: 4200,
     currency: "AED",
     image: "/image/famous-art/calling_matthew.jpg",
@@ -2358,6 +2406,89 @@ export const generateSlug = (title: string) => {
     .trim();
 };
 
+const getImageBaseSlug = (imagePath?: string | null) => {
+  if (!imagePath) return '';
+  const base = String(imagePath)
+    .split('?')[0]
+    .split('#')[0]
+    .split('/')
+    .pop();
+  if (!base) return '';
+  const noExt = base.replace(/\.[^.]+$/, '');
+  return generateSlug(noExt);
+};
+
+// Canonical, unique slug for each artwork.
+// - Usually equals generateSlug(title)
+// - For collisions, it gets disambiguated using artist and/or image
+const CANONICAL_SLUG_BY_INDEX = (() => {
+  const baseCounts = new Map<string, number>();
+  for (const art of ARTWORKS) {
+    const base = generateSlug(art.title);
+    baseCounts.set(base, (baseCounts.get(base) ?? 0) + 1);
+  }
+
+  const used = new Set<string>();
+  const slugs: string[] = [];
+
+  for (let idx = 0; idx < ARTWORKS.length; idx++) {
+    const art = ARTWORKS[idx];
+    const base = generateSlug(art.title);
+    let s = base;
+
+    // Disambiguate any title-slug collisions.
+    if ((baseCounts.get(base) ?? 0) > 1) {
+      const artistPart = generateSlug(art.artist);
+      const imagePart = getImageBaseSlug(art.image);
+
+      // Prefer artist-based disambiguation.
+      s = `${base}--${artistPart}`;
+
+      // If still colliding (same artist + same title), add image basename.
+      if (used.has(s) && imagePart) {
+        s = `${base}--${artistPart}--${imagePart}`;
+      }
+    }
+
+    // Absolute final fallback: append index to ensure uniqueness.
+    if (used.has(s)) {
+      s = `${s}--${idx + 1}`;
+    }
+
+    used.add(s);
+    slugs[idx] = s;
+  }
+
+  return slugs;
+})();
+
+export const getArtworkSlug = (artwork: Artwork) => {
+  const idx = ARTWORKS.indexOf(artwork);
+  if (idx >= 0) return CANONICAL_SLUG_BY_INDEX[idx];
+  // Fallback for non-canonical objects (should be rare)
+  return generateSlug(artwork.title);
+};
+
 export const getArtworkBySlug = (slug: string) => {
+  // Prefer canonical unique slugs.
+  for (let i = 0; i < ARTWORKS.length; i++) {
+    if (CANONICAL_SLUG_BY_INDEX[i] === slug) return ARTWORKS[i];
+  }
+
+  // Backward-compat: allow legacy links that used generateSlug(title).
   return ARTWORKS.find((a) => generateSlug(a.title) === slug) || null;
+};
+
+// Slug helpers for artist pages
+export const generateArtistSlug = (artistName: string) => generateSlug(artistName);
+
+export const getArtworksByArtistSlug = (artistSlug: string) => {
+  const normalized = generateArtistSlug(artistSlug);
+  return ARTWORKS.filter((art) => generateArtistSlug(art.artist) === normalized);
+};
+
+export const getArtistNameBySlug = (artistSlug: string) => {
+  const normalized = generateArtistSlug(artistSlug);
+  const match = ARTWORKS.find((art) => generateArtistSlug(art.artist) === normalized);
+  return match?.artist ?? null;
 };

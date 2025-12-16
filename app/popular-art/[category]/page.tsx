@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import { Playfair_Display } from 'next/font/google';
 import PageTransition from '../../components/PageTransition';
-import { ARTWORKS, generateSlug, getArtworkBySlug, type Artwork } from '../../../data/artworks';
+import { ARTWORKS, generateSlug, getArtworkBySlug, getArtworkSlug, type Artwork } from '../../../data/artworks';
 import { getCategorySlugs } from '../../../data/popularCategories';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
@@ -121,7 +121,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {gridItems.map((art) => (
                 <article key={art.title} className="bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-shadow rounded-md overflow-hidden">
-                  <Link href={`/artworks/${generateSlug(art.title)}`} className="block group">
+                  <Link href={`/artworks/${getArtworkSlug(art)}`} className="block group">
                     <div className="relative w-full h-56 md:h-44 lg:h-48">
                       <Image src={art.image} alt={art.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
                     </div>

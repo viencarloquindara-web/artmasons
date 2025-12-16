@@ -11,8 +11,8 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 
 export default function OurQualityPage() {
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+    <main className={`${playfair.variable} bg-white min-h-screen text-black relative`}>
+      <div className="container mx-auto px-4 py-12 max-w-6xl relative z-10">
         
         <div className="mb-8">
           <Breadcrumbs items={[{ label: 'Our Quality', href: '/our-quality' }]} />
@@ -50,7 +50,7 @@ export default function OurQualityPage() {
           <section>
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Quality Standards</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">100% Hand-Painted</h3>
@@ -58,7 +58,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Premium Linen Canvas</h3>
@@ -66,7 +66,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Refined Oil Paints</h3>
@@ -74,7 +74,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Master Artists</h3>
@@ -82,7 +82,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Quality Control</h3>
@@ -90,7 +90,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Proper Drying Time</h3>
@@ -149,7 +149,7 @@ export default function OurQualityPage() {
           </section>
 
           {/* Certification */}
-          <section className="bg-gray-50 p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg">
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000] text-center">Certified Excellence</h2>
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="md:w-1/3 flex justify-center">

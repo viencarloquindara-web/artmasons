@@ -9,8 +9,8 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 
 export default function FrameSizeArtPage() {
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
+    <main className={`${playfair.variable} bg-white min-h-screen text-black relative`}>
+      <div className="container mx-auto px-4 py-12 max-w-6xl relative z-10">
         
         <div className="mb-8">
           <Breadcrumbs items={[{ label: 'Frame & Size Art', href: '/frame-size-art' }]} />
@@ -32,7 +32,7 @@ export default function FrameSizeArtPage() {
           </section>
 
           {/* Size Options */}
-          <section className="bg-gray-50 p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg">
             <div className="flex items-center gap-3 mb-6">
               <Ruler className="text-[#800000]" size={32} />
               <h2 className="font-serif text-3xl font-bold text-[#800000]">Size Options</h2>
@@ -107,7 +107,7 @@ export default function FrameSizeArtPage() {
                 </p>
               </div>
 
-              <div className="bg-gray-50 p-8 rounded-lg">
+              <div className="bg-white shadow-sm p-8 rounded-lg">
                 <h3 className="font-serif text-xl font-semibold mb-4 text-gray-800">Professional Framing Made Easy</h3>
                 <p className="text-lg mb-4">
                   Once your artwork arrives, framing is a simple and enjoyable process. Any professional frame shop will offer a wide selection of options to match your personal style and interior design.
@@ -167,7 +167,7 @@ export default function FrameSizeArtPage() {
           </section>
 
           {/* Choosing the Right Frame */}
-          <section className="bg-gray-50 p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg">
             <div className="flex items-center gap-3 mb-6">
               <Palette className="text-[#800000]" size={32} />
               <h2 className="font-serif text-3xl font-bold text-[#800000]">Choosing the Right Frame</h2>

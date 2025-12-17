@@ -9,12 +9,6 @@ import { type Artwork, ARTWORKS, generateArtistSlug, getArtworkBySlug, getArtwor
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
-// Artwork details are loaded from `data/artworks.ts` by slug
-
-// Header is provided by shared component (app/components/Header.tsx)
-
-// Footer is provided by shared component (app/components/Footer.tsx)
-
 // --- MAIN PRODUCT PAGE ---
 export default async function ProductDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -38,9 +32,9 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
       ];
 
   return (
-    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-white text-black font-serif text-base`}>
+    <main className={`${playfair.variable} ${inter.variable} min-h-screen bg-art-texture text-black font-serif text-base`}>
       <PageTransition>
-        <div className="container mx-auto px-4 py-4 md:py-6 max-w-7xl">
+        <div className="container mx-auto px-4 py-4 md:py-6 max-w-7xl relative z-10">
           {/* Breadcrumb */}
           <div className="mb-4 md:mb-6">
             <Breadcrumbs items={breadcrumbs} />
@@ -54,7 +48,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
               similarArtworks={similarArtworks}
             />
           ) : (
-            <div className="py-20 text-center">
+            <div className="py-20 text-center bg-white/60 rounded-lg shadow-sm">
               <h2 className="font-serif text-2xl font-bold text-gray-700">Artwork not found</h2>
               <p className="text-gray-500 mt-2">The artwork you requested could not be located.</p>
             </div>

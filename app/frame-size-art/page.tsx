@@ -9,7 +9,15 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 
 export default function FrameSizeArtPage() {
   return (
-    <main className={`${playfair.variable} bg-white min-h-screen text-black relative`}>
+    <main className={`${playfair.variable} bg-art-texture min-h-screen text-black relative`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
       <div className="container mx-auto px-4 py-12 max-w-6xl relative z-10">
         
         <div className="mb-8">
@@ -20,8 +28,8 @@ export default function FrameSizeArtPage() {
 
         <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
           
-          {/* Introduction */}
-          <section>
+          {/* Introduction - Wrapped in semi-transparent card for readability on texture */}
+          <section className="bg-white/60 p-8 rounded-lg border border-[#800000]/10 backdrop-blur-sm">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Perfect Proportions, Timeless Elegance</h2>
             <p className="text-lg mb-4">
               At ART MASONS, we understand that the presentation of your artwork is just as important as the painting itself. Our approach to sizing and framing ensures that every reproduction maintains the authentic proportions and aesthetic integrity of the original masterpiece.
@@ -32,7 +40,7 @@ export default function FrameSizeArtPage() {
           </section>
 
           {/* Size Options */}
-          <section className="bg-white shadow-sm p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg border-t-4 border-[#800000]">
             <div className="flex items-center gap-3 mb-6">
               <Ruler className="text-[#800000]" size={32} />
               <h2 className="font-serif text-3xl font-bold text-[#800000]">Size Options</h2>
@@ -54,7 +62,7 @@ export default function FrameSizeArtPage() {
                 <p className="text-lg mb-4">
                   On each painting&apos;s detailed page, you&apos;ll find a selection of size options along with their corresponding prices. These sizes are carefully chosen to work well in various spaces while maintaining the artwork&apos;s original proportions.
                 </p>
-                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                   <p className="text-lg font-semibold mb-2 text-[#800000]">Common Size Categories:</p>
                   <ul className="space-y-2 text-lg">
                     <li className="flex items-start gap-2">
@@ -91,12 +99,14 @@ export default function FrameSizeArtPage() {
 
           {/* Framing Information */}
           <section>
-            <div className="flex items-center gap-3 mb-6">
-              <Frame className="text-[#800000]" size={32} />
-              <h2 className="font-serif text-3xl font-bold text-[#800000]">Framing Your Artwork</h2>
+            <div className="bg-white/60 p-6 rounded-t-lg border-b border-[#800000]/10 mb-0 backdrop-blur-sm">
+                <div className="flex items-center gap-3">
+                  <Frame className="text-[#800000]" size={32} />
+                  <h2 className="font-serif text-3xl font-bold text-[#800000]">Framing Your Artwork</h2>
+                </div>
             </div>
             
-            <div className="space-y-6">
+            <div className="bg-white p-8 rounded-b-lg shadow-sm space-y-6">
               <div>
                 <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">Why We Ship Unframed</h3>
                 <p className="text-lg mb-4">
@@ -107,7 +117,7 @@ export default function FrameSizeArtPage() {
                 </p>
               </div>
 
-              <div className="bg-white shadow-sm p-8 rounded-lg">
+              <div className="bg-gray-50 p-8 rounded-lg border border-gray-100">
                 <h3 className="font-serif text-xl font-semibold mb-4 text-gray-800">Professional Framing Made Easy</h3>
                 <p className="text-lg mb-4">
                   Once your artwork arrives, framing is a simple and enjoyable process. Any professional frame shop will offer a wide selection of options to match your personal style and interior design.
@@ -136,7 +146,7 @@ export default function FrameSizeArtPage() {
                     </ul>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                  <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                     <p className="font-semibold text-lg mb-2 text-[#800000]">The Framing Process:</p>
                     <ol className="space-y-3 text-lg list-decimal list-inside">
                       <li>Take your rolled canvas to a local professional frame shop</li>
@@ -157,7 +167,7 @@ export default function FrameSizeArtPage() {
                 <p className="text-lg mb-4">
                   We will connect you directly with one of our recommended frame shops, where you can choose from a wide variety of materials, finishes, and styles that complement both your artwork and your interior design.
                 </p>
-                <div className="bg-[#800000] text-white p-6 rounded-lg">
+                <div className="bg-[#800000] text-white p-6 rounded-lg shadow-md">
                   <p className="text-lg">
                     <strong>Note:</strong> All payments for stretching and framing are made directly to the framing shop, giving you full transparency and flexibility in selecting the service that best meets your needs.
                   </p>
@@ -167,7 +177,7 @@ export default function FrameSizeArtPage() {
           </section>
 
           {/* Choosing the Right Frame */}
-          <section className="bg-white shadow-sm p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg border-t-4 border-[#800000]">
             <div className="flex items-center gap-3 mb-6">
               <Palette className="text-[#800000]" size={32} />
               <h2 className="font-serif text-3xl font-bold text-[#800000]">Choosing the Right Frame</h2>
@@ -179,7 +189,7 @@ export default function FrameSizeArtPage() {
               </p>
 
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                   <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">For Classical Paintings</h3>
                   <ul className="space-y-2 text-lg">
                     <li className="flex items-start gap-2">
@@ -197,7 +207,7 @@ export default function FrameSizeArtPage() {
                   </ul>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                   <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">For Impressionist Works</h3>
                   <ul className="space-y-2 text-lg">
                     <li className="flex items-start gap-2">
@@ -215,7 +225,7 @@ export default function FrameSizeArtPage() {
                   </ul>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                   <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">For Modern Art</h3>
                   <ul className="space-y-2 text-lg">
                     <li className="flex items-start gap-2">
@@ -233,7 +243,7 @@ export default function FrameSizeArtPage() {
                   </ul>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                   <h3 className="font-serif text-xl font-semibold mb-3 text-gray-800">General Tips</h3>
                   <ul className="space-y-2 text-lg">
                     <li className="flex items-start gap-2">
@@ -255,7 +265,7 @@ export default function FrameSizeArtPage() {
           </section>
 
           {/* Contact Section */}
-          <section className="bg-[#800000] text-white p-8 rounded-lg text-center">
+          <section className="bg-[#800000] text-white p-8 rounded-lg text-center shadow-lg">
             <h2 className="font-serif text-3xl font-bold mb-4">Need Assistance?</h2>
             <p className="text-lg mb-6">
               Our team is here to help you choose the perfect size and provide guidance on framing options that will beautifully showcase your artwork.

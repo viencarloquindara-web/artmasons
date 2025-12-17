@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import React, { useState, useEffect, useRef, useSyncExternalStore, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Playfair_Display } from "next/font/google";
@@ -9,6 +9,8 @@ import PageTransition from "./components/PageTransition";
 import {
   ChevronLeft,
   ChevronRight,
+  ArrowRightLeft,
+  CheckCircle2
 } from "lucide-react";
 import { ARTWORKS, getArtworkSlug } from "../data/artworks";
 
@@ -26,6 +28,11 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
 });
+
+// --- HELPER: GCD for Aspect Ratio ---
+const gcd = (a: number, b: number): number => {
+  return b === 0 ? a : gcd(b, a % b);
+};
 
 // --- DATA ---
 const ASSURANCE_POINTS = [
@@ -120,7 +127,7 @@ const TESTIMONIALS_DATA = [
   "The realism is so powerful — Art Masons are true masters.",
   "Art Masons made the entire process smooth and professional.",
   "Every detail is perfect. Art Masons is the real deal.",
-  "The texture, color, and depth from Art Masons are incredible.",
+  "The texture, color, and depth from Art Masons is incredible.",
   "Art Masons delivered exactly what I envisioned and more.",
   "A truly luxurious experience — Art Masons understands art lovers.",
   "I own three pieces from Art Masons and each one is perfection.",
@@ -153,7 +160,6 @@ const POPULAR_ARTISTS = [
   { name: "PORTRAITS", image: "/popular-art/portrait.jpg" },
 ];
 
-// Simple slug generator (matches the one in `data/artworks.ts`)
 const generateSlug = (title: string) =>
   title
     .toLowerCase()
@@ -240,7 +246,6 @@ const ART_OF_THE_DAY = [
   };
 });
 
-// Placeholder Top 100 list. Images not yet available; logic implemented.
 const TOP_100_ARTS = Array.from({ length: 100 }).map((_, i) => ({
   title: `Artwork #${i + 1}`,
   artist: `Artist #${i + 1}`,
@@ -256,6 +261,15 @@ export default function ArtMasonsLanding() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [famousAutoPlay, setFamousAutoPlay] = useState(true);
 
+  // --- TRANSITION STATE (Curtains) ---
+  const [curtainStatus, setCurtainStatus] = useState<'open' | 'closed'>('open');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // --- CALCULATOR STATES ---
+  const [calcW, setCalcW] = useState<number | ''>(90);
+  const [calcH, setCalcH] = useState<number | ''>(60);
+  const [aspectString, setAspectString] = useState("3:2");
+
   const isClient = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -267,7 +281,6 @@ export default function ArtMasonsLanding() {
     return isClient ? shuffle(indices) : indices;
   }, [isClient]);
 
-  // You might need to import useRef from 'react'
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const extendedArtists = [...POPULAR_ARTISTS, ...POPULAR_ARTISTS];
@@ -282,52 +295,91 @@ export default function ArtMasonsLanding() {
     };
   }, []);
 
-  // Famous art carousel autoplay (advances every 5s when enabled)
+  // --- CALCULATOR LOGIC ---
+  useEffect(() => {
+    if (typeof calcW === 'number' && typeof calcH === 'number' && calcW > 0 && calcH > 0) {
+      const w = Math.round(calcW * 100); 
+      const h = Math.round(calcH * 100);
+      const divisor = gcd(w, h);
+      setAspectString(`${w / divisor}:${h / divisor}`);
+    } else {
+      setAspectString("- : -");
+    }
+  }, [calcW, calcH]);
+
+  const currentArray = playTop100Random ? TOP_100_ARTS : ART_OF_THE_DAY;
+  const currentArt = playTop100Random
+    ? TOP_100_ARTS[top100Order[currentArtIndex] ?? currentArtIndex]
+    : ART_OF_THE_DAY[currentArtIndex];
+
+  // --- CENTRALIZED TRANSITION LOGIC ---
+  const triggerArtTransition = useCallback(async (direction: 'next' | 'prev') => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+
+    // 1. Close Curtains
+    setCurtainStatus('closed');
+    
+    // Wait for Close Animation
+    await new Promise(resolve => setTimeout(resolve, 700));
+
+    // 2. Swap Image behind closed curtains
+    if (direction === 'next') {
+       setCurrentArtIndex((prev) => (prev + 1) % currentArray.length);
+    } else {
+       setCurrentArtIndex((prev) => (prev - 1 + currentArray.length) % currentArray.length);
+    }
+
+    // Short pause
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // 3. Open Curtains
+    setCurtainStatus('open');
+
+    // Wait for Open Animation
+    await new Promise(resolve => setTimeout(resolve, 700));
+    setIsTransitioning(false);
+  }, [currentArray, isTransitioning]);
+
   useEffect(() => {
     if (!isClient) return;
-    if (playTop100Random) return; // don't autoplay famous when Top100 mode is active
+    if (playTop100Random) return;
     if (!famousAutoPlay) return;
 
     const interval = setInterval(() => {
-      setCurrentArtIndex((prev) => (prev + 1) % ART_OF_THE_DAY.length);
-    }, 5000);
+      triggerArtTransition('next');
+    }, 6000);
 
     return () => clearInterval(interval);
-  }, [isClient, playTop100Random, famousAutoPlay]);
+  }, [isClient, playTop100Random, famousAutoPlay, triggerArtTransition]);
 
-  // When top100 random playback is active, set up auto-advance timer
   useEffect(() => {
     if (!playTop100Random || !isTop100AutoPlay) return;
 
     const interval = setInterval(() => {
-      setCurrentArtIndex((prev) => {
-        const next = prev + 1;
-        return next % TOP_100_ARTS.length;
-      });
-    }, 5000);
+       triggerArtTransition('next');
+    }, 6000);
 
     return () => clearInterval(interval);
-  }, [playTop100Random, isTop100AutoPlay]);
+  }, [playTop100Random, isTop100AutoPlay, triggerArtTransition]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    // FIX 1: Explicitly type this as a number
     let animationFrameId: number;
     let lastTime = 0;
-    const speed = 40; // pixels per second (adjust for comfortable scroll speed)
+    const speed = 40;
 
     const step = (time: number) => {
       if (document.hidden || isCarouselPaused) {
-        // Do not advance while tab is hidden or carousel is paused
         lastTime = time;
         animationFrameId = requestAnimationFrame(step);
         return;
       }
 
       if (!lastTime) lastTime = time;
-      const delta = (time - lastTime) / 1000; // seconds elapsed
+      const delta = (time - lastTime) / 1000;
       const deltaPx = speed * delta;
 
       if (container.scrollLeft >= container.scrollWidth / 2) {
@@ -347,7 +399,6 @@ export default function ArtMasonsLanding() {
     };
 
     document.addEventListener('visibilitychange', handleVisibility);
-
     animationFrameId = requestAnimationFrame(step);
 
     return () => {
@@ -367,27 +418,22 @@ export default function ArtMasonsLanding() {
       scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
     }
   };
+
   const currentTestimonials = [0, 1, 2].map((offset) => {
     const index = (testimonialIndex + offset) % TESTIMONIALS_DATA.length;
     return TESTIMONIALS_DATA[index];
   });
 
-  // Helper to resolve current array depending on mode
-  const currentArray = playTop100Random ? TOP_100_ARTS : ART_OF_THE_DAY;
-  const currentArt = playTop100Random
-    ? TOP_100_ARTS[top100Order[currentArtIndex] ?? currentArtIndex]
-    : ART_OF_THE_DAY[currentArtIndex];
-
   const goPrevArt = () => {
     setIsTop100AutoPlay(false);
     setFamousAutoPlay(false);
-    setCurrentArtIndex((prev) => (prev - 1 + currentArray.length) % currentArray.length);
+    triggerArtTransition('prev');
   };
 
   const goNextArt = () => {
     setIsTop100AutoPlay(false);
     setFamousAutoPlay(false);
-    setCurrentArtIndex((prev) => (prev + 1) % currentArray.length);
+    triggerArtTransition('next');
   };
 
   return (
@@ -402,11 +448,18 @@ export default function ArtMasonsLanding() {
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
       `}</style>
 
       <PageTransition>
         {/* --- HERO SECTION --- */}
-        {/* Added md:pr-8 lg:pr-16 to add space on the right side of the screen */}
         <section className="flex flex-col md:flex-row w-full min-h-[600px] border-b border-gray-200 md:pr-8 lg:pr-16">
           <div className="w-full md:w-1/3 bg-white p-8 md:py-12 md:pl-12 md:pr-1 flex flex-col justify-center items-center">
             <div className="w-full max-w-[330px] text-left mx-auto">
@@ -428,30 +481,84 @@ export default function ArtMasonsLanding() {
           </div>
 
           <div className="w-full md:w-2/3 relative bg-gray-50 group overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentArtIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                className="absolute inset-0"
-              >
-                {/* Render hero image on initial render (SSR-friendly). This removes the isClient gating
-                    so famous art shows on mobile immediately rather than waiting for client mount. */}
-                <div className="w-full h-full bg-gray-200 relative">
+            {/* IMAGE CONTAINER */}
+            <div className="absolute inset-0">
+                {/* BACKGROUND: Red Curtain pattern for margins */}
+                <div 
+                  className="w-full h-full relative"
+                  style={{ backgroundColor: '#2a0a0a' }}
+                >
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      // FIXED PIXEL WIDTH (60px) to ensure dense curtain texture is visible in margins
+                      backgroundImage: 'repeating-linear-gradient(90deg, #370606 0px, #5e0b0b 15px, #800000 30px, #5e0b0b 45px, #370606 60px)',
+                      opacity: 1
+                    }}
+                  />
+                  <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/50 to-transparent z-0 pointer-events-none"></div>
+
                   <Image
+                    key={currentArtIndex}
                     src={currentArt.image}
                     alt={currentArt.title}
                     fill
-                    className="object-contain"
+                    className="object-contain z-10 drop-shadow-2xl"
                     priority
                   />
                 </div>
-              </motion.div>
-            </AnimatePresence>
+            </div>
 
-              <div className="absolute bottom-0 w-full bg-white/90 py-4 text-center z-20 backdrop-blur-sm border-t border-gray-200">
+            {/* --- TRANSITION CURTAIN OVERLAY --- */}
+            <div className="absolute inset-0 z-50 pointer-events-none flex flex-col justify-center">
+               <div className="absolute inset-0 flex">
+                   {/* Left Curtain Panel - Uses larger folds for the main animation */}
+                   <motion.div
+                      initial={{ x: "-100%" }}
+                      animate={{ x: curtainStatus === 'closed' ? "0%" : "-100%" }}
+                      transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+                      className="w-1/2 h-full bg-[#800000] relative shadow-2xl z-20"
+                      style={{
+                        // 100% / 8 folds = 12.5% - Visible on the full panel
+                        backgroundImage: 'repeating-linear-gradient(90deg, #600000 0%, #700000 3.125%, #800000 6.25%, #700000 9.375%, #600000 12.5%)',
+                      }}
+                   />
+
+                   {/* Right Curtain Panel */}
+                   <motion.div
+                      initial={{ x: "100%" }}
+                      animate={{ x: curtainStatus === 'closed' ? "0%" : "100%" }}
+                      transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+                      className="w-1/2 h-full bg-[#800000] relative shadow-2xl z-20"
+                      style={{
+                         backgroundImage: 'repeating-linear-gradient(90deg, #600000 0%, #700000 3.125%, #800000 6.25%, #700000 9.375%, #600000 12.5%)',
+                      }}
+                   />
+               </div>
+               
+               {/* Center Logo */}
+               <motion.div
+                 initial={{ opacity: 0, scale: 0.8 }}
+                 animate={{ 
+                   opacity: curtainStatus === 'closed' ? 1 : 0,
+                   scale: curtainStatus === 'closed' ? 1 : 0.8
+                 }}
+                 transition={{ duration: 0.4, delay: curtainStatus === 'closed' ? 0.3 : 0 }}
+                 className="absolute inset-0 flex items-center justify-center z-50"
+               >
+                  <div className="relative w-48 h-48 drop-shadow-[0_0_30px_rgba(0,0,0,0.9)]">
+                    <Image
+                      src="/artmasons_logo.png"
+                      alt="Art Masons Seal"
+                      fill
+                      sizes="(max-width: 768px) 192px, 192px"
+                      className="object-contain"
+                    />
+                  </div>
+               </motion.div>
+            </div>
+
+            <div className="absolute bottom-0 w-full bg-white py-4 text-center z-20 border-t border-gray-200">
               <div className="flex items-center justify-center gap-3">
                 <span className="font-serif text-xs uppercase tracking-[0.2em] block text-[#800000] mb-1">
                   FAMOUS ART
@@ -465,15 +572,15 @@ export default function ArtMasonsLanding() {
               </p>
             </div>
 
-            {/* Left/Right manual navigation for hero */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
                 goPrevArt();
               }}
+              disabled={isTransitioning}
               aria-label="Previous art"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={28} />
             </button>
@@ -484,13 +591,13 @@ export default function ArtMasonsLanding() {
                 e.preventDefault();
                 goNextArt();
               }}
+              disabled={isTransitioning}
               aria-label="Next art"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight size={28} />
             </button>
 
-            {/* Full-area clickable overlay (covers the hero image) */}
             <Link
               href={isClient && currentArt.slug ? `/artworks/${currentArt.slug}` : "#"}
               className="absolute inset-0 z-30 cursor-pointer"
@@ -507,14 +614,13 @@ export default function ArtMasonsLanding() {
               </div>
             </Link>
 
-            {/* BUY NOW ribbon - sits above the full-area Link and stops propagation */}
             <Link
               href={isClient && currentArt.slug ? `/artworks/${currentArt.slug}` : "#"}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
+              onClick={(e) => { e.stopPropagation(); }}
               aria-label="Buy now"
-              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition text-sm bottom-20 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2"
+              className={`absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition-all duration-300 text-sm bottom-20 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2 ${
+                curtainStatus === 'closed' ? 'opacity-0 pointer-events-none scale-75' : 'opacity-100 scale-100'
+              }`}
             >
               BUY NOW
             </Link>
@@ -581,14 +687,14 @@ export default function ArtMasonsLanding() {
           </div>
         </section>
 
-        {/* --- FUN FACTS & ABOUT US --- */}
+        {/* --- FUN FACTS & IMAGE ASPECT CALCULATOR --- */}
         <section className="container mx-auto px-4 py-20 flex flex-col md:flex-row gap-12">
+          {/* FUN FACTS */}
           <div className="w-full md:w-1/2">
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">
               FUN FACTS
             </h3>
             <div className="p-8 md:p-12 min-h-[300px] flex items-center justify-center text-center relative bg-white shadow-sm border-2 border-[#800000] rounded-lg">
-              {/* Opening quote aligned to first line */}
               <div
                 className="absolute left-6 text-[#800000] opacity-90"
                 style={{ top: '30%', transform: 'translateY(-50%)' }}
@@ -607,7 +713,6 @@ export default function ArtMasonsLanding() {
                 </motion.p>
               )}
 
-              {/* Closing quote aligned to second line */}
               <div
                 className="absolute right-6 text-[#800000] opacity-90"
                 style={{ top: '70%', transform: 'translateY(-50%)' }}
@@ -617,36 +722,88 @@ export default function ArtMasonsLanding() {
             </div>
           </div>
 
+          {/* --- IMAGE ASPECT CALCULATOR --- */}
           <div className="w-full md:w-1/2">
-            <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">
-              About Us
+            <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase flex items-center gap-3">
+              Custom Art Size
             </h3>
-            <div className="space-y-6 font-serif text-gray-600 leading-relaxed text-justify bg-white p-8 md:p-10 border-2 border-[#800000] rounded-lg shadow-sm">
-              <p>
-                You can have a Monet or Renoir in your own home or office which
-                can be exactly like the original masterpiece in the museum. ART
-                MASONS reproductions are your opportunity that comes as near to
-                the original masterpiece as possible!
+            <div className="font-serif bg-white p-6 md:p-8 border-2 border-[#800000] rounded-lg shadow-sm h-full flex flex-col">
+              <p className="text-gray-600 mb-6 text-sm md:text-base border-b border-gray-100 pb-4">
+                Calculate the perfect aspect ratio for your custom artwork. Enter your dimensions (cm) below.
               </p>
-              <p>
-                Our artworks are absolutely and completely hand-painted with oil
-                on a blank linen canvas. Everybody in our team of artists is an
-                exceptional master in his own field, and this makes it possible
-                for us reproduce our paintings to the level of perfection and
-                style of the old masters.
-              </p>
-              <p>
-                We have recorded on video the process of reproduction of
-                hundreds of paintings created in our studio. You can watch these
-                videos and be persuaded in the high quality of our work. We are
-                not wholesalers, and we do not have varying levels of quality
-                like our competitors.
-              </p>
+
+              <div className="flex gap-6 mb-6">
+                <div className="flex-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 block">Width (cm)</label>
+                  <input
+                    type="number"
+                    value={calcW}
+                    onChange={(e) => setCalcW(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] focus:ring-1 focus:ring-[#800000] outline-none text-xl font-bold text-center"
+                    placeholder="W"
+                  />
+                </div>
+                <div className="flex items-center pt-6 text-gray-400">
+                  <ArrowRightLeft size={20} />
+                </div>
+                <div className="flex-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 block">Height (cm)</label>
+                  <input
+                    type="number"
+                    value={calcH}
+                    onChange={(e) => setCalcH(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] focus:ring-1 focus:ring-[#800000] outline-none text-xl font-bold text-center"
+                    placeholder="H"
+                  />
+                </div>
+              </div>
+
+              {/* RESULT DISPLAY */}
+              <div className="bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center flex-grow relative overflow-hidden">
+                 
+                 {/* Visual Aspect Box */}
+                 <div className="mb-4 relative z-10 flex items-center justify-center w-full h-[180px]">
+                    <motion.div 
+                      layout
+                      className="border-4 border-[#800000] bg-white shadow-lg flex items-center justify-center"
+                      style={{
+                        aspectRatio: (typeof calcW === 'number' && typeof calcH === 'number' && calcW > 0 && calcH > 0) 
+                          ? `${calcW}/${calcH}` 
+                          : '1/1',
+                        height: (typeof calcW === 'number' && typeof calcH === 'number' && calcW > calcH) ? 'auto' : '100%',
+                        width: (typeof calcW === 'number' && typeof calcH === 'number' && calcW > calcH) ? '100%' : 'auto',
+                        maxHeight: '160px',
+                        maxWidth: '240px'
+                      }}
+                      transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                    >
+                       <span className="text-[#800000]/20 text-4xl font-bold">
+                          {aspectString}
+                       </span>
+                    </motion.div>
+                 </div>
+
+                 <div className="text-center relative z-10">
+                   <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Calculated Ratio</h4>
+                   <div className="text-4xl font-bold text-[#800000] flex items-center justify-center gap-2">
+                     {aspectString}
+                     {typeof calcW === 'number' && calcW > 0 && typeof calcH === 'number' && calcH > 0 && (
+                       <CheckCircle2 size={24} className="text-green-600" />
+                     )}
+                   </div>
+                   {typeof calcW === 'number' && calcW > 0 && typeof calcH === 'number' && calcH > 0 && (
+                      <p className="text-xs text-gray-500 mt-2 font-sans">
+                        Decimal: {(calcW / calcH).toFixed(2)}
+                      </p>
+                   )}
+                 </div>
+
+              </div>
             </div>
           </div>
         </section>
 
-        {/* --- TESTIMONIALS (Updated to fix Animation Warning) --- */}
+        {/* --- TESTIMONIALS --- */}
         <section className="py-20 container mx-auto px-4">
           <h3 className="font-serif text-3xl text-center mb-12">
             Collector Testimonials

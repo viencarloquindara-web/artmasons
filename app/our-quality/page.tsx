@@ -11,7 +11,15 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 
 export default function OurQualityPage() {
   return (
-    <main className={`${playfair.variable} bg-white min-h-screen text-black relative`}>
+    <main className={`${playfair.variable} bg-art-texture min-h-screen text-black relative`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
       <div className="container mx-auto px-4 py-12 max-w-6xl relative z-10">
         
         <div className="mb-8">
@@ -22,7 +30,7 @@ export default function OurQualityPage() {
 
         {/* Hero Banner */}
         <div className="mb-16">
-          <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-2xl">
+          <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-2xl border-4 border-white">
             <Image 
               src="/our-quality/banner_1.jpg" 
               alt="Museum Quality Art" 
@@ -36,7 +44,7 @@ export default function OurQualityPage() {
         <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
           
           {/* Introduction */}
-          <section>
+          <section className="bg-white/60 p-8 rounded-lg border border-[#800000]/10 backdrop-blur-sm">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Museum-Quality Excellence</h2>
             <p className="text-lg mb-4">
               At ART MASONS, we are committed to delivering nothing less than museum-quality oil painting reproductions. Each piece is meticulously hand-painted by our master artists, ensuring that every brushstroke captures the essence and beauty of the original masterpiece.
@@ -48,9 +56,13 @@ export default function OurQualityPage() {
 
           {/* Quality Standards */}
           <section>
-            <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Quality Standards</h2>
+            <div className="flex items-center gap-4 mb-8">
+               <h2 className="font-serif text-3xl font-bold text-[#800000]">Our Quality Standards</h2>
+               <div className="h-px bg-[#800000]/30 flex-1"></div>
+            </div>
+            
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">100% Hand-Painted</h3>
@@ -58,7 +70,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Premium Linen Canvas</h3>
@@ -66,7 +78,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Refined Oil Paints</h3>
@@ -74,7 +86,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Master Artists</h3>
@@ -82,7 +94,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Quality Control</h3>
@@ -90,7 +102,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Proper Drying Time</h3>
@@ -102,7 +114,7 @@ export default function OurQualityPage() {
 
           {/* Second Banner */}
           <div className="my-16">
-            <div className="relative w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden shadow-2xl border-4 border-white">
               <Image 
                 src="/our-quality/banner_2.jpg" 
                 alt="Artisan at Work" 
@@ -116,32 +128,33 @@ export default function OurQualityPage() {
           <section>
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Creation Process</h2>
             <div className="space-y-6">
-              <div className="p-6 border border-[#800000] rounded-md">
+              {/* Process steps with white backgrounds */}
+              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">1. Selection & Study</h3>
                 <p>Our artists carefully study the original masterpiece, analyzing brushwork, color palette, and technique.</p>
               </div>
               
-              <div className="p-6 border border-[#800000] rounded-md">
+              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">2. Canvas Preparation</h3>
                 <p>Premium linen canvas is stretched on wooden frames and treated with multiple layers of primer.</p>
               </div>
               
-              <div className="p-6 border border-[#800000] rounded-md">
+              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">3. Underpainting</h3>
                 <p>The composition is sketched and an underpainting layer is applied to establish values and composition.</p>
               </div>
               
-              <div className="p-6 border border-[#800000] rounded-md">
+              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">4. Layer by Layer Painting</h3>
                 <p>Multiple layers of oil paint are applied using traditional techniques, building depth and richness.</p>
               </div>
               
-              <div className="p-6 border border-[#800000] rounded-md">
+              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">5. Detail Work & Finishing</h3>
                 <p>Fine details are added with precision, and the painting is allowed to dry completely.</p>
               </div>
               
-              <div className="p-6 border border-[#800000] rounded-md">
+              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">6. Quality Inspection</h3>
                 <p>Each painting is inspected for accuracy, quality, and adherence to our museum-grade standards.</p>
               </div>
@@ -149,11 +162,11 @@ export default function OurQualityPage() {
           </section>
 
           {/* Certification */}
-          <section className="bg-white shadow-sm p-8 rounded-lg">
+          <section className="bg-white shadow-lg p-8 rounded-lg border-t-4 border-[#800000]">
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000] text-center">Certified Excellence</h2>
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="md:w-1/3 flex justify-center">
-                <div className="relative w-64 h-64">
+                <div className="relative w-64 h-64 drop-shadow-xl">
                   <Image 
                     src="/our-quality/cert_1.png" 
                     alt="Quality Certificate" 
@@ -169,7 +182,7 @@ export default function OurQualityPage() {
                 <p className="text-lg">
                   This certificate serves as proof of the quality materials used, the traditional techniques employed, and our commitment to delivering museum-quality artwork that will be treasured for generations.
                 </p>
-                <div className="mt-6 p-6 border border-[#800000] rounded-md">
+                <div className="mt-6 p-6 bg-gray-50 border border-[#800000]/20 rounded-md">
                   <p className="font-bold text-[#800000]">Our Guarantee:</p>
                   <p className="mt-2">We stand behind the quality of every painting we create. If you&apos;re not completely satisfied with your artwork, we offer a comprehensive return policy to ensure your peace of mind.</p>
                 </div>
@@ -181,24 +194,24 @@ export default function OurQualityPage() {
           <section>
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Premium Materials</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+              <div className="text-center bg-white p-6 rounded-lg shadow-sm">
+                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg border-4 border-[#fdfbf7]">
                   1
                 </div>
                 <h3 className="font-bold text-xl mb-3">Linen Canvas</h3>
                 <p>100% pure Belgian linen, known for its superior texture and durability compared to cotton canvas.</p>
               </div>
               
-              <div className="text-center">
-                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+              <div className="text-center bg-white p-6 rounded-lg shadow-sm">
+                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg border-4 border-[#fdfbf7]">
                   2
                 </div>
                 <h3 className="font-bold text-xl mb-3">Artist-Grade Oils</h3>
                 <p>Professional quality oil paints with high pigment concentration for brilliant, long-lasting color.</p>
               </div>
               
-              <div className="text-center">
-                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+              <div className="text-center bg-white p-6 rounded-lg shadow-sm">
+                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg border-4 border-[#fdfbf7]">
                   3
                 </div>
                 <h3 className="font-bold text-xl mb-3">Wooden Frames</h3>
@@ -208,7 +221,7 @@ export default function OurQualityPage() {
           </section>
 
           {/* Why Choose Us */}
-          <section className="border-2 border-[#800000] p-8 rounded-lg">
+          <section className="bg-white border-2 border-[#800000] p-8 rounded-lg shadow-md">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000] text-center">Why Choose ART MASONS?</h2>
             <div className="space-y-4 text-lg">
               <p>✓ <strong>Authenticity:</strong> Each painting is 100% hand-painted—no prints, no reproductions.</p>
@@ -228,7 +241,7 @@ export default function OurQualityPage() {
             </p>
             <Link 
               href="/"
-              className="inline-block bg-[#800000] text-white px-8 py-4 rounded-lg font-bold hover:bg-[#600000] transition-colors text-lg"
+              className="inline-block bg-[#800000] text-white px-8 py-4 rounded-lg font-bold hover:bg-[#600000] transition-colors text-lg shadow-lg"
             >
               Explore Our Collection
             </Link>

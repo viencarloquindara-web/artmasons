@@ -88,14 +88,14 @@ export default async function CategoryPage({ params, searchParams }: { params: P
   const gridItems = filtered;
 
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black font-serif`}>
+    <main className={`${playfair.variable} min-h-screen bg-art-texture text-black font-serif`}>
       <PageTransition>
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
           <div className="mb-6">
             <Breadcrumbs items={[{ label: 'Popular Art', href: '/' }, { label: title, href: `/popular-art/${slug}` }]} />
           </div>
 
-          <header className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
+          <header className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6 bg-white/60 p-6 rounded-lg backdrop-blur-sm border border-[#800000]/10">
             <div className="flex-1">
               <h1 className="font-serif text-3xl font-bold text-[#800000]">{title}</h1>
               <p className="text-sm text-gray-600 mt-1">Browse curated {title.toLowerCase()} paintings from our collection.</p>
@@ -113,20 +113,20 @@ export default async function CategoryPage({ params, searchParams }: { params: P
           </header>
 
           {filtered.length === 0 ? (
-            <div className="py-20 text-center">
+            <div className="py-20 text-center bg-white/60 rounded-lg">
               <h2 className="font-serif text-xl font-bold text-gray-700">No artworks found</h2>
               <p className="text-gray-500 mt-2">We couldn&apos;t find artworks for “{title}”.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {gridItems.map((art) => (
-                <article key={art.title} className="bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-shadow rounded-md overflow-hidden">
+                <article key={art.title} className="bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 rounded-md overflow-hidden hover:border-[#800000]/20">
                   <Link href={`/artworks/${getArtworkSlug(art)}`} className="block group">
                     <div className="relative w-full h-56 md:h-44 lg:h-48">
-                      <Image src={art.image} alt={art.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <Image src={art.image} alt={art.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="p-3">
-                      <h3 className="font-serif text-sm font-semibold text-gray-900 truncate">{art.title}</h3>
+                      <h3 className="font-serif text-sm font-semibold text-gray-900 truncate group-hover:text-[#800000] transition-colors">{art.title}</h3>
                       <p className="text-xs text-gray-500 mt-1 truncate">{art.artist}</p>
                     </div>
                   </Link>

@@ -8,8 +8,16 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <main className={`${playfair.variable} min-h-screen bg-art-texture text-black`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
+      <div className="container mx-auto px-4 py-12 max-w-4xl relative z-10">
         
         <div className="mb-8">
           <Breadcrumbs items={[{ label: 'Privacy Policy', href: '/privacy-policy' }]} />
@@ -17,7 +25,7 @@ export default function PrivacyPolicyPage() {
 
         <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Privacy Policy</h1>
 
-        <div className="font-serif space-y-8 text-gray-700 leading-relaxed">
+        <div className="font-serif space-y-8 text-gray-700 leading-relaxed bg-white/80 p-8 md:p-12 rounded-lg backdrop-blur-sm border border-[#800000]/10 shadow-sm">
           
           <p className="font-bold">
              At ART MASONS, we take your privacy seriously. This policy explains what information we collect, how we use it, and the measures we take to protect it.

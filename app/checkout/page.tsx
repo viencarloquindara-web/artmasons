@@ -89,8 +89,16 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <main className={`${playfair.variable} min-h-screen bg-art-texture text-black`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
+      <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
         <div className="mb-8">
           <Breadcrumbs items={[{ label: 'Checkout', href: '/checkout' }]} />
         </div>
@@ -109,8 +117,8 @@ export default function CheckoutPage() {
         </header>
 
         {items.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="inline-block p-6 bg-gray-100 rounded-full mb-6">
+          <div className="text-center py-20 bg-white/60 rounded-lg shadow-sm border border-[#800000]/10">
+            <div className="inline-block p-6 bg-white rounded-full mb-6 shadow-sm">
               <ShoppingBag size={64} className="text-gray-400" />
             </div>
             <h2 className="font-serif text-3xl font-bold mb-4 text-gray-800">Your Cart is Empty</h2>
@@ -127,7 +135,7 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Customer Details */}
             <div className="lg:col-span-2">
-              <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 space-y-6">
+              <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 space-y-6 shadow-sm">
                 <h2 className="font-serif text-2xl font-bold text-gray-800">Customer Details</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -210,7 +218,7 @@ export default function CheckoutPage() {
 
             {/* Order Summary */}
             <aside className="lg:col-span-1 space-y-6">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <div className="bg-white/90 border border-gray-200 rounded-lg p-6 shadow-sm backdrop-blur-sm sticky top-6">
                 <h2 className="font-serif text-2xl font-bold mb-6 text-gray-800">Order Summary</h2>
 
                 <div className="space-y-3 mb-6">

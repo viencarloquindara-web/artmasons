@@ -13,7 +13,6 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif'
 // --- THEME COLORS ---
 const THEME_RED = '#800000';
 
-// Type for collection painting
 type CollectionPainting = {
   rank: number;
   title: string;
@@ -27,17 +26,14 @@ type CollectionPainting = {
   priceLabel: string;
 };
 
-// Helper function to extract period/era from artist life dates or year
+// ... (existing helper logic remains same) ...
 const getPeriod = (artistLife?: string, year?: string): string => {
   if (!artistLife && !year) return 'Historical';
-  
   const yearMatch = year?.match(/\d{4}/);
   const lifeMatch = artistLife?.match(/(\d{4})-(\d{4})/);
-  
   let refYear = 0;
   if (yearMatch) refYear = parseInt(yearMatch[0]);
-  else if (lifeMatch) refYear = parseInt(lifeMatch[1]) + 30; // Approximate mid-career
-  
+  else if (lifeMatch) refYear = parseInt(lifeMatch[1]) + 30;
   if (refYear < 1400) return 'Medieval';
   if (refYear < 1600) return 'Renaissance';
   if (refYear < 1700) return 'Baroque';
@@ -55,24 +51,15 @@ const getPrimaryPricing = (artwork: Artwork) => {
   const minOption = hasOptions
     ? artwork.options.reduce((min, option) => (option.price < min.price ? option : min), artwork.options[0])
     : null;
-
   const price = minOption?.price ?? artwork.basePrice ?? null;
-  return {
-    price,
-    currency: artwork.currency || 'AED',
-    label: minOption?.label || 'Original Size'
-  };
+  return { price, currency: artwork.currency || 'AED', label: minOption?.label || 'Original Size' };
 };
 
 const formatPrice = (price: number, currency: string) => {
-  const formatted = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(price);
+  const formatted = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(price);
   return `${currency} ${formatted}`;
 };
 
-// Map artworks from the system to collection format with ranking
 const COLLECTION_PAINTINGS: CollectionPainting[] = ARTWORKS.map((artwork: Artwork, index: number) => ({
   rank: index + 1,
   title: artwork.title,
@@ -83,11 +70,7 @@ const COLLECTION_PAINTINGS: CollectionPainting[] = ARTWORKS.map((artwork: Artwor
   slug: getArtworkSlug(artwork),
   ...(() => {
     const pricing = getPrimaryPricing(artwork);
-    return {
-      price: pricing.price,
-      currency: pricing.currency,
-      priceLabel: pricing.label
-    };
+    return { price: pricing.price, currency: pricing.currency, priceLabel: pricing.label };
   })()
 }));
 
@@ -95,20 +78,16 @@ export default function Top100Page() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPeriod, setSelectedPeriod] = useState<string>('All');
 
-  // Get unique periods
   const periods = useMemo(() => {
     const uniquePeriods = Array.from(new Set(COLLECTION_PAINTINGS.map((p: CollectionPainting) => p.period)));
     return ['All', ...uniquePeriods.sort()];
   }, []);
 
-  // Filter paintings based on search and period
   const filteredPaintings = useMemo(() => {
     let filtered = COLLECTION_PAINTINGS;
-
     if (selectedPeriod !== 'All') {
       filtered = filtered.filter((p: CollectionPainting) => p.period === selectedPeriod);
     }
-
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((p: CollectionPainting) => 
@@ -117,12 +96,19 @@ export default function Top100Page() {
         p.period.toLowerCase().includes(query)
       );
     }
-
     return filtered;
   }, [searchQuery, selectedPeriod]);
 
   return (
-    <main className={`${playfair.variable} bg-white min-h-screen text-black font-serif relative`}>
+    <main className={`${playfair.variable} bg-art-texture min-h-screen text-black font-serif relative`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
       <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
         
         {/* Breadcrumbs */}
@@ -145,7 +131,7 @@ export default function Top100Page() {
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-8 bg-white shadow-sm p-6 rounded-lg">
+        <div className="mb-8 bg-white/90 shadow-sm p-6 rounded-lg backdrop-blur-sm border border-[#800000]/10">
           <div className="mb-4">
             {/* Search Bar */}
             <div className="flex-1">
@@ -199,7 +185,7 @@ export default function Top100Page() {
               return (
                 <div 
                   key={painting.rank}
-                  className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group"
+                  className="block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 group hover:border-[#800000]/20 border border-transparent"
                 >
                   {/* Image with Rank Badge */}
                   <Link href={`/artworks/${painting.slug}`} className="block">
@@ -273,7 +259,7 @@ export default function Top100Page() {
             })}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-lg">
+          <div className="flex flex-col items-center justify-center py-20 bg-white/60 rounded-lg shadow-sm">
             <Trophy className="text-gray-300 mb-4" size={64} strokeWidth={1} />
             <p className="text-xl font-serif text-gray-400 mb-2">No paintings found</p>
             <p className="font-serif text-sm text-gray-500">Try adjusting your search or filters</p>

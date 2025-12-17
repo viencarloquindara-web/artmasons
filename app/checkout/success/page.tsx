@@ -84,15 +84,25 @@ export default function CheckoutSuccess() {
   }, [id, clearCart, addToast]);
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-12 max-w-3xl text-center">
-        <h1 className="font-serif text-4xl font-bold text-[#800000] mb-4">Thank you — Order received</h1>
-        {status === 'checking' && <p className="mb-6 text-gray-600">Verifying payment...</p>}
-        {status === 'paid' && <p className="mb-6 text-gray-700">Your payment was successful. We have received your order and will process it shortly.</p>}
-        {status === 'pending' && <p className="mb-6 text-gray-600">Payment is pending. If this doesn’t update shortly, contact support.</p>}
-        {status === 'not_found' && <p className="mb-6 text-gray-700">We couldn&apos;t find your order on the server. If you were charged, contact support.</p>}
-        {status === 'error' && <p className="mb-6 text-gray-700">There was an error verifying your payment. Contact support if needed.</p>}
-        <Link href="/" className="inline-block bg-[#800000] text-white px-6 py-3 rounded-md font-bold">Return to shop</Link>
+    <main className="min-h-screen bg-art-texture flex items-center justify-center">
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
+      <div className="container mx-auto px-4 py-12 max-w-3xl text-center relative z-10">
+        <div className="bg-white p-12 rounded-lg shadow-lg border-2 border-[#800000]">
+          <h1 className="font-serif text-4xl font-bold text-[#800000] mb-4">Thank you — Order received</h1>
+          {status === 'checking' && <p className="mb-6 text-gray-600 font-serif">Verifying payment...</p>}
+          {status === 'paid' && <p className="mb-6 text-gray-700 font-serif text-lg">Your payment was successful. We have received your order and will process it shortly.</p>}
+          {status === 'pending' && <p className="mb-6 text-gray-600 font-serif">Payment is pending. If this doesn’t update shortly, contact support.</p>}
+          {status === 'not_found' && <p className="mb-6 text-gray-700 font-serif">We couldn&apos;t find your order on the server. If you were charged, contact support.</p>}
+          {status === 'error' && <p className="mb-6 text-gray-700 font-serif">There was an error verifying your payment. Contact support if needed.</p>}
+          <Link href="/" className="inline-block bg-[#800000] text-white px-8 py-3 rounded-md font-bold font-serif hover:bg-[#600000] transition-colors shadow-md">Return to shop</Link>
+        </div>
       </div>
     </main>
   );

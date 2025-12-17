@@ -185,7 +185,15 @@ export default function AboutUsPage() {
   };
 
   return (
-    <main className={`${playfair.variable} bg-white min-h-screen text-black relative`}>
+    <main className={`${playfair.variable} bg-art-texture min-h-screen text-black relative`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+      
       <div className="container mx-auto px-4 py-12 max-w-6xl relative z-10">
         
         <div className="mb-8">
@@ -197,7 +205,7 @@ export default function AboutUsPage() {
         <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
           
           {/* Our Philosophy */}
-          <section>
+          <section className="bg-white/60 p-6 rounded-lg backdrop-blur-sm border border-[#800000]/5">
             <div className="flex items-center gap-3 mb-6">
               <Heart className="text-[#800000]" size={32} />
               <h2 className="font-serif text-3xl font-bold text-[#800000]">Our Philosophy</h2>
@@ -213,7 +221,7 @@ export default function AboutUsPage() {
               </p>
 
               <div className="grid md:grid-cols-3 gap-8 mt-8">
-                <div className="bg-white shadow-sm p-6 rounded-lg">
+                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
                     <Palette className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Authenticity</h3>
@@ -223,7 +231,7 @@ export default function AboutUsPage() {
                   </p>
                 </div>
 
-                <div className="bg-white shadow-sm p-6 rounded-lg">
+                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
                     <Users className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Craftsmanship</h3>
@@ -233,7 +241,7 @@ export default function AboutUsPage() {
                   </p>
                 </div>
 
-                <div className="bg-white shadow-sm p-6 rounded-lg">
+                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow">
                   <div className="flex items-center gap-3 mb-4">
                     <Sparkles className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Accessibility</h3>
@@ -247,7 +255,7 @@ export default function AboutUsPage() {
           </section>
 
           {/* Our Story */}
-          <section className="bg-white shadow-sm p-8 rounded-lg">
+          <section className="bg-white shadow-sm p-8 rounded-lg border-t-4 border-[#800000]">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Our Story</h2>
             <div className="space-y-4">
               <p className="text-lg">
@@ -266,10 +274,10 @@ export default function AboutUsPage() {
           </section>
 
           {/* Our Commitment */}
-          <section>
+          <section className="bg-white/40 p-6 rounded-lg border border-[#800000]/10">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Our Commitment to You</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Museum-Quality Materials</h3>
@@ -279,7 +287,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Master Artisans</h3>
@@ -289,7 +297,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Proportional Accuracy</h3>
@@ -299,7 +307,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Personalized Service</h3>
@@ -312,7 +320,7 @@ export default function AboutUsPage() {
           </section>
 
           {/* Know Your Essence Quiz */}
-          <section className="bg-gradient-to-br from-[#800000] to-[#600000] text-white p-8 md:p-12 rounded-lg">
+          <section className="bg-gradient-to-br from-[#800000] to-[#600000] text-white p-8 md:p-12 rounded-lg shadow-xl">
             <div className="text-center mb-8">
               <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Know Your Essence</h2>
               <p className="text-lg md:text-xl opacity-90">
@@ -327,7 +335,7 @@ export default function AboutUsPage() {
                 </p>
                 <button
                   onClick={() => setQuizStarted(true)}
-                  className="bg-white text-[#800000] px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+                  className="bg-white text-[#800000] px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg"
                 >
                   Start the Quiz
                 </button>
@@ -353,7 +361,7 @@ export default function AboutUsPage() {
                   </div>
                 </div>
 
-                <div className="bg-white text-gray-800 p-8 rounded-lg">
+                <div className="bg-white text-gray-800 p-8 rounded-lg shadow-lg">
                   <h3 className="font-serif text-2xl font-bold mb-6 text-[#800000]">
                     {quizQuestions[currentQuestion].question}
                   </h3>
@@ -374,9 +382,9 @@ export default function AboutUsPage() {
 
             {showResult && result && (
               <div className="max-w-3xl mx-auto">
-                <div className="bg-white text-gray-800 p-8 md:p-12 rounded-lg">
+                <div className="bg-white text-gray-800 p-8 md:p-12 rounded-lg shadow-lg">
                   <div className="text-center mb-8">
-                    <div className="inline-block p-4 bg-[#800000] text-white rounded-full mb-4">
+                    <div className="inline-block p-4 bg-[#800000] text-white rounded-full mb-4 shadow-md">
                       <Sparkles size={40} />
                     </div>
                     <h3 className="font-serif text-3xl font-bold mb-4 text-[#800000]">
@@ -416,7 +424,7 @@ export default function AboutUsPage() {
                   <div className="text-center space-y-4">
                     <Link
                       href="/artists-a-z"
-                      className="inline-block bg-[#800000] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#600000] transition-colors"
+                      className="inline-block bg-[#800000] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#600000] transition-colors shadow-md"
                     >
                       Explore Our Collection
                     </Link>
@@ -433,7 +441,7 @@ export default function AboutUsPage() {
           </section>
 
           {/* Contact CTA */}
-          <section className="text-center bg-white shadow-sm p-8 rounded-lg">
+          <section className="text-center bg-white shadow-sm p-8 rounded-lg border-2 border-[#800000]/10">
             <h2 className="font-serif text-3xl font-bold mb-4 text-[#800000]">Let&apos;s Create Something Beautiful Together</h2>
             <p className="text-lg mb-6 max-w-2xl mx-auto">
               Whether you have questions about our process, need help selecting the perfect piece, or want to discuss a custom commission, we&apos;re here to help.

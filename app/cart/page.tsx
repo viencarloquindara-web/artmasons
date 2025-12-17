@@ -10,8 +10,6 @@ import { useCart } from '../context/CartContext';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
-// Cart data comes from CartContext
-
 const SHIPPING_COST = 0; // Free shipping
 const TAX_RATE = 0.05; // 5% tax
 
@@ -20,23 +18,27 @@ export default function CartPage() {
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
 
-  // updateQuantity and removeItem handled by context
-
   const applyPromoCode = () => {
     if (promoCode.trim()) {
       setPromoApplied(true);
-      // In a real app, validate the promo code with backend
     }
   };
 
-  // subtotal provided by context
-  const discount = promoApplied ? subtotal * 0.1 : 0; // 10% discount if promo applied
+  const discount = promoApplied ? subtotal * 0.1 : 0; 
   const tax = (subtotal - discount) * TAX_RATE;
   const total = subtotal - discount + tax + SHIPPING_COST;
 
   return (
-    <main className={`${playfair.variable} min-h-screen bg-white text-black`}>
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <main className={`${playfair.variable} min-h-screen bg-art-texture text-black`}>
+      {/* Linen Canvas Background Pattern */}
+      <style jsx global>{`
+        .bg-art-texture {
+          background-color: #fdfbf7;
+          background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23800000' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+      `}</style>
+
+      <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
         
         <div className="mb-8">
           <Breadcrumbs items={[{ label: 'Shopping Cart', href: '/cart' }]} />
@@ -46,8 +48,8 @@ export default function CartPage() {
 
         {cartItems.length === 0 ? (
           // Empty Cart State
-          <div className="text-center py-20">
-            <div className="inline-block p-6 bg-gray-100 rounded-full mb-6">
+          <div className="text-center py-20 bg-white/60 rounded-lg shadow-sm border border-[#800000]/10">
+            <div className="inline-block p-6 bg-white rounded-full mb-6 shadow-sm">
               <ShoppingBag size={64} className="text-gray-400" />
             </div>
             <h2 className="font-serif text-3xl font-bold mb-4 text-gray-800">Your Cart is Empty</h2>
@@ -68,7 +70,7 @@ export default function CartPage() {
             
             {/* Cart Items - Left Column */}
             <div className="lg:col-span-2 space-y-4">
-              <div className="bg-gray-50 p-4 rounded-lg mb-4">
+              <div className="bg-white/80 p-4 rounded-lg mb-4 border border-[#800000]/10 backdrop-blur-sm">
                 <p className="font-serif text-lg">
                   <span className="font-bold text-[#800000] tabular-nums">{cartItems.length}</span>{' '}
                   <span>{cartItems.length === 1 ? 'item' : 'items'} in your cart</span>
@@ -169,7 +171,7 @@ export default function CartPage() {
 
             {/* Order Summary - Right Column */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm sticky top-6">
                 <h2 className="font-serif text-2xl font-bold mb-6 text-gray-800">Order Summary</h2>
 
                 {/* Promo Code */}
@@ -259,7 +261,7 @@ export default function CartPage() {
               </div>
 
               {/* Trust Badges */}
-              <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <div className="bg-white/80 border border-gray-200 rounded-lg p-6 backdrop-blur-sm">
                 <h3 className="font-serif text-lg font-bold mb-4 text-gray-800">Why Choose Art Masons?</h3>
                 <ul className="space-y-3 font-serif text-sm text-gray-700">
                   <li className="flex items-start gap-2">
@@ -287,7 +289,7 @@ export default function CartPage() {
         {/* Additional Information Section */}
         {cartItems.length > 0 && (
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 p-6 rounded-lg text-center">
+            <div className="bg-white/80 p-6 rounded-lg text-center border border-[#800000]/5 backdrop-blur-sm">
               <div className="inline-block p-4 bg-[#800000] text-white rounded-full mb-4">
                 <Lock size={32} />
               </div>
@@ -297,7 +299,7 @@ export default function CartPage() {
               </p>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-lg text-center">
+            <div className="bg-white/80 p-6 rounded-lg text-center border border-[#800000]/5 backdrop-blur-sm">
               <div className="inline-block p-4 bg-[#800000] text-white rounded-full mb-4">
                 <Truck size={32} />
               </div>
@@ -307,7 +309,7 @@ export default function CartPage() {
               </p>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-lg text-center">
+            <div className="bg-white/80 p-6 rounded-lg text-center border border-[#800000]/5 backdrop-blur-sm">
               <div className="inline-block p-4 bg-[#800000] text-white rounded-full mb-4">
                 <Shield size={32} />
               </div>

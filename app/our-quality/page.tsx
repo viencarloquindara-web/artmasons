@@ -45,7 +45,7 @@ export default function OurQualityPage() {
           {/* Hero Banner - Portrait Video */}
           <div className="relative w-full max-w-sm mx-auto rounded-lg overflow-hidden shadow-2xl border-4 border-white">
             <video 
-              src="/video/video_1.mp4" 
+              src="/video/video_2.mp4" 
               className="w-full h-auto block"
               autoPlay
               muted
@@ -117,12 +117,37 @@ export default function OurQualityPage() {
 
           {/* Second Banner */}
           <div className="my-16">
-            <div className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-2xl border-4 border-white">
-              <img 
-                src="/our-quality/quality_paint.png" 
-                alt="Artisan at Work" 
-                className="w-full h-auto block"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            {[
+              {
+                src: '/our-quality/quality_paint.png',
+                width: 2622,
+                height: 1824,
+              },
+              {
+                src: '/our-quality/quality_paint_2.png',
+                width: 4000,
+                height: 3584,
+              },
+              {
+                src: '/our-quality/quality_paint_3.png',
+                width: 3238,
+                height: 4000,
+              },
+            ].map((img, index) => (
+              <div
+                key={img.src}
+                className="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl border-4 border-white"
+              >
+                <Image
+                  src={img.src}
+                  alt={`Artisan at Work ${index + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (min-width: 768px) 33vw"
+                  className="object-fill"
+                />
+              </div>
+            ))}
             </div>
           </div>
 

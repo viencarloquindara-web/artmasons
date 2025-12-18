@@ -9,8 +9,6 @@ import PageTransition from "./components/PageTransition";
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowRightLeft,
-  CheckCircle2
 } from "lucide-react";
 import { ARTWORKS, getArtworkSlug } from "../data/artworks";
 
@@ -28,11 +26,6 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
 });
-
-// --- HELPER: GCD for Aspect Ratio ---
-const gcd = (a: number, b: number): number => {
-  return b === 0 ? a : gcd(b, a % b);
-};
 
 // --- DATA ---
 const ASSURANCE_POINTS = [
@@ -266,9 +259,15 @@ export default function ArtMasonsLanding() {
   const [origH, setOrigH] = useState<number | ''>(60);
   const [knownDim, setKnownDim] = useState<'width' | 'height'>('width');
   const [newKnown, setNewKnown] = useState<number | ''>('');
-  const [newW, setNewW] = useState<number | ''>(90);
-  const [newH, setNewH] = useState<number | ''>(60);
-  const [aspectString, setAspectString] = useState("3:2");
+
+  const computedOtherDim = React.useMemo<number | ''>(() => {
+    if (typeof origW !== 'number' || typeof origH !== 'number') return '';
+    if (typeof newKnown !== 'number') return knownDim === 'width' ? origH : origW;
+
+    const delta = knownDim === 'width' ? newKnown - origW : newKnown - origH;
+    const other = knownDim === 'width' ? origH + delta : origW + delta;
+    return Math.max(0, +other.toFixed(2));
+  }, [origW, origH, knownDim, newKnown]);
 
   const isClient = useSyncExternalStore(
     () => () => {},
@@ -294,38 +293,6 @@ export default function ArtMasonsLanding() {
       clearInterval(testimonialTimer);
     };
   }, []);
-
-  // --- CALCULATOR LOGIC ---
-  useEffect(() => {
-    // Compute new dimensions based on original values and the single known new dimension.
-    if (typeof origW === 'number' && typeof origH === 'number') {
-      if (typeof newKnown === 'number') {
-        const delta = knownDim === 'width' ? newKnown - origW : newKnown - origH;
-        const computedW = knownDim === 'width' ? newKnown : Math.max(0, +(origW + delta).toFixed(2));
-        const computedH = knownDim === 'height' ? newKnown : Math.max(0, +(origH + delta).toFixed(2));
-        setNewW(computedW);
-        setNewH(computedH);
-
-        if (computedW > 0 && computedH > 0) {
-          const w = Math.round(computedW * 100);
-          const h = Math.round(computedH * 100);
-          const divisor = gcd(w, h);
-          setAspectString(`${w / divisor}:${h / divisor}`);
-        } else {
-          setAspectString("- : -");
-        }
-      } else {
-        setNewW(origW);
-        setNewH(origH);
-        const w = Math.round(origW * 100);
-        const h = Math.round(origH * 100);
-        const divisor = gcd(w, h);
-        setAspectString(`${w / divisor}:${h / divisor}`);
-      }
-    } else {
-      setAspectString("- : -");
-    }
-  }, [origW, origH, knownDim, newKnown]);
 
   const currentArray = playTop100Random ? TOP_100_ARTS : ART_OF_THE_DAY;
   const currentArt = playTop100Random
@@ -571,7 +538,7 @@ export default function ArtMasonsLanding() {
               href={isClient && currentArt.slug ? `/artworks/${currentArt.slug}` : "#"}
               onClick={(e) => { e.stopPropagation(); }}
               aria-label="Buy now"
-              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition-all duration-300 text-sm bottom-20 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2 opacity-100 scale-100"
+              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition-all duration-300 text-sm bottom-24 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2 opacity-100 scale-100"
             >
               BUY NOW
             </Link>
@@ -676,38 +643,30 @@ export default function ArtMasonsLanding() {
           {/* --- IMAGE ASPECT CALCULATOR --- */}
           <div className="w-full md:w-1/2">
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase flex items-center gap-3">
-              Custom Art Size
+              ART RESIZING TOOL
             </h3>
             <div className="font-serif bg-white p-6 border-2 border-[#800000] rounded-lg shadow-sm flex flex-col">
               <div className="text-gray-600 mb-4 text-sm border-b border-gray-100 pb-4">
-                <p className="mb-2 font-semibold">All custom sizes keep the original artwork proportions.</p>
-                <ol className="list-decimal list-inside mb-3 space-y-1">
-                  <li>Enter the original Height × Width (listed as H × W across our site).</li>
-                  <li>Measure your wall space.</li>
-                  <li>Enter your desired new height for the artwork (e.g. 150 cm).</li>
-                </ol>
+                <p className="mb-2">Keep your art perfectly proportional while fitting it to your space.</p>
+                <p className="mb-4">Note: All artwork on our site is listed as Height x Width</p>
 
-                <p className="mb-2 font-semibold">The Custom Art Calculator will automatically adjust the width.</p>
-                <ol className="list-decimal list-inside space-y-1">
-                  <li>Check that the final H × W size fits your wall.</li>
-                  <li>If it’s too large, choose a smaller size. If you have more space, you can go larger.</li>
-                  <li>Need help? Contact us at <a href="mailto:info@artmasons.com" className="underline">info@artmasons.com</a></li>
-                </ol>
+                <ul className="list-disc list-inside mb-4 space-y-1">
+                  <li><span className="font-semibold">Step 1:</span> Enter the original Height and Width found on the product page.</li>
+                  <li><span className="font-semibold">Step 2:</span> Measure your wall to decide how large you want the piece to be.</li>
+                  <li><span className="font-semibold">Step 3:</span> Enter either your desired New Height or New Width.</li>
+                </ul>
+
+                <p className="mb-4">The tool will automatically calculate the matching dimension to ensure your art never looks stretched or distorted.</p>
+
+                <p className="font-semibold">Need a Hand?</p>
+                <p>
+                  If you’re unsure about sizing, we’re happy to help! Contact us at{' '}
+                  <a href="mailto:info@artmasons.com" className="text-[#800000] underline">info@artmasons.com</a>
+                </p>
               </div>
 
               <div className="flex flex-col gap-4 mb-6">
                 <div className="flex gap-4">
-                  <div className="w-1/2">
-                    <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old width</label>
-                    <input
-                      type="number"
-                      value={origW}
-                      onChange={(e) => setOrigW(e.target.value === '' ? '' : Number(e.target.value))}
-                      className="w-full p-3 border border-gray-300 rounded outline-none"
-                      placeholder="Width"
-                    />
-                  </div>
-
                   <div className="w-1/2">
                     <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old height</label>
                     <input
@@ -718,19 +677,30 @@ export default function ArtMasonsLanding() {
                       placeholder="Height"
                     />
                   </div>
+
+                  <div className="w-1/2">
+                    <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old width</label>
+                    <input
+                      type="number"
+                      value={origW}
+                      onChange={(e) => setOrigW(e.target.value === '' ? '' : Number(e.target.value))}
+                      className="w-full p-3 border border-gray-300 rounded outline-none"
+                      placeholder="Width"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 block mb-3">Choose new dimension you already know <span className="text-red-500">*</span></label>
+                  <label className="text-sm font-semibold text-gray-700 block mb-3">Enter either the new desired Height or Width and the resize calculator will do the rest!</label>
                   <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <div className="flex items-center gap-6 shrink-0">
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="known" checked={knownDim === 'width'} onChange={() => setKnownDim('width')} className="accent-[#800000]" />
-                        <span>New width</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
                         <input type="radio" name="known" checked={knownDim === 'height'} onChange={() => setKnownDim('height')} className="accent-[#800000]" />
                         <span>New height</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="known" checked={knownDim === 'width'} onChange={() => setKnownDim('width')} className="accent-[#800000]" />
+                        <span>New width</span>
                       </label>
                     </div>
                     
@@ -748,7 +718,7 @@ export default function ArtMasonsLanding() {
 
                 <div className="mt-3 pt-3 border-t">
                   <div className="text-sm font-semibold text-gray-700">Behold! Your new {knownDim === 'width' ? 'height' : 'width'}</div>
-                  <div className="text-2xl font-bold text-[#800000] mt-2">{typeof (knownDim === 'width' ? newH : newW) === 'number' ? `${knownDim === 'width' ? newH : newW} cm` : '-'}</div>
+                  <div className="text-2xl font-bold text-[#800000] mt-2">{typeof computedOtherDim === 'number' ? `${computedOtherDim} cm` : '-'}</div>
                 </div>
               </div>
             </div>
@@ -756,39 +726,41 @@ export default function ArtMasonsLanding() {
         </section>
 
         {/* --- TESTIMONIALS --- */}
-        <section className="py-20 container mx-auto px-4">
-          <h3 className="font-serif text-3xl text-center mb-12">
-            Collector Testimonials
-          </h3>
+        <section className="bg-gray-50 py-20">
+          <div className="container mx-auto px-4">
+            <h3 className="font-serif text-3xl text-center mb-12">
+              Collector Testimonials
+            </h3>
 
-          <div className="min-h-[250px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={testimonialIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-8"
-              >
-                {currentTestimonials.map((text, i) => (
-                  <div
-                    key={i}
-                    className="bg-white p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex text-[#800000] mb-4">★★★★★</div>
-                      <p className="font-serif italic text-gray-700">
-                        “{text}”
+            <div className="min-h-[250px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={testimonialIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
+                  {currentTestimonials.map((text, i) => (
+                    <div
+                      key={i}
+                      className="bg-white p-8 border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex text-[#800000] mb-4">★★★★★</div>
+                        <p className="font-serif italic text-gray-700">
+                          “{text}”
+                        </p>
+                      </div>
+                      <p className="mt-4 font-serif text-xs font-bold text-gray-400 uppercase tracking-widest">
+                        Verified Collector
                       </p>
                     </div>
-                    <p className="mt-4 font-serif text-xs font-bold text-gray-400 uppercase tracking-widest">
-                      Verified Collector
-                    </p>
-                  </div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </section>
       </PageTransition>

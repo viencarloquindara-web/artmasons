@@ -78,8 +78,8 @@ export default function ClientProductDetails({
             </div>
 
             {/* Museum Quality Diagonal Ribbon */}
-            <div className="absolute top-0 left-0 w-40 md:w-48 h-40 md:h-48 overflow-hidden pointer-events-none">
-              <div className="absolute -left-16 md:-left-20 top-8 md:top-10 transform -rotate-45 bg-[#800000] text-white px-20 md:px-24 py-2 md:py-2.5 font-serif text-[10px] md:text-xs font-bold uppercase tracking-wide shadow-xl whitespace-nowrap flex items-center justify-center">
+            <div className="absolute top-0 left-0 w-32 md:w-48 h-32 md:h-48 overflow-hidden pointer-events-none">
+              <div className="absolute -left-12 md:-left-20 top-6 md:top-10 transform -rotate-45 bg-[#800000] text-white px-16 md:px-24 py-1.5 md:py-2.5 font-serif text-[9px] md:text-xs font-bold uppercase tracking-wide shadow-xl whitespace-nowrap flex items-center justify-center">
                 Museum Quality
               </div>
             </div>

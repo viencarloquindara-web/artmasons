@@ -26,33 +26,36 @@ export default function OurQualityPage() {
           <Breadcrumbs items={[{ label: 'Our Quality', href: '/our-quality' }]} />
         </div>
 
-        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-12 text-[#800000]">Our Quality</h1>
+        <div className="grid md:grid-cols-2 gap-12 mb-16 items-center">
+          <div>
+            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-8 text-[#800000]">Our Quality</h1>
+            
+            {/* Introduction */}
+            <section className="bg-white/60 p-8 rounded-lg border border-[#800000]/10 backdrop-blur-sm">
+              <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Museum-Quality Excellence</h2>
+              <p className="text-lg mb-4">
+                At ART MASONS, we are committed to delivering nothing less than museum-quality oil painting reproductions. Each piece is meticulously hand-painted by our master artists, ensuring that every brushstroke captures the essence and beauty of the original masterpiece.
+              </p>
+              <p className="text-lg">
+                Our dedication to quality means using only the finest materials and employing time-honored techniques that have been perfected over centuries. When you choose ART MASONS, you&apos;re not just buying a painting—you&apos;re investing in a work of art.
+              </p>
+            </section>
+          </div>
 
-        {/* Hero Banner */}
-        <div className="mb-16">
-          <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden shadow-2xl border-4 border-white">
-            <Image 
-              src="/our-quality/banner_1.jpg" 
-              alt="Museum Quality Art" 
-              fill
-              className="object-cover"
-              priority
+          {/* Hero Banner - Portrait Video */}
+          <div className="relative w-full max-w-sm mx-auto rounded-lg overflow-hidden shadow-2xl border-4 border-white">
+            <video 
+              src="/video/video_1.mp4" 
+              className="w-full h-auto block"
+              autoPlay
+              muted
+              loop
+              playsInline
             />
           </div>
         </div>
 
         <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
-          
-          {/* Introduction */}
-          <section className="bg-white/60 p-8 rounded-lg border border-[#800000]/10 backdrop-blur-sm">
-            <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Museum-Quality Excellence</h2>
-            <p className="text-lg mb-4">
-              At ART MASONS, we are committed to delivering nothing less than museum-quality oil painting reproductions. Each piece is meticulously hand-painted by our master artists, ensuring that every brushstroke captures the essence and beauty of the original masterpiece.
-            </p>
-            <p className="text-lg">
-              Our dedication to quality means using only the finest materials and employing time-honored techniques that have been perfected over centuries. When you choose ART MASONS, you&apos;re not just buying a painting—you&apos;re investing in a work of art.
-            </p>
-          </section>
 
           {/* Quality Standards */}
           <section>
@@ -114,12 +117,11 @@ export default function OurQualityPage() {
 
           {/* Second Banner */}
           <div className="my-16">
-            <div className="relative w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden shadow-2xl border-4 border-white">
-              <Image 
-                src="/our-quality/banner_2.jpg" 
+            <div className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-2xl border-4 border-white">
+              <img 
+                src="/our-quality/quality_paint.png" 
                 alt="Artisan at Work" 
-                fill
-                className="object-cover"
+                className="w-full h-auto block"
               />
             </div>
           </div>
@@ -193,7 +195,7 @@ export default function OurQualityPage() {
           {/* Materials & Techniques */}
           <section>
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Premium Materials</h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 gap-8">
               <div className="text-center bg-white p-6 rounded-lg shadow-sm">
                 <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg border-4 border-[#fdfbf7]">
                   1
@@ -208,14 +210,6 @@ export default function OurQualityPage() {
                 </div>
                 <h3 className="font-bold text-xl mb-3">Artist-Grade Oils</h3>
                 <p>Professional quality oil paints with high pigment concentration for brilliant, long-lasting color.</p>
-              </div>
-              
-              <div className="text-center bg-white p-6 rounded-lg shadow-sm">
-                <div className="bg-[#800000] text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg border-4 border-[#fdfbf7]">
-                  3
-                </div>
-                <h3 className="font-bold text-xl mb-3">Wooden Frames</h3>
-                <p>Kiln-dried wooden stretcher bars ensure stability and prevent warping over time.</p>
               </div>
             </div>
           </section>

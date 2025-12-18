@@ -261,13 +261,13 @@ export default function ArtMasonsLanding() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [famousAutoPlay, setFamousAutoPlay] = useState(true);
 
-  // --- TRANSITION STATE (Curtains) ---
-  const [curtainStatus, setCurtainStatus] = useState<'open' | 'closed'>('open');
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
   // --- CALCULATOR STATES ---
-  const [calcW, setCalcW] = useState<number | ''>(90);
-  const [calcH, setCalcH] = useState<number | ''>(60);
+  const [origW, setOrigW] = useState<number | ''>(90);
+  const [origH, setOrigH] = useState<number | ''>(60);
+  const [knownDim, setKnownDim] = useState<'width' | 'height'>('width');
+  const [newKnown, setNewKnown] = useState<number | ''>('');
+  const [newW, setNewW] = useState<number | ''>(90);
+  const [newH, setNewH] = useState<number | ''>(60);
   const [aspectString, setAspectString] = useState("3:2");
 
   const isClient = useSyncExternalStore(
@@ -297,15 +297,35 @@ export default function ArtMasonsLanding() {
 
   // --- CALCULATOR LOGIC ---
   useEffect(() => {
-    if (typeof calcW === 'number' && typeof calcH === 'number' && calcW > 0 && calcH > 0) {
-      const w = Math.round(calcW * 100); 
-      const h = Math.round(calcH * 100);
-      const divisor = gcd(w, h);
-      setAspectString(`${w / divisor}:${h / divisor}`);
+    // Compute new dimensions based on original values and the single known new dimension.
+    if (typeof origW === 'number' && typeof origH === 'number') {
+      if (typeof newKnown === 'number') {
+        const delta = knownDim === 'width' ? newKnown - origW : newKnown - origH;
+        const computedW = knownDim === 'width' ? newKnown : Math.max(0, +(origW + delta).toFixed(2));
+        const computedH = knownDim === 'height' ? newKnown : Math.max(0, +(origH + delta).toFixed(2));
+        setNewW(computedW);
+        setNewH(computedH);
+
+        if (computedW > 0 && computedH > 0) {
+          const w = Math.round(computedW * 100);
+          const h = Math.round(computedH * 100);
+          const divisor = gcd(w, h);
+          setAspectString(`${w / divisor}:${h / divisor}`);
+        } else {
+          setAspectString("- : -");
+        }
+      } else {
+        setNewW(origW);
+        setNewH(origH);
+        const w = Math.round(origW * 100);
+        const h = Math.round(origH * 100);
+        const divisor = gcd(w, h);
+        setAspectString(`${w / divisor}:${h / divisor}`);
+      }
     } else {
       setAspectString("- : -");
     }
-  }, [calcW, calcH]);
+  }, [origW, origH, knownDim, newKnown]);
 
   const currentArray = playTop100Random ? TOP_100_ARTS : ART_OF_THE_DAY;
   const currentArt = playTop100Random
@@ -313,33 +333,13 @@ export default function ArtMasonsLanding() {
     : ART_OF_THE_DAY[currentArtIndex];
 
   // --- CENTRALIZED TRANSITION LOGIC ---
-  const triggerArtTransition = useCallback(async (direction: 'next' | 'prev') => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-
-    // 1. Close Curtains
-    setCurtainStatus('closed');
-    
-    // Wait for Close Animation
-    await new Promise(resolve => setTimeout(resolve, 700));
-
-    // 2. Swap Image behind closed curtains
+  const triggerArtTransition = useCallback((direction: 'next' | 'prev') => {
     if (direction === 'next') {
        setCurrentArtIndex((prev) => (prev + 1) % currentArray.length);
     } else {
        setCurrentArtIndex((prev) => (prev - 1 + currentArray.length) % currentArray.length);
     }
-
-    // Short pause
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    // 3. Open Curtains
-    setCurtainStatus('open');
-
-    // Wait for Open Animation
-    await new Promise(resolve => setTimeout(resolve, 700));
-    setIsTransitioning(false);
-  }, [currentArray, isTransitioning]);
+  }, [currentArray]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -483,79 +483,24 @@ export default function ArtMasonsLanding() {
           <div className="w-full md:w-2/3 relative bg-gray-50 group overflow-hidden">
             {/* IMAGE CONTAINER */}
             <div className="absolute inset-0">
-                {/* BACKGROUND: Red Curtain pattern for margins */}
-                <div 
-                  className="w-full h-full relative"
-                  style={{ backgroundColor: '#2a0a0a' }}
+              <AnimatePresence>
+                <motion.div
+                  key={currentArtIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="absolute inset-0"
                 >
-                  <div 
-                    className="absolute inset-0"
-                    style={{
-                      // FIXED PIXEL WIDTH (60px) to ensure dense curtain texture is visible in margins
-                      backgroundImage: 'repeating-linear-gradient(90deg, #370606 0px, #5e0b0b 15px, #800000 30px, #5e0b0b 45px, #370606 60px)',
-                      opacity: 1
-                    }}
-                  />
-                  <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/50 to-transparent z-0 pointer-events-none"></div>
-
                   <Image
-                    key={currentArtIndex}
                     src={currentArt.image}
                     alt={currentArt.title}
                     fill
                     className="object-contain z-10 drop-shadow-2xl"
                     priority
                   />
-                </div>
-            </div>
-
-            {/* --- TRANSITION CURTAIN OVERLAY --- */}
-            <div className="absolute inset-0 z-50 pointer-events-none flex flex-col justify-center">
-               <div className="absolute inset-0 flex">
-                   {/* Left Curtain Panel - Uses larger folds for the main animation */}
-                   <motion.div
-                      initial={{ x: "-100%" }}
-                      animate={{ x: curtainStatus === 'closed' ? "0%" : "-100%" }}
-                      transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-                      className="w-1/2 h-full bg-[#800000] relative shadow-2xl z-20"
-                      style={{
-                        // 100% / 8 folds = 12.5% - Visible on the full panel
-                        backgroundImage: 'repeating-linear-gradient(90deg, #600000 0%, #700000 3.125%, #800000 6.25%, #700000 9.375%, #600000 12.5%)',
-                      }}
-                   />
-
-                   {/* Right Curtain Panel */}
-                   <motion.div
-                      initial={{ x: "100%" }}
-                      animate={{ x: curtainStatus === 'closed' ? "0%" : "100%" }}
-                      transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-                      className="w-1/2 h-full bg-[#800000] relative shadow-2xl z-20"
-                      style={{
-                         backgroundImage: 'repeating-linear-gradient(90deg, #600000 0%, #700000 3.125%, #800000 6.25%, #700000 9.375%, #600000 12.5%)',
-                      }}
-                   />
-               </div>
-               
-               {/* Center Logo */}
-               <motion.div
-                 initial={{ opacity: 0, scale: 0.8 }}
-                 animate={{ 
-                   opacity: curtainStatus === 'closed' ? 1 : 0,
-                   scale: curtainStatus === 'closed' ? 1 : 0.8
-                 }}
-                 transition={{ duration: 0.4, delay: curtainStatus === 'closed' ? 0.3 : 0 }}
-                 className="absolute inset-0 flex items-center justify-center z-50"
-               >
-                  <div className="relative w-48 h-48 drop-shadow-[0_0_30px_rgba(0,0,0,0.9)]">
-                    <Image
-                      src="/artmasons_logo.png"
-                      alt="Art Masons Seal"
-                      fill
-                      sizes="(max-width: 768px) 192px, 192px"
-                      className="object-contain"
-                    />
-                  </div>
-               </motion.div>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             <div className="absolute bottom-0 w-full bg-white py-4 text-center z-20 border-t border-gray-200">
@@ -564,12 +509,22 @@ export default function ArtMasonsLanding() {
                   FAMOUS ART
                 </span>
               </div>
-              <h2 className="font-serif text-2xl text-black">
-                {currentArt?.title ?? ""}
-              </h2>
-              <p className="font-serif text-sm text-gray-600 mt-1">
-                {currentArt?.artist ?? ""}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentArtIndex}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <h2 className="font-serif text-2xl text-black">
+                    {currentArt?.title ?? ""}
+                  </h2>
+                  <p className="font-serif text-sm text-gray-600 mt-1">
+                    {currentArt?.artist ?? ""}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             <button
@@ -578,7 +533,6 @@ export default function ArtMasonsLanding() {
                 e.preventDefault();
                 goPrevArt();
               }}
-              disabled={isTransitioning}
               aria-label="Previous art"
               className="absolute left-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -591,7 +545,6 @@ export default function ArtMasonsLanding() {
                 e.preventDefault();
                 goNextArt();
               }}
-              disabled={isTransitioning}
               aria-label="Next art"
               className="absolute right-4 top-1/2 -translate-y-1/2 z-40 p-2 bg-white/70 rounded-full hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -618,9 +571,7 @@ export default function ArtMasonsLanding() {
               href={isClient && currentArt.slug ? `/artworks/${currentArt.slug}` : "#"}
               onClick={(e) => { e.stopPropagation(); }}
               aria-label="Buy now"
-              className={`absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition-all duration-300 text-sm bottom-20 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2 ${
-                curtainStatus === 'closed' ? 'opacity-0 pointer-events-none scale-75' : 'opacity-100 scale-100'
-              }`}
+              className="absolute z-50 inline-flex items-center justify-center bg-[#800000] text-white w-24 h-24 rounded-full font-bold uppercase tracking-wider shadow-lg hover:bg-[#9a0000] transition-all duration-300 text-sm bottom-20 right-6 md:left-1/2 md:bottom-[105px] md:transform md:-translate-x-1/2 opacity-100 scale-100"
             >
               BUY NOW
             </Link>
@@ -727,77 +678,78 @@ export default function ArtMasonsLanding() {
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase flex items-center gap-3">
               Custom Art Size
             </h3>
-            <div className="font-serif bg-white p-6 md:p-8 border-2 border-[#800000] rounded-lg shadow-sm h-full flex flex-col">
-              <p className="text-gray-600 mb-6 text-sm md:text-base border-b border-gray-100 pb-4">
-                Calculate the perfect aspect ratio for your custom artwork. Enter your dimensions (cm) below.
-              </p>
+            <div className="font-serif bg-white p-6 border-2 border-[#800000] rounded-lg shadow-sm flex flex-col">
+              <div className="text-gray-600 mb-4 text-sm border-b border-gray-100 pb-4">
+                <p className="mb-2 font-semibold">All custom sizes keep the original artwork proportions.</p>
+                <ol className="list-decimal list-inside mb-3 space-y-1">
+                  <li>Enter the original Height × Width (listed as H × W across our site).</li>
+                  <li>Measure your wall space.</li>
+                  <li>Enter your desired new height for the artwork (e.g. 150 cm).</li>
+                </ol>
 
-              <div className="flex gap-6 mb-6">
-                <div className="flex-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 block">Width (cm)</label>
-                  <input
-                    type="number"
-                    value={calcW}
-                    onChange={(e) => setCalcW(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] focus:ring-1 focus:ring-[#800000] outline-none text-xl font-bold text-center"
-                    placeholder="W"
-                  />
-                </div>
-                <div className="flex items-center pt-6 text-gray-400">
-                  <ArrowRightLeft size={20} />
-                </div>
-                <div className="flex-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 block">Height (cm)</label>
-                  <input
-                    type="number"
-                    value={calcH}
-                    onChange={(e) => setCalcH(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] focus:ring-1 focus:ring-[#800000] outline-none text-xl font-bold text-center"
-                    placeholder="H"
-                  />
-                </div>
+                <p className="mb-2 font-semibold">The Custom Art Calculator will automatically adjust the width.</p>
+                <ol className="list-decimal list-inside space-y-1">
+                  <li>Check that the final H × W size fits your wall.</li>
+                  <li>If it’s too large, choose a smaller size. If you have more space, you can go larger.</li>
+                  <li>Need help? Contact us at <a href="mailto:info@artmasons.com" className="underline">info@artmasons.com</a></li>
+                </ol>
               </div>
 
-              {/* RESULT DISPLAY */}
-              <div className="bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center flex-grow relative overflow-hidden">
-                 
-                 {/* Visual Aspect Box */}
-                 <div className="mb-4 relative z-10 flex items-center justify-center w-full h-[180px]">
-                    <motion.div 
-                      layout
-                      className="border-4 border-[#800000] bg-white shadow-lg flex items-center justify-center"
-                      style={{
-                        aspectRatio: (typeof calcW === 'number' && typeof calcH === 'number' && calcW > 0 && calcH > 0) 
-                          ? `${calcW}/${calcH}` 
-                          : '1/1',
-                        height: (typeof calcW === 'number' && typeof calcH === 'number' && calcW > calcH) ? 'auto' : '100%',
-                        width: (typeof calcW === 'number' && typeof calcH === 'number' && calcW > calcH) ? '100%' : 'auto',
-                        maxHeight: '160px',
-                        maxWidth: '240px'
-                      }}
-                      transition={{ type: "spring", stiffness: 120, damping: 20 }}
-                    >
-                       <span className="text-[#800000]/20 text-4xl font-bold">
-                          {aspectString}
-                       </span>
-                    </motion.div>
-                 </div>
+              <div className="flex flex-col gap-4 mb-6">
+                <div className="flex gap-4">
+                  <div className="w-1/2">
+                    <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old width</label>
+                    <input
+                      type="number"
+                      value={origW}
+                      onChange={(e) => setOrigW(e.target.value === '' ? '' : Number(e.target.value))}
+                      className="w-full p-3 border border-gray-300 rounded outline-none"
+                      placeholder="Width"
+                    />
+                  </div>
 
-                 <div className="text-center relative z-10">
-                   <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Calculated Ratio</h4>
-                   <div className="text-4xl font-bold text-[#800000] flex items-center justify-center gap-2">
-                     {aspectString}
-                     {typeof calcW === 'number' && calcW > 0 && typeof calcH === 'number' && calcH > 0 && (
-                       <CheckCircle2 size={24} className="text-green-600" />
-                     )}
-                   </div>
-                   {typeof calcW === 'number' && calcW > 0 && typeof calcH === 'number' && calcH > 0 && (
-                      <p className="text-xs text-gray-500 mt-2 font-sans">
-                        Decimal: {(calcW / calcH).toFixed(2)}
-                      </p>
-                   )}
-                 </div>
+                  <div className="w-1/2">
+                    <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old height</label>
+                    <input
+                      type="number"
+                      value={origH}
+                      onChange={(e) => setOrigH(e.target.value === '' ? '' : Number(e.target.value))}
+                      className="w-full p-3 border border-gray-300 rounded outline-none"
+                      placeholder="Height"
+                    />
+                  </div>
+                </div>
 
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 block mb-3">Choose new dimension you already know <span className="text-red-500">*</span></label>
+                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                    <div className="flex items-center gap-6 shrink-0">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="known" checked={knownDim === 'width'} onChange={() => setKnownDim('width')} className="accent-[#800000]" />
+                        <span>New width</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="known" checked={knownDim === 'height'} onChange={() => setKnownDim('height')} className="accent-[#800000]" />
+                        <span>New height</span>
+                      </label>
+                    </div>
+                    
+                    <div className="w-full">
+                      <input
+                        type="number"
+                        value={newKnown}
+                        onChange={(e) => setNewKnown(e.target.value === '' ? '' : Number(e.target.value))}
+                        className="w-full p-3 border border-gray-300 rounded outline-none"
+                        placeholder={knownDim === 'width' ? 'Enter new width' : 'Enter new height'}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-3 pt-3 border-t">
+                  <div className="text-sm font-semibold text-gray-700">Behold! Your new {knownDim === 'width' ? 'height' : 'width'}</div>
+                  <div className="text-2xl font-bold text-[#800000] mt-2">{typeof (knownDim === 'width' ? newH : newW) === 'number' ? `${knownDim === 'width' ? newH : newW} cm` : '-'}</div>
+                </div>
               </div>
             </div>
           </div>

@@ -250,7 +250,7 @@ export default function ArtMasonsLanding() {
   const [currentArtIndex, setCurrentArtIndex] = useState(0);
   const [playTop100Random] = useState(false);
   const [isTop100AutoPlay, setIsTop100AutoPlay] = useState(true);
-  const [currentFactIndex] = useState(0);
+  const [currentFactIndex, setCurrentFactIndex] = useState(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [famousAutoPlay, setFamousAutoPlay] = useState(true);
 
@@ -294,6 +294,36 @@ export default function ArtMasonsLanding() {
     };
   }, []);
 
+  // --- FUN FACTS: daily rotation ---
+  useEffect(() => {
+    if (!isClient) return;
+
+    const today = new Date();
+    const startOfYear = new Date(today.getFullYear(), 0, 0);
+    const diff = today.getTime() - startOfYear.getTime();
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay);
+
+    setCurrentFactIndex(dayOfYear % FUN_FACTS_DATA.length);
+
+    // Schedule update at next midnight, then every 24h
+    const now = new Date();
+    const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime();
+
+    let intervalId: number | undefined;
+    const timeoutId = window.setTimeout(() => {
+      setCurrentFactIndex((prev) => (prev + 1) % FUN_FACTS_DATA.length);
+      intervalId = window.setInterval(() => {
+        setCurrentFactIndex((prev) => (prev + 1) % FUN_FACTS_DATA.length);
+      }, oneDay);
+    }, msUntilMidnight);
+
+    return () => {
+      window.clearTimeout(timeoutId as number);
+      if (intervalId) window.clearInterval(intervalId as number);
+    };
+  }, [isClient]);
+
   const currentArray = playTop100Random ? TOP_100_ARTS : ART_OF_THE_DAY;
   const currentArt = playTop100Random
     ? TOP_100_ARTS[top100Order[currentArtIndex] ?? currentArtIndex]
@@ -315,7 +345,7 @@ export default function ArtMasonsLanding() {
 
     const interval = setInterval(() => {
       triggerArtTransition('next');
-    }, 6000);
+    }, 4500);
 
     return () => clearInterval(interval);
   }, [isClient, playTop100Random, famousAutoPlay, triggerArtTransition]);

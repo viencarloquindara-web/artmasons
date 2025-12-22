@@ -1,3 +1,4 @@
+export const hArtworks = [
   {
     title: "Italian Landscape",
     year: "1795",
@@ -465,4 +466,8 @@
     image: "/image/h/the great wave of kanagawa.jpg",
     options: [{ id: 'opt1', width: 25.4, height: 38, price: 2350, label: 'Original Size' }],
   },
+
+];
+
+export default hArtworks;
 

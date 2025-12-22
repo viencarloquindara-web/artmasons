@@ -103,7 +103,7 @@ function calculatePrice(width, height) {
   ];
 
   // Generate TypeScript code
-  let tsCode = '';
+  let tsCode = 'export const fArtworks = [\n';
   let skuCounter = 1;
   
   // Track duplicate titles
@@ -147,6 +147,8 @@ function calculatePrice(width, height) {
     
     skuCounter++;
   }
+
+  tsCode += '];\n\nexport default fArtworks;\n';
 
   console.log('Generated TypeScript code:');
   console.log(tsCode);

@@ -1,3 +1,4 @@
+export const fArtworks = [
   {
     title: "The Goldfinch",
     year: "1654",
@@ -309,4 +310,8 @@
     image: "/image/f/ship-in-the-polar-sea.jpg",
     options: [{ id: 'opt1', width: 29.6, height: 21.9, price: 3011, label: 'Original Size' }],
   },
+
+];
+
+export default fArtworks;
 

@@ -48,7 +48,7 @@ console.log('Available images:', imageFiles);
 console.log('\nGenerating TypeScript entries...\n');
 
 // Generate TypeScript entries
-let output = '';
+let output = 'export const hArtworks = [\n';
 let skuCounter = 1;
 
 artworks.forEach((artwork) => {
@@ -87,6 +87,8 @@ artworks.forEach((artwork) => {
 
 `;
 });
+
+output += '];\n\nexport default hArtworks;\n';
 
 console.log(output);
 console.log(`\nTotal artworks processed: ${skuCounter - 1}`);

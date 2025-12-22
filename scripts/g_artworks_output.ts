@@ -1,3 +1,4 @@
+export const gArtworks = [
   {
     title: "The Pond October",
     year: "1921",
@@ -439,4 +440,8 @@
     image: "/image/g/liverpool from wapping.jpg",
     options: [{ id: 'opt1', width: 61, height: 93, price: 5480, label: 'Original Size' }],
   },
+
+];
+
+export default gArtworks;
 

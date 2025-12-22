@@ -52,7 +52,7 @@ const entries = [
 ];
 
 // Generate TypeScript code
-let tsCode = '';
+let tsCode = 'export const gArtworks = [\n';
 let skuCounter = 1;
 
 const imageFiles = fs.readdirSync('public/image/g/').filter(f => f.endsWith('.jpg'));
@@ -85,6 +85,8 @@ for (const entry of entries) {
   
   skuCounter++;
 }
+
+tsCode += '];\n\nexport default gArtworks;\n';
 
 console.log('Generated TypeScript code:');
 console.log(tsCode);

@@ -60,12 +60,11 @@ export default function OurQualityPage() {
           {/* Quality Standards */}
           <section>
             <div className="flex items-center gap-4 mb-8">
-               <h2 className="font-serif text-3xl font-bold text-[#800000]">Our Quality Standards</h2>
-               <div className="h-px bg-[#800000]/30 flex-1"></div>
+              <h2 className="font-serif text-3xl font-bold text-[#800000]">Our Quality Standards</h2>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg border-2 border-[#800000]">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">100% Hand-Painted</h3>
@@ -73,7 +72,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg border-2 border-[#800000]">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Premium Linen Canvas</h3>
@@ -81,7 +80,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg border-2 border-[#800000]">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Refined Oil Paints</h3>
@@ -89,7 +88,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg border-2 border-[#800000]">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Master Artists</h3>
@@ -97,7 +96,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg border-2 border-[#800000]">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Quality Control</h3>
@@ -105,7 +104,7 @@ export default function OurQualityPage() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg">
+              <div className="flex items-start gap-4 p-6 bg-white shadow-sm hover:shadow-md transition-shadow rounded-lg border-2 border-[#800000]">
                 <CheckCircle className="text-[#800000] flex-shrink-0 mt-1" size={24} />
                 <div>
                   <h3 className="font-bold text-xl mb-2">Proper Drying Time</h3>
@@ -152,36 +151,36 @@ export default function OurQualityPage() {
           </div>
 
           {/* Our Process */}
-          <section>
+          <section className="p-6 rounded-lg">
             <h2 className="font-serif text-3xl font-bold mb-8 text-[#800000]">Our Creation Process</h2>
             <div className="space-y-6">
               {/* Process steps with white backgrounds */}
-              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
+              <div className="p-6 bg-white shadow-sm border-2 border-[#800000] rounded-lg">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">1. Selection & Study</h3>
                 <p>Our artists carefully study the original masterpiece, analyzing brushwork, color palette, and technique.</p>
               </div>
               
-              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
+              <div className="p-6 bg-white shadow-sm border-2 border-[#800000] rounded-lg">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">2. Canvas Preparation</h3>
                 <p>Premium linen canvas is stretched on wooden frames and treated with multiple layers of primer.</p>
               </div>
               
-              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
+              <div className="p-6 bg-white shadow-sm border-2 border-[#800000] rounded-lg">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">3. Underpainting</h3>
                 <p>The composition is sketched and an underpainting layer is applied to establish values and composition.</p>
               </div>
               
-              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
+              <div className="p-6 bg-white shadow-sm border-2 border-[#800000] rounded-lg">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">4. Layer by Layer Painting</h3>
                 <p>Multiple layers of oil paint are applied using traditional techniques, building depth and richness.</p>
               </div>
               
-              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
+              <div className="p-6 bg-white shadow-sm border-2 border-[#800000] rounded-lg">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">5. Detail Work & Finishing</h3>
                 <p>Fine details are added with precision, and the painting is allowed to dry completely.</p>
               </div>
               
-              <div className="p-6 bg-white shadow-sm border-l-4 border-[#800000] rounded-r-md">
+              <div className="p-6 bg-white shadow-sm border-2 border-[#800000] rounded-lg">
                 <h3 className="font-bold text-xl mb-2 text-[#800000]">6. Quality Inspection</h3>
                 <p>Each painting is inspected for accuracy, quality, and adherence to our museum-grade standards.</p>
               </div>

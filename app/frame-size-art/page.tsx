@@ -29,7 +29,7 @@ export default function FrameSizeArtPage() {
         <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
           
           {/* Introduction - Wrapped in semi-transparent card for readability on texture */}
-          <section className="bg-white/60 p-8 rounded-lg border border-[#800000]/10 backdrop-blur-sm">
+          <section className="bg-white/60 p-8 rounded-lg border-2 border-[#800000] backdrop-blur-sm">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Perfect Proportions, Timeless Elegance</h2>
             <p className="text-lg mb-4">
               At ART MASONS, we understand that the presentation of your artwork is just as important as the painting itself. Our approach to sizing and framing ensures that every reproduction maintains the authentic proportions and aesthetic integrity of the original masterpiece.

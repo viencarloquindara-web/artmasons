@@ -205,7 +205,7 @@ export default function AboutUsPage() {
         <div className="font-serif space-y-16 text-gray-700 leading-relaxed">
           
           {/* Our Philosophy */}
-          <section className="bg-white/60 p-6 rounded-lg backdrop-blur-sm border border-[#800000]/5">
+          <section className="bg-white/60 p-6 rounded-lg backdrop-blur-sm border border-2 border-[#800000]">
             <div className="flex items-center gap-3 mb-6">
               <Heart className="text-[#800000]" size={32} />
               <h2 className="font-serif text-3xl font-bold text-[#800000]">Our Philosophy</h2>
@@ -221,7 +221,7 @@ export default function AboutUsPage() {
               </p>
 
               <div className="grid md:grid-cols-3 gap-8 mt-8">
-                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow">
+                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow border-2 border-[#800000]">
                   <div className="flex items-center gap-3 mb-4">
                     <Palette className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Authenticity</h3>
@@ -231,7 +231,7 @@ export default function AboutUsPage() {
                   </p>
                 </div>
 
-                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow">
+                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow border-2 border-[#800000]">
                   <div className="flex items-center gap-3 mb-4">
                     <Users className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Craftsmanship</h3>
@@ -241,7 +241,7 @@ export default function AboutUsPage() {
                   </p>
                 </div>
 
-                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow">
+                <div className="bg-white shadow-sm p-6 rounded-lg hover:shadow-md transition-shadow border-2 border-[#800000]">
                   <div className="flex items-center gap-3 mb-4">
                     <Sparkles className="text-[#800000]" size={28} />
                     <h3 className="font-serif text-xl font-bold text-gray-800">Accessibility</h3>
@@ -274,10 +274,10 @@ export default function AboutUsPage() {
           </section>
 
           {/* Our Commitment */}
-          <section className="bg-white/40 p-6 rounded-lg border border-[#800000]/10">
+          <section className="bg-white/40 p-6 rounded-lg border border-2 border-[#800000]">
             <h2 className="font-serif text-3xl font-bold mb-6 text-[#800000]">Our Commitment to You</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
+              <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm border-2 border-[#800000]">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Museum-Quality Materials</h3>
@@ -287,7 +287,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm border-2 border-[#800000]">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Master Artisans</h3>
@@ -297,7 +297,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm border-2 border-[#800000]">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Proportional Accuracy</h3>
@@ -307,7 +307,7 @@ export default function AboutUsPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm">
+              <div className="flex items-start gap-3 bg-white p-4 rounded-md shadow-sm border-2 border-[#800000]">
                 <CheckCircle size={24} className="text-[#800000] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-serif text-xl font-semibold mb-2 text-gray-800">Personalized Service</h3>
@@ -441,7 +441,7 @@ export default function AboutUsPage() {
           </section>
 
           {/* Contact CTA */}
-          <section className="text-center bg-white shadow-sm p-8 rounded-lg border-2 border-[#800000]/10">
+          <section className="text-center bg-white shadow-sm p-8 rounded-lg border-2 border-[#800000]">
             <h2 className="font-serif text-3xl font-bold mb-4 text-[#800000]">Let&apos;s Create Something Beautiful Together</h2>
             <p className="text-lg mb-6 max-w-2xl mx-auto">
               Whether you have questions about our process, need help selecting the perfect piece, or want to discuss a custom commission, we&apos;re here to help.

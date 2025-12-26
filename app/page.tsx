@@ -294,33 +294,17 @@ export default function ArtMasonsLanding() {
     };
   }, []);
 
-  // --- FUN FACTS: daily rotation ---
+  // --- FUN FACTS: continuous rotation (client-only) ---
   useEffect(() => {
     if (!isClient) return;
 
-    const today = new Date();
-    const startOfYear = new Date(today.getFullYear(), 0, 0);
-    const diff = today.getTime() - startOfYear.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-
-    setCurrentFactIndex(dayOfYear % FUN_FACTS_DATA.length);
-
-    // Schedule update at next midnight, then every 24h
-    const now = new Date();
-    const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime();
-
-    let intervalId: number | undefined;
-    const timeoutId = window.setTimeout(() => {
+    // rotate every 3 seconds
+    const intervalId = window.setInterval(() => {
       setCurrentFactIndex((prev) => (prev + 1) % FUN_FACTS_DATA.length);
-      intervalId = window.setInterval(() => {
-        setCurrentFactIndex((prev) => (prev + 1) % FUN_FACTS_DATA.length);
-      }, oneDay);
-    }, msUntilMidnight);
+    }, 3000);
 
     return () => {
-      window.clearTimeout(timeoutId as number);
-      if (intervalId) window.clearInterval(intervalId as number);
+      window.clearInterval(intervalId as number);
     };
   }, [isClient]);
 
@@ -651,14 +635,18 @@ export default function ArtMasonsLanding() {
               </div>
 
               {isClient && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="font-serif text-2xl md:text-3xl leading-relaxed text-gray-700 -mt-3"
-                >
-                  {FUN_FACTS_DATA[currentFactIndex]}
-                </motion.p>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={currentFactIndex}
+                    initial={{ opacity: 0, y: 6, scale: 0.995 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.995 }}
+                    transition={{ duration: 0.4 }}
+                    className="font-serif text-2xl md:text-3xl leading-relaxed text-gray-700 -mt-3"
+                  >
+                    {FUN_FACTS_DATA[currentFactIndex]}
+                  </motion.p>
+                </AnimatePresence>
               )}
 
               <div
@@ -675,30 +663,30 @@ export default function ArtMasonsLanding() {
             <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase flex items-center gap-3">
               ART RESIZING TOOL
             </h3>
-            <div className="font-serif bg-white p-6 border-2 border-[#800000] rounded-lg shadow-sm flex flex-col">
-              <div className="text-gray-600 mb-4 text-sm border-b border-gray-100 pb-4">
+            <div className="font-serif bg-white p-6 border-2 border-[#800000] rounded-lg shadow-sm flex flex-col text-black text-base">
+              <div className="text-black mb-4 text-base border-b border-gray-100 pb-4">
                 <p className="mb-2">Keep your art perfectly proportional while fitting it to your space.</p>
                 <p className="mb-4">Note: All artwork on our site is listed as Height x Width</p>
 
-                <ul className="list-disc list-inside mb-4 space-y-1">
+                <ul className="list-disc list-inside mb-4 space-y-1 text-base text-[#800000]">
                   <li><span className="font-semibold">Step 1:</span> Enter the original Height and Width found on the product page.</li>
                   <li><span className="font-semibold">Step 2:</span> Measure your wall to decide how large you want the piece to be.</li>
                   <li><span className="font-semibold">Step 3:</span> Enter either your desired New Height or New Width.</li>
                 </ul>
 
-                <p className="mb-4">The tool will automatically calculate the matching dimension to ensure your art never looks stretched or distorted.</p>
+                <p className="mb-4 text-base">The tool will automatically calculate the matching dimension to ensure your art never looks stretched or distorted.</p>
 
-                <p className="font-semibold">Need a Hand?</p>
+                <p className="font-semibold text-base">Need a Hand?</p>
                 <p>
                   If you’re unsure about sizing, we’re happy to help! Contact us at{' '}
                   <a href="mailto:info@artmasons.com" className="text-[#800000] underline">info@artmasons.com</a>
                 </p>
               </div>
 
-              <div className="flex flex-col gap-4 mb-6">
+              <div className="flex flex-col gap-4 mb-6 text-base">
                 <div className="flex gap-4">
                   <div className="w-1/2">
-                    <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old height</label>
+                    <label className="text-base font-semibold text-black block mb-2">Enter Original Height</label>
                     <input
                       type="number"
                       value={origH}
@@ -709,7 +697,7 @@ export default function ArtMasonsLanding() {
                   </div>
 
                   <div className="w-1/2">
-                    <label className="text-sm font-semibold text-gray-700 block mb-2">Enter old width</label>
+                    <label className="text-base font-semibold text-black block mb-2">Enter Original Width</label>
                     <input
                       type="number"
                       value={origW}
@@ -721,13 +709,16 @@ export default function ArtMasonsLanding() {
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 block mb-3">Enter either the new desired Height or Width and the resize calculator will do the rest!</label>
+                  <label className="text-base font-semibold text-black block mb-3">Enter either the new desired Height or Width and the resize calculator will do the rest!</label>
                   <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <div className="flex items-center gap-6 shrink-0">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input type="radio" name="known" checked={knownDim === 'height'} onChange={() => setKnownDim('height')} className="accent-[#800000]" />
                         <span>New height</span>
                       </label>
+
+                      <span className="mx-2 text-sm text-black self-center">Or</span>
+
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input type="radio" name="known" checked={knownDim === 'width'} onChange={() => setKnownDim('width')} className="accent-[#800000]" />
                         <span>New width</span>
@@ -747,7 +738,7 @@ export default function ArtMasonsLanding() {
                 </div>
 
                 <div className="mt-3 pt-3 border-t">
-                  <div className="text-sm font-semibold text-gray-700">Behold! Your new {knownDim === 'width' ? 'height' : 'width'}</div>
+                  <div className="text-base font-semibold text-black">Behold! Your new {knownDim === 'width' ? 'height' : 'width'}</div>
                   <div className="text-2xl font-bold text-[#800000] mt-2">{typeof computedOtherDim === 'number' ? `${computedOtherDim} cm` : '-'}</div>
                 </div>
               </div>

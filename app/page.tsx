@@ -656,92 +656,166 @@ export default function ArtMasonsLanding() {
                 <span className="font-serif text-6xl leading-none">”</span>
               </div>
             </div>
+
+            {/* Logos below Fun Facts */}
+            <div className="mt-12">
+              <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase">
+                ART MASON'S QUALITY PROMISE
+              </h3>
+              <div className="p-8 bg-white border-2 border-[#800000] rounded-lg shadow-sm flex flex-col items-center gap-6">
+                {/* First Row */}
+                <div className="w-full flex justify-center">
+                  <div className="relative w-32 h-32 sm:w-44 sm:h-44 md:w-72 md:h-72">
+                    <Image
+                      src="/image/icons/logo_1.png"
+                      alt="Logo 1"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+                {/* Second Row */}
+                <div className="w-full flex justify-center gap-12 items-center">
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44">
+                    <Image
+                      src="/image/icons/logo_2.png"
+                      alt="Logo 2"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44">
+                    <Image
+                      src="/image/icons/logo_3.png"
+                      alt="Logo 3"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44">
+                    <Image
+                      src="/image/icons/logo_4.png"
+                      alt="Logo 4"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* --- IMAGE ASPECT CALCULATOR --- */}
           <div className="w-full md:w-1/2">
-            <h3 className="font-serif text-2xl font-bold mb-6 text-center md:text-left uppercase flex items-center gap-3">
-              ART RESIZING TOOL
-            </h3>
-            <div className="font-serif bg-white p-6 border-2 border-[#800000] rounded-lg shadow-sm flex flex-col text-black text-base">
-              <div className="text-black mb-4 text-base border-b border-gray-100 pb-4">
-                <p className="mb-2">Keep your art perfectly proportional while fitting it to your space.</p>
-                <p className="mb-4">Note: All artwork on our site is listed as Height x Width</p>
+            <div className="flex items-center justify-center gap-4 mb-6">
+               <div className="h-px bg-[#800000] flex-grow"></div>
+               <h3 className="font-serif text-3xl font-bold text-center uppercase text-black tracking-widest">
+                 ART RESIZE TOOL
+               </h3>
+               <div className="h-px bg-[#800000] flex-grow"></div>
+            </div>
+            
+            <div className="font-serif bg-white p-8 border-2 border-[#800000] rounded-lg shadow-sm flex flex-col text-black text-lg relative">
+              
+              <p className="mb-2 text-lg text-black">Keep your art perfectly proportional while fitting it to your space.</p>
+              <p className="mb-6 text-base text-black">Note: All artwork across our site is listed as Height x Width in <span className="font-bold text-[#b91c1c]">centimeters (cm)</span></p>
 
-                <ul className="list-disc list-inside mb-4 space-y-1 text-base text-[#800000]">
-                  <li><span className="font-semibold">Step 1:</span> Enter the original Height and Width found on the product page.</li>
-                  <li><span className="font-semibold">Step 2:</span> Measure your wall to decide how large you want the piece to be.</li>
-                  <li><span className="font-semibold">Step 3:</span> Enter either your desired New Height or New Width.</li>
-                </ul>
-
-                <p className="mb-4 text-base">The tool will automatically calculate the matching dimension to ensure your art never looks stretched or distorted.</p>
-
-                <p className="font-semibold text-base">Need a Hand?</p>
-                <p>
-                  If you’re unsure about sizing, we’re happy to help! Contact us at{' '}
-                  <a href="mailto:info@artmasons.com" className="text-[#800000] underline">info@artmasons.com</a>
-                </p>
+              <div className="bg-[#b91c1c] text-white p-4 rounded mb-8 text-center font-medium shadow-sm">
+                Your artwork will always remain perfectly proportional – never stretched or distorted.
               </div>
 
-              <div className="flex flex-col gap-4 mb-6 text-base">
-                <div className="flex gap-4">
-                  <div className="w-1/2">
-                    <label className="text-base font-semibold text-black block mb-2">Enter Original Height</label>
-                    <input
-                      type="number"
-                      value={origH}
-                      onChange={(e) => setOrigH(e.target.value === '' ? '' : Number(e.target.value))}
-                      className="w-full p-3 border border-gray-300 rounded outline-none"
-                      placeholder="Height"
-                    />
-                  </div>
+              <p className="mb-4 font-semibold text-black">Follow these 3 simple steps:</p>
 
-                  <div className="w-1/2">
-                    <label className="text-base font-semibold text-black block mb-2">Enter Original Width</label>
-                    <input
-                      type="number"
-                      value={origW}
-                      onChange={(e) => setOrigW(e.target.value === '' ? '' : Number(e.target.value))}
-                      className="w-full p-3 border border-gray-300 rounded outline-none"
-                      placeholder="Width"
-                    />
-                  </div>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <span className="bg-[#b91c1c] text-white text-sm font-bold px-3 py-1 rounded-full shrink-0 mt-0.5">STEP 1</span>
+                  <p className="text-base text-black">Enter the original Height and Width found on the product page.</p>
                 </div>
-
-                <div>
-                  <label className="text-base font-semibold text-black block mb-3">Enter either the new desired Height or Width and the resize calculator will do the rest!</label>
-                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                    <div className="flex items-center gap-6 shrink-0">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="known" checked={knownDim === 'height'} onChange={() => setKnownDim('height')} className="accent-[#800000]" />
-                        <span>New height</span>
-                      </label>
-
-                      <span className="mx-2 text-sm text-black self-center">Or</span>
-
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="known" checked={knownDim === 'width'} onChange={() => setKnownDim('width')} className="accent-[#800000]" />
-                        <span>New width</span>
-                      </label>
-                    </div>
-                    
-                    <div className="w-full">
-                      <input
-                        type="number"
-                        value={newKnown}
-                        onChange={(e) => setNewKnown(e.target.value === '' ? '' : Number(e.target.value))}
-                        className="w-full p-3 border border-gray-300 rounded outline-none"
-                        placeholder={knownDim === 'width' ? 'Enter new width' : 'Enter new height'}
-                      />
-                    </div>
-                  </div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-[#b91c1c] text-white text-sm font-bold px-3 py-1 rounded-full shrink-0 mt-0.5">STEP 2</span>
+                  <p className="text-base text-black">Measure your wall to decide how large you want the piece to be.</p>
                 </div>
-
-                <div className="mt-3 pt-3 border-t">
-                  <div className="text-base font-semibold text-black">Behold! Your new {knownDim === 'width' ? 'height' : 'width'}</div>
-                  <div className="text-2xl font-bold text-[#800000] mt-2">{typeof computedOtherDim === 'number' ? `${computedOtherDim} cm` : '-'}</div>
+                <div className="flex items-start gap-3">
+                  <span className="bg-[#b91c1c] text-white text-sm font-bold px-3 py-1 rounded-full shrink-0 mt-0.5">STEP 3</span>
+                  <p className="text-base text-black">Enter either your new Height OR Width.</p>
                 </div>
               </div>
+
+              <div className="flex gap-6 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                <div className="w-1/2">
+                  <label className="text-base font-bold text-black block mb-2">Enter Original Height</label>
+                  <input
+                    type="number"
+                    value={origH}
+                    onChange={(e) => setOrigH(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] outline-none bg-white text-black transition-colors"
+                    placeholder="60"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label className="text-base font-bold text-black block mb-2">Enter Original Width</label>
+                  <input
+                    type="number"
+                    value={origW}
+                    onChange={(e) => setOrigW(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] outline-none bg-white text-black transition-colors"
+                    placeholder="90"
+                  />
+                </div>
+              </div>
+
+              <div className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                <label className="text-sm font-bold text-black block mb-4">
+                  Enter either the new desired Height <span className="text-[#b91c1c] font-extrabold">OR</span> Width
+                </label>
+                
+                <div className="flex items-center gap-4 mb-4">
+                   <label className="flex items-center gap-2 cursor-pointer group">
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${knownDim === 'height' ? 'border-[#b91c1c]' : 'border-gray-400'}`}>
+                        {knownDim === 'height' && <div className="w-2.5 h-2.5 rounded-full bg-[#b91c1c]" />}
+                      </div>
+                      <input type="radio" name="known" checked={knownDim === 'height'} onChange={() => setKnownDim('height')} className="hidden" />
+                      <span className="text-base font-medium text-black group-hover:text-[#b91c1c] transition-colors">New Height</span>
+                   </label>
+
+                   <span className="bg-[#b91c1c] text-white text-xs font-bold px-3 py-1 rounded shadow-sm">OR</span>
+
+                   <label className="flex items-center gap-2 cursor-pointer group">
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${knownDim === 'width' ? 'border-[#b91c1c]' : 'border-gray-400'}`}>
+                        {knownDim === 'width' && <div className="w-2.5 h-2.5 rounded-full bg-[#b91c1c]" />}
+                      </div>
+                      <input type="radio" name="known" checked={knownDim === 'width'} onChange={() => setKnownDim('width')} className="hidden" />
+                      <span className="text-base font-medium text-black group-hover:text-[#b91c1c] transition-colors">New Width</span>
+                   </label>
+                </div>
+
+                <div className="mb-4">
+                   <input
+                      type="number"
+                      value={newKnown}
+                      onChange={(e) => setNewKnown(e.target.value === '' ? '' : Number(e.target.value))}
+                      className="w-full p-3 border border-gray-300 rounded focus:border-[#800000] outline-none bg-white text-black transition-colors"
+                      placeholder={knownDim === 'width' ? 'Enter new width' : 'Enter new height'}
+                   />
+                </div>
+
+                <div className="flex items-center border border-gray-200 rounded bg-white overflow-hidden shadow-sm">
+                   <div className="px-4 py-3 text-black text-base border-r border-gray-200 bg-gray-50 min-w-[180px] font-medium">
+                      Behold your new {knownDim === 'width' ? 'Height' : 'Width'}
+                   </div>
+                    <div className="px-4 py-3 font-bold text-[#b91c1c] text-lg flex-grow">
+                       {typeof computedOtherDim === 'number' ? `${computedOtherDim} cm` : ''}
+                    </div>
+                </div>
+              </div>
+
+              <div className="border-2 border-[#800000] rounded p-4 mt-2">
+                 <p className="font-bold text-base mb-1 text-black">Need a hand?</p>
+                 <p className="text-base text-black">
+                   We're happy to help — contact us at <a href="mailto:info@artmasons.com" className="text-[#800000] underline font-medium">info@artmasons.com</a>
+                 </p>
+              </div>
+
             </div>
           </div>
         </section>
